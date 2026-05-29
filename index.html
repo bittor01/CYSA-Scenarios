@@ -247,13 +247,23 @@
         };
 
         function init() {
-            populateScenarioDropdown();
-            loadScenario(state.currentScenarioId);
-            lucide.createIcons();
+            try {
+                populateScenarioDropdown();
+                loadScenario(state.currentScenarioId);
+                if (window.lucide) {
+                    lucide.createIcons();
+                } else {
+                    console.error("Lucide icons not loaded.");
+                }
+            } catch (err) {
+                console.error("Initialization failed:", err);
+                document.getElementById('scenario-desc').textContent = "Error loading simulation. Please check the console.";
+            }
         }
 
         function populateScenarioDropdown() {
             const select = document.getElementById('scenario-select');
+            if (!select) return;
             select.innerHTML = scenarios.map(s => `<option value="${s.id}">${s.title}</option>`).join('');
             select.addEventListener('change', (e) => {
                 loadScenario(e.target.value);
@@ -268,8 +278,11 @@
             state.isSubmitted = false;
 
             // Update UI
-            document.getElementById('scenario-desc').textContent = scenario.description;
-            document.getElementById('feedback-section').classList.add('hidden');
+            const descEl = document.getElementById('scenario-desc');
+            if (descEl) descEl.textContent = scenario.description;
+
+            const feedbackEl = document.getElementById('feedback-section');
+            if (feedbackEl) feedbackEl.classList.add('hidden');
             document.getElementById('submit-btn').disabled = false;
             document.getElementById('submit-btn').classList.remove('opacity-50', 'cursor-not-allowed');
 
@@ -277,11 +290,14 @@
             selectAsset('proxy');
 
             // Re-initialize icons if needed
-            lucide.createIcons();
+            if (window.lucide) {
+                lucide.createIcons();
+            }
         }
 
         function renderQuestions(scenario) {
             const container = document.getElementById('questions-container');
+            if (!container) return;
             container.innerHTML = Object.entries(scenario.questions).map(([key, q]) => `
                 <div class="question-block" id="q-block-${key}">
                     <label class="block text-sm font-medium text-slate-300 mb-2">${q.label}</label>
@@ -301,7 +317,9 @@
                     </div>
                 </div>
             `).join('');
-            lucide.createIcons();
+            if (window.lucide) {
+                lucide.createIcons();
+            }
         }
 
         function selectAsset(assetKey) {
@@ -386,7 +404,9 @@
             document.getElementById('submit-btn').disabled = true;
             document.getElementById('submit-btn').classList.add('opacity-50', 'cursor-not-allowed');
 
-            lucide.createIcons();
+            if (window.lucide) {
+                lucide.createIcons();
+            }
 
             // Scroll feedback into view
             feedbackSection.scrollIntoView({ behavior: 'smooth' });
