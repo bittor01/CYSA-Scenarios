@@ -23,19 +23,21 @@
             box-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
             background-color: rgba(30, 41, 59, 1);
         }
-        /* Custom scrollbar for terminal */
-        .log-container::-webkit-scrollbar {
+        .log-container::-webkit-scrollbar, .scrollable-list::-webkit-scrollbar {
             width: 8px;
         }
-        .log-container::-webkit-scrollbar-track {
+        .log-container::-webkit-scrollbar-track, .scrollable-list::-webkit-scrollbar-track {
             background: #000;
         }
-        .log-container::-webkit-scrollbar-thumb {
+        .log-container::-webkit-scrollbar-thumb, .scrollable-list::-webkit-scrollbar-thumb {
             background: #334155;
             border-radius: 4px;
         }
-        .log-container::-webkit-scrollbar-thumb:hover {
+        .log-container::-webkit-scrollbar-thumb:hover, .scrollable-list::-webkit-scrollbar-thumb:hover {
             background: #475569;
+        }
+        .checkbox-item:hover {
+            background-color: rgba(59, 130, 246, 0.1);
         }
     </style>
 </head>
@@ -50,10 +52,10 @@
         <div class="flex items-center gap-4">
             <button onclick="startRandomInvestigation()" class="bg-blue-600 hover:bg-blue-500 text-sm font-bold py-1.5 px-4 rounded transition-colors flex items-center gap-2">
                 <i data-lucide="shuffle" class="w-4 h-4"></i>
-                Random Investigation
+                Random Case
             </button>
             <div class="h-6 w-px bg-slate-700"></div>
-            <label for="scenario-select" class="text-sm font-medium text-slate-400 uppercase tracking-wider">Active:</label>
+            <label for="scenario-select" class="text-sm font-medium text-slate-400 uppercase tracking-wider">Case:</label>
             <select id="scenario-select" class="bg-slate-700 border border-slate-600 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
                 <!-- Options populated via JS -->
             </select>
@@ -64,28 +66,32 @@
     <main class="flex-1 flex overflow-hidden">
 
         <!-- Left Column: Assets & Logs -->
-        <section class="w-[65%] flex flex-col border-r border-slate-700 p-6 overflow-y-auto">
+        <section class="w-[60%] flex flex-col border-r border-slate-700 p-6 overflow-y-auto">
             <div class="mb-6">
                 <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
                     <i data-lucide="layout-grid" class="w-5 h-5 text-slate-400"></i>
                     Network Observation Nodes
                 </h2>
-                <div class="grid grid-cols-4 gap-4" id="asset-grid">
-                    <button onclick="selectAsset('proxy')" id="asset-proxy" class="asset-card flex flex-col items-center justify-center p-4 bg-slate-800 border border-slate-700 rounded-lg hover:border-slate-500 transition-all group">
-                        <i data-lucide="server" class="w-8 h-8 mb-2 text-slate-400 group-hover:text-blue-400"></i>
-                        <span class="text-sm font-medium">Web Gateway</span>
+                <div class="grid grid-cols-5 gap-4" id="asset-grid">
+                    <button onclick="selectAsset('proxy')" id="asset-proxy" class="asset-card flex flex-col items-center justify-center p-3 bg-slate-800 border border-slate-700 rounded-lg hover:border-slate-500 transition-all group">
+                        <i data-lucide="globe" class="w-6 h-6 mb-1 text-slate-400 group-hover:text-blue-400"></i>
+                        <span class="text-xs font-medium">Web Gateway</span>
                     </button>
-                    <button onclick="selectAsset('email')" id="asset-email" class="asset-card flex flex-col items-center justify-center p-4 bg-slate-800 border border-slate-700 rounded-lg hover:border-slate-500 transition-all group">
-                        <i data-lucide="mail" class="w-8 h-8 mb-2 text-slate-400 group-hover:text-blue-400"></i>
-                        <span class="text-sm font-medium">Mail Exchange</span>
+                    <button onclick="selectAsset('email')" id="asset-email" class="asset-card flex flex-col items-center justify-center p-3 bg-slate-800 border border-slate-700 rounded-lg hover:border-slate-500 transition-all group">
+                        <i data-lucide="mail" class="w-6 h-6 mb-1 text-slate-400 group-hover:text-blue-400"></i>
+                        <span class="text-xs font-medium">Mail Exchange</span>
                     </button>
-                    <button onclick="selectAsset('file_server')" id="asset-file_server" class="asset-card flex flex-col items-center justify-center p-4 bg-slate-800 border border-slate-700 rounded-lg hover:border-slate-500 transition-all group">
-                        <i data-lucide="hard-drive" class="w-8 h-8 mb-2 text-slate-400 group-hover:text-blue-400"></i>
-                        <span class="text-sm font-medium">File Repository</span>
+                    <button onclick="selectAsset('file_server')" id="asset-file_server" class="asset-card flex flex-col items-center justify-center p-3 bg-slate-800 border border-slate-700 rounded-lg hover:border-slate-500 transition-all group">
+                        <i data-lucide="hard-drive" class="w-6 h-6 mb-1 text-slate-400 group-hover:text-blue-400"></i>
+                        <span class="text-xs font-medium">File Repo</span>
                     </button>
-                    <button onclick="selectAsset('workstations')" id="asset-workstations" class="asset-card flex flex-col items-center justify-center p-4 bg-slate-800 border border-slate-700 rounded-lg hover:border-slate-500 transition-all group">
-                        <i data-lucide="monitor" class="w-8 h-8 mb-2 text-slate-400 group-hover:text-blue-400"></i>
-                        <span class="text-sm font-medium">Endpoints</span>
+                    <button onclick="selectAsset('workstations')" id="asset-workstations" class="asset-card flex flex-col items-center justify-center p-3 bg-slate-800 border border-slate-700 rounded-lg hover:border-slate-500 transition-all group">
+                        <i data-lucide="monitor" class="w-6 h-6 mb-1 text-slate-400 group-hover:text-blue-400"></i>
+                        <span class="text-xs font-medium">Endpoints</span>
+                    </button>
+                    <button onclick="selectAsset('auth_logs')" id="asset-auth_logs" class="asset-card flex flex-col items-center justify-center p-3 bg-slate-800 border border-slate-700 rounded-lg hover:border-slate-500 transition-all group">
+                        <i data-lucide="key" class="w-6 h-6 mb-1 text-slate-400 group-hover:text-blue-400"></i>
+                        <span class="text-xs font-medium">Auth Logs</span>
                     </button>
                 </div>
             </div>
@@ -102,24 +108,37 @@
         </section>
 
         <!-- Right Column: Incident Assessment -->
-        <section class="w-[35%] p-6 flex flex-col overflow-y-auto bg-slate-900/50">
-            <div class="sticky top-0">
+        <section class="w-[40%] p-6 flex flex-col overflow-y-auto bg-slate-900/50">
+            <div class="flex-1">
                 <h2 class="text-lg font-semibold mb-2 flex items-center gap-2">
                     <i data-lucide="clipboard-list" class="w-5 h-5 text-slate-400"></i>
-                    Incident Assessment
+                    Assessment Panel
                 </h2>
                 <p id="scenario-desc" class="text-sm text-slate-400 mb-6 italic">
-                    Loading investigation data...
+                    Initializing investigation...
                 </p>
 
-                <div id="questions-container" class="space-y-6">
+                <div id="questions-container" class="space-y-6 mb-8">
                     <!-- Questions generated here -->
                 </div>
 
-                <div class="mt-8 pt-6 border-t border-slate-700">
+                <div class="border-t border-slate-700 pt-6">
+                    <h3 class="text-sm font-bold text-slate-300 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <i data-lucide="check-square" class="w-4 h-4 text-blue-500"></i>
+                        CySA+ Principles Observed
+                    </h3>
+                    <div id="principles-checklist" class="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden flex flex-col h-64 scrollable-list">
+                        <!-- Checklist generated here -->
+                    </div>
+                    <div id="checklist-score" class="mt-2 text-xs font-medium text-slate-500 hidden">
+                        Principles matched: <span id="checklist-matches" class="text-blue-400">0/0</span>
+                    </div>
+                </div>
+
+                <div class="mt-8">
                     <button id="submit-btn" onclick="submitAnalysis()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
                         <i data-lucide="send" class="w-5 h-5"></i>
-                        Submit Analysis
+                        Submit Final Analysis
                     </button>
                 </div>
 
@@ -141,6 +160,25 @@
     </main>
 
     <script>
+        const MASTER_PRINCIPLES = [
+            "Phishing / Social Engineering",
+            "Beaconing / Command & Control",
+            "Data Exfiltration (Overt Channel)",
+            "Data Exfiltration (Alternate Channel)",
+            "Privilege Escalation",
+            "Lateral Movement",
+            "Impossible Travel (Geo-velocity violation)",
+            "Insider Threat",
+            "Reconnaissance / Scanning",
+            "Obfuscation / Encryption",
+            "Persistence",
+            "Insecure Direct Object Reference (IDOR)",
+            "SQL Injection",
+            "Cross-Site Scripting (XSS)",
+            "Brute Force / Credential Stuffing",
+            "Unauthorized Privilege Use"
+        ];
+
         const scenarios = [
             {
                 id: "scen-01",
@@ -151,192 +189,73 @@
                         "2026-05-29 02:14:10 | 10.10.4.52 -> 192.0.2.115:443 | POST /upload HTTP/1.1 | 200 | 4.2GB",
                         "2026-05-29 02:15:00 | 10.10.4.52 -> 192.0.2.115:443 | POST /upload HTTP/1.1 | 200 | 3.8GB"
                     ],
-                    email: [
-                        "2026-05-29 01:00:00 | Inbound | From: external-sender@unknown.com | To: d.jones@company.com | Clean",
-                        "No anomalous mail logs within target timeframe."
-                    ],
+                    email: ["Normal activity."],
                     file_server: [
                         "2026-05-29 01:45:12 | User: d.jones | IP: 10.10.4.52 | Read/Copy | S:\\Finances\\Q2_Proprietary_Data.csv",
                         "2026-05-29 01:46:01 | User: d.jones | IP: 10.10.4.52 | Read/Copy | S:\\R&D\\Blueprints_2026.tar.gz"
                     ],
                     workstations: [
-                        "Host: WKSTN-452 | IP: 10.10.4.52 | Active User: d.jones",
-                        "Event ID 4624: Successful Logon | Type 3 (Network) | Source: 10.10.4.52"
+                        "Host: WKSTN-452 | IP: 10.10.4.52 | Active User: d.jones"
+                    ],
+                    auth_logs: [
+                        "2026-05-29 01:40:00 | User d.jones | Login Success | IP: 10.10.4.52 | Workstation"
                     ]
                 },
                 questions: {
                     vector: {
-                        label: "What is the primary infection vector or root cause?",
+                        label: "Initial Access Method?",
                         type: "select",
-                        options: ["Phishing Link", "Credential Stuffing", "Insider Threat / Data Theft", "SQL Injection"],
-                        correct: "Insider Threat / Data Theft"
-                    },
-                    origin: {
-                        label: "Point of Origin (Identity or Asset)?",
-                        type: "select",
-                        options: ["External IP 192.0.2.115", "User d.jones", "Mail Exchange", "WKSTN-452"],
-                        correct: "User d.jones"
-                    },
-                    count: {
-                        label: "How many endpoints are currently confirmed compromised?",
-                        type: "number",
-                        correct: 1
-                    },
-                    artifact: {
-                        label: "What artifact was targeted for exfiltration?",
-                        type: "select",
-                        options: ["malware.exe", "Q2_Proprietary_Data.csv", "Blueprints_2026.tar.gz", "shadow_copy.bak"],
-                        correct: "Q2_Proprietary_Data.csv"
+                        options: ["Phishing", "Insider Abuse", "Vulnerability Exploit", "Broken Auth"],
+                        correct: "Insider Abuse"
                     }
                 },
-                explanation: "Correct! User d.jones copied sensitive files from the File Repository and exfiltrated them to an external IP via HTTPS. Only one workstation (WKSTN-452) was used."
+                principles: ["Insider Threat", "Data Exfiltration (Overt Channel)", "Unauthorized Privilege Use"],
+                explanation: "Correct! User d.jones used their existing access to copy and exfiltrate proprietary data over a standard HTTPS channel."
             },
             {
                 id: "scen-02",
-                title: "Ransomware Outbreak",
-                description: "Alert: Multiple endpoints reporting encrypted files. Unusual SMB traffic detected internally.",
+                title: "Ransomware Spread",
+                description: "Alert: Multiple endpoints reporting file encryption alerts.",
                 logs: {
-                    proxy: [
-                        "2026-06-12 09:12:05 | 10.10.4.88 -> 93.184.216.34:80 | GET /payload.exe | 200 | 1.2MB",
-                        "2026-06-12 10:05:44 | 10.10.4.88 -> dev-c2-control.net:443 | ESTABLISHED | 443 | 12KB"
-                    ],
-                    email: [
-                        "2026-06-12 08:45:00 | Inbound | From: updates@trusted-vendor.com | To: s.rogers@company.com | Subject: Security Patch | Link: http://93.184.216.34/patch",
-                        "2026-06-12 08:46:12 | User s.rogers clicked link in email."
-                    ],
-                    file_server: [
-                        "2026-06-12 10:15:22 | User: s.rogers | IP: 10.10.4.88 | Write/Rename | S:\\HR\\Salaries.xlsx -> S:\\HR\\Salaries.xlsx.locked",
-                        "2026-06-12 10:18:05 | User: s.rogers | IP: 10.10.4.88 | Write/Rename | S:\\Shared\\Public.zip -> S:\\Shared\\Public.zip.locked"
-                    ],
+                    proxy: ["2026-06-12 09:12:05 | 10.10.4.88 -> 93.184.216.34:80 | GET /payload.exe"],
+                    email: ["2026-06-12 08:45:00 | Inbound | From: updates@it.net | To: s.rogers@co.com | Link: 93.184.216.34/patch"],
+                    file_server: ["2026-06-12 10:15:22 | User: s.rogers | IP: 10.10.4.88 | Rename -> *.locked"],
                     workstations: [
-                        "Host: WKSTN-88 | IP: 10.10.4.88 | Active User: s.rogers | Process Start: payload.exe",
-                        "Host: WKSTN-89 | IP: 10.10.4.89 | Active User: t.stark | Alert: C:\\Users\\t.stark\\Documents\\encrypted",
-                        "Host: WKSTN-90 | IP: 10.10.4.90 | Active User: n.romanoff | Alert: C:\\Users\\n.romanoff\\Desktop\\note.txt"
-                    ]
+                        "WKSTN-88 | 10.10.4.88 | payload.exe active",
+                        "WKSTN-89 | 10.10.4.89 | Lateral Move: SMB Admin Share Access from 10.10.4.88"
+                    ],
+                    auth_logs: ["No anomalies."]
                 },
                 questions: {
-                    vector: {
-                        label: "Initial Infection Vector?",
-                        type: "select",
-                        options: ["Brute Force", "Spear Phishing Link", "Watering Hole Attack", "Malicious USB"],
-                        correct: "Spear Phishing Link"
-                    },
-                    origin: {
-                        label: "Which endpoint was the Patient Zero?",
-                        type: "select",
-                        options: ["WKSTN-88", "WKSTN-89", "WKSTN-90", "File Repository"],
-                        correct: "WKSTN-88"
-                    },
-                    count: {
-                        label: "Total number of confirmed infected endpoints?",
-                        type: "number",
-                        correct: 3
-                    },
-                    source: {
-                        label: "External Command & Control (C2) Source IP?",
-                        type: "select",
-                        options: ["10.10.4.88", "93.184.216.34", "192.0.2.1", "172.16.0.5"],
-                        correct: "93.184.216.34"
-                    }
+                    count: { label: "Infected Endpoints?", type: "number", correct: 2 }
                 },
-                explanation: "Correct! The infection started on WKSTN-88 via a phishing link and spread to WKSTN-89 and WKSTN-90. The File Repository was also impacted via network shares."
+                principles: ["Phishing / Social Engineering", "Lateral Movement", "Obfuscation / Encryption", "Persistence"],
+                explanation: "Correct! The attack began with phishing, followed by a payload download and internal spread via SMB lateral movement."
             },
             {
-                id: "scen-03",
-                title: "DNS Exfiltration",
-                description: "Alert: Abnormal DNS traffic volume detected. Multiple TXT record queries to an unknown domain.",
+                id: "scen-05",
+                title: "Impossible Travel Detection",
+                description: "Alert: Identity Protection alert for user account 't.stark'. Logins detected from disparate geographic locations.",
                 logs: {
-                    proxy: [
-                        "2026-07-04 14:00:00 | 10.10.5.10 -> 8.8.8.8:53 | DNS Query: d3NoLWV4ZmlsdHJhdGU=.evil-domain.com | TXT",
-                        "2026-07-04 14:00:01 | 10.10.5.10 -> 8.8.8.8:53 | DNS Query: bXktc2VjcmV0LWRhdGE=.evil-domain.com | TXT",
-                        "2026-07-04 14:01:05 | 10.10.5.11 -> 8.8.8.8:53 | DNS Query: dXNlci1wYXNzd29yZHM=.evil-domain.com | TXT"
-                    ],
-                    email: [
-                        "No anomalous mail logs found."
-                    ],
-                    file_server: [
-                        "2026-07-04 13:45:00 | User: b.wayne | IP: 10.10.5.10 | Read | C:\\Users\\b.wayne\\Documents\\Vault_Access.txt"
-                    ],
-                    workstations: [
-                        "Host: WKSTN-510 | IP: 10.10.5.10 | Active User: b.wayne | Process: nslookup.exe",
-                        "Host: WKSTN-511 | IP: 10.10.5.11 | Active User: k.kent | Process: nslookup.exe",
-                        "Host: WKSTN-512 | IP: 10.10.5.12 | Active User: d.prince | Process: Idle"
+                    proxy: ["Standard traffic."],
+                    email: ["Standard traffic."],
+                    file_server: ["Standard traffic."],
+                    workstations: ["WKSTN-101 | 10.10.10.5 | User: t.stark"],
+                    auth_logs: [
+                        "2026-09-01 10:00:00 | User t.stark | Login Success | IP: 72.14.213.10 (New York, US)",
+                        "2026-09-01 10:12:45 | User t.stark | Login Success | IP: 117.20.14.52 (Bangalore, India)",
+                        "2026-09-01 10:15:00 | User t.stark | Access Granted | S:\\Confidential\\Iron_Legion_Specs.pdf"
                     ]
                 },
                 questions: {
-                    method: {
-                        label: "Exfiltration Method?",
-                        type: "select",
-                        options: ["HTTP POST", "DNS Tunneling / TXT Records", "ICMP Payloads", "SMTP Attachment"],
-                        correct: "DNS Tunneling / TXT Records"
-                    },
-                    count: {
-                        label: "Number of endpoints confirmed beaconing/exfiltrating?",
+                    gap: {
+                        label: "Time gap between disparate logins (minutes)?",
                         type: "number",
-                        correct: 2
-                    },
-                    domain: {
-                        label: "Target Exfiltration Domain?",
-                        type: "select",
-                        options: ["evil-domain.com", "google-analytics.co", "microsoft-update.net", "cdn-check.biz"],
-                        correct: "evil-domain.com"
-                    },
-                    origin: {
-                        label: "Primary Point of Origin?",
-                        type: "select",
-                        options: ["WKSTN-510", "WKSTN-511", "WKSTN-512", "Web Gateway"],
-                        correct: "WKSTN-510"
+                        correct: 12
                     }
                 },
-                explanation: "Correct! The attackers used DNS TXT records to tunnel data out of the network. Both WKSTN-510 and WKSTN-511 were observed making these queries."
-            },
-            {
-                id: "scen-04",
-                title: "ICMP Tunneling & Beaconing",
-                description: "Alert: Unusual ICMP (Ping) traffic detected. Large packet sizes and consistent heartbeat intervals.",
-                logs: {
-                    proxy: [
-                        "2026-08-15 22:00:10 | 10.10.6.22 -> 203.0.113.42 | ICMP Echo Request | 1500 bytes | Heartbeat",
-                        "2026-08-15 22:00:40 | 10.10.6.22 -> 203.0.113.42 | ICMP Echo Request | 1500 bytes | Heartbeat",
-                        "2026-08-15 22:01:10 | 10.10.6.22 -> 203.0.113.42 | ICMP Echo Request | 1500 bytes | Heartbeat"
-                    ],
-                    email: [
-                        "No anomalous mail logs found."
-                    ],
-                    file_server: [
-                        "2026-08-15 21:30:12 | User: a.curry | IP: 10.10.6.22 | Access | S:\\Strategy\\Atlantis_Defense.pdf"
-                    ],
-                    workstations: [
-                        "Host: WKSTN-622 | IP: 10.10.6.22 | Active User: a.curry | Beacon: Confirmed",
-                        "Host: WKSTN-623 | IP: 10.10.6.23 | Active User: v.stone | Beacon: Idle"
-                    ]
-                },
-                questions: {
-                    method: {
-                        label: "Exfiltration Protocol?",
-                        type: "select",
-                        options: ["TCP", "UDP", "ICMP", "SCTP"],
-                        correct: "ICMP"
-                    },
-                    behavior: {
-                        label: "Observed Network Behavior?",
-                        type: "select",
-                        options: ["Data Burst", "Beaconing / Heartbeat", "Port Scanning", "SMB Brute Force"],
-                        correct: "Beaconing / Heartbeat"
-                    },
-                    count: {
-                        label: "Number of endpoints confirmed compromised?",
-                        type: "number",
-                        correct: 1
-                    },
-                    target: {
-                        label: "Threat Destination IP?",
-                        type: "select",
-                        options: ["203.0.113.42", "192.168.1.1", "8.8.8.8", "10.10.6.1"],
-                        correct: "203.0.113.42"
-                    }
-                },
-                explanation: "Correct! The compromised workstation (WKSTN-622) used oversized ICMP packets for beaconing and data exfiltration to a remote IP."
+                principles: ["Impossible Travel (Geo-velocity violation)", "Brute Force / Credential Stuffing", "Unauthorized Privilege Use"],
+                explanation: "Correct! The user account t.stark was used to log in from New York and Bangalore within 12 minutes, which is physically impossible, indicating a credential compromise."
             }
         ];
 
@@ -344,36 +263,33 @@
             currentScenarioId: scenarios[0].id,
             activeAsset: 'proxy',
             answers: {},
+            selectedPrinciples: [],
             isSubmitted: false
         };
 
         const assetLabels = {
             proxy: "Web Gateway",
             email: "Mail Exchange",
-            file_server: "File Repository",
-            workstations: "Endpoints"
+            file_server: "File Repo",
+            workstations: "Endpoints",
+            auth_logs: "Auth Logs"
         };
 
         function init() {
             try {
                 populateScenarioDropdown();
                 loadScenario(scenarios[0].id);
-                if (window.lucide) {
-                    lucide.createIcons();
-                }
+                if (window.lucide) lucide.createIcons();
             } catch (err) {
-                console.error("Initialization failed:", err);
-                document.getElementById('scenario-desc').textContent = "Error loading simulation.";
+                console.error("Init fail:", err);
             }
         }
 
         function populateScenarioDropdown() {
             const select = document.getElementById('scenario-select');
             if (!select) return;
-            select.innerHTML = scenarios.map((s, idx) => `<option value="${s.id}">Investigation ${String(idx + 1).padStart(2, '0')}</option>`).join('');
-            select.addEventListener('change', (e) => {
-                loadScenario(e.target.value);
-            });
+            select.innerHTML = scenarios.map((s, idx) => `<option value="${s.id}">Case ${String(idx + 1).padStart(2, '0')}</option>`).join('');
+            select.addEventListener('change', (e) => loadScenario(e.target.value));
         }
 
         function startRandomInvestigation() {
@@ -388,22 +304,20 @@
             state.currentScenarioId = id;
             state.activeAsset = 'proxy';
             state.answers = {};
+            state.selectedPrinciples = [];
             state.isSubmitted = false;
 
-            // Update UI
-            const descEl = document.getElementById('scenario-desc');
-            if (descEl) descEl.textContent = scenario.description;
-
-            const feedbackEl = document.getElementById('feedback-section');
-            if (feedbackEl) feedbackEl.classList.add('hidden');
+            document.getElementById('scenario-desc').textContent = scenario.description;
+            document.getElementById('feedback-section').classList.add('hidden');
+            document.getElementById('checklist-score').classList.add('hidden');
 
             const submitBtn = document.getElementById('submit-btn');
             submitBtn.disabled = false;
             submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
 
             renderQuestions(scenario);
+            renderChecklist();
             selectAsset('proxy');
-
             if (window.lucide) lucide.createIcons();
         }
 
@@ -415,11 +329,7 @@
                 let inputHtml = '';
                 if (q.type === 'select') {
                     inputHtml = `
-                        <select
-                            onchange="updateAnswer('${key}', this.value)"
-                            id="input-${key}"
-                            class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-                        >
+                        <select onchange="updateAnswer('${key}', this.value)" id="input-${key}" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
                             <option value="" disabled selected>Select findings...</option>
                             ${q.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
                         </select>
@@ -428,19 +338,11 @@
                         </div>
                     `;
                 } else if (q.type === 'number') {
-                    inputHtml = `
-                        <input
-                            type="number"
-                            placeholder="Enter count..."
-                            onchange="updateAnswer('${key}', parseInt(this.value))"
-                            id="input-${key}"
-                            class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
-                        >
-                    `;
+                    inputHtml = `<input type="number" placeholder="Value..." onchange="updateAnswer('${key}', parseInt(this.value))" id="input-${key}" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">`;
                 }
 
                 return `
-                    <div class="question-block relative" id="q-block-${key}">
+                    <div class="question-block" id="q-block-${key}">
                         <label class="block text-sm font-medium text-slate-300 mb-2">${q.label}</label>
                         <div class="relative">
                             ${inputHtml}
@@ -449,8 +351,38 @@
                     </div>
                 `;
             }).join('');
+        }
 
-            if (window.lucide) lucide.createIcons();
+        function renderChecklist() {
+            const container = document.getElementById('principles-checklist');
+            if (!container) return;
+
+            container.innerHTML = MASTER_PRINCIPLES.map((p, idx) => `
+                <div onclick="togglePrinciple('${p}')" id="p-item-${idx}" class="checkbox-item flex items-center gap-3 p-3 border-b border-slate-700/50 cursor-pointer transition-colors">
+                    <div id="p-check-${idx}" class="w-5 h-5 border-2 border-slate-600 rounded flex items-center justify-center transition-all"></div>
+                    <span class="text-sm text-slate-300">${p}</span>
+                    <div id="p-feedback-${idx}" class="ml-auto"></div>
+                </div>
+            `).join('');
+        }
+
+        function togglePrinciple(p) {
+            if (state.isSubmitted) return;
+
+            const idx = MASTER_PRINCIPLES.indexOf(p);
+            const check = document.getElementById(`p-check-${idx}`);
+            const item = document.getElementById(`p-item-${idx}`);
+
+            if (state.selectedPrinciples.includes(p)) {
+                state.selectedPrinciples = state.selectedPrinciples.filter(item => item !== p);
+                check.classList.remove('bg-blue-600', 'border-blue-600');
+                check.innerHTML = '';
+            } else {
+                state.selectedPrinciples.push(p);
+                check.classList.add('bg-blue-600', 'border-blue-600');
+                check.innerHTML = '<i data-lucide="check" class="w-3 h-3 text-white"></i>';
+                if (window.lucide) lucide.createIcons();
+            }
         }
 
         function selectAsset(assetKey) {
@@ -461,8 +393,7 @@
 
             const terminal = document.getElementById('log-terminal');
             const scenario = scenarios.find(s => s.id === state.currentScenarioId);
-            const logs = scenario.logs[assetKey] || ["No logs available for this node."];
-
+            const logs = scenario.logs[assetKey] || ["No traffic detected."];
             terminal.innerHTML = logs.map(line => `<div class="mb-1 border-b border-white/5 pb-1 last:border-0">> ${line}</div>`).join('');
             terminal.scrollTop = 0;
         }
@@ -475,54 +406,54 @@
             const scenario = scenarios.find(s => s.id === state.currentScenarioId);
             const questionKeys = Object.keys(scenario.questions);
 
-            let allAnswered = true;
-            questionKeys.forEach(key => {
-                if (state.answers[key] === undefined || state.answers[key] === null || state.answers[key] === "") {
-                    allAnswered = false;
-                }
-            });
-
-            if (!allAnswered) {
-                alert("Complete the investigation before submitting.");
-                return;
-            }
-
             state.isSubmitted = true;
-            let score = 0;
+            let qScore = 0;
 
+            // Validate questions
             questionKeys.forEach(key => {
                 const input = document.getElementById(`input-${key}`);
-                const iconContainer = document.getElementById(`icon-${key}`);
-                const isCorrect = state.answers[key] === scenario.questions[key].correct;
-
-                if (isCorrect) {
-                    score++;
+                const icon = document.getElementById(`icon-${key}`);
+                const correct = state.answers[key] === scenario.questions[key].correct;
+                if (correct) {
+                    qScore++;
                     input.classList.add('border-green-500', 'bg-green-900/20');
-                    iconContainer.innerHTML = '<i data-lucide="check-circle" class="text-green-500 w-5 h-5"></i>';
+                    icon.innerHTML = '<i data-lucide="check-circle" class="text-green-500 w-5 h-5"></i>';
                 } else {
                     input.classList.add('border-red-500', 'bg-red-900/20');
-                    iconContainer.innerHTML = '<i data-lucide="x-circle" class="text-red-500 w-5 h-5"></i>';
+                    icon.innerHTML = '<i data-lucide="x-circle" class="text-red-500 w-5 h-5"></i>';
                 }
             });
 
+            // Validate principles
+            let pScore = 0;
+            MASTER_PRINCIPLES.forEach((p, idx) => {
+                const feedback = document.getElementById(`p-feedback-${idx}`);
+                const item = document.getElementById(`p-item-${idx}`);
+                const check = document.getElementById(`p-check-${idx}`);
+                const shouldBeSet = scenario.principles.includes(p);
+                const isSet = state.selectedPrinciples.includes(p);
+
+                if (shouldBeSet && isSet) {
+                    pScore++;
+                    item.classList.add('bg-green-900/10');
+                    feedback.innerHTML = '<i data-lucide="check" class="text-green-500 w-4 h-4"></i>';
+                } else if (shouldBeSet && !isSet) {
+                    item.classList.add('bg-red-900/10');
+                    check.classList.add('border-red-500');
+                    feedback.innerHTML = '<span class="text-xs text-red-500 font-bold uppercase">Missing</span>';
+                } else if (!shouldBeSet && isSet) {
+                    item.classList.add('bg-red-900/10');
+                    check.classList.add('bg-red-500', 'border-red-500');
+                    feedback.innerHTML = '<i data-lucide="x" class="text-white w-4 h-4"></i>';
+                }
+            });
+
+            document.getElementById('checklist-score').classList.remove('hidden');
+            document.getElementById('checklist-matches').textContent = `${pScore}/${scenario.principles.length}`;
+
             const feedbackSection = document.getElementById('feedback-section');
-            const feedbackBanner = document.getElementById('feedback-banner');
-            const feedbackTitle = document.getElementById('feedback-title');
-            const feedbackMsg = document.getElementById('feedback-msg');
-            const explanationText = document.getElementById('explanation-text');
-
             feedbackSection.classList.remove('hidden');
-            explanationText.textContent = scenario.explanation;
-
-            if (score === questionKeys.length) {
-                feedbackBanner.className = "p-4 rounded-lg border mb-4 bg-green-900/20 border-green-500 text-green-400";
-                feedbackTitle.textContent = "Analysis Verified";
-                feedbackMsg.textContent = `All indicators identified correctly (${score}/${questionKeys.length}).`;
-            } else {
-                feedbackBanner.className = "p-4 rounded-lg border mb-4 bg-red-900/20 border-red-500 text-red-400";
-                feedbackTitle.textContent = "Analysis Incomplete";
-                feedbackMsg.textContent = `Found ${score} out of ${questionKeys.length} indicators. Check the debrief.`;
-            }
+            document.getElementById('explanation-text').textContent = scenario.explanation;
 
             document.getElementById('submit-btn').disabled = true;
             document.getElementById('submit-btn').classList.add('opacity-50', 'cursor-not-allowed');
