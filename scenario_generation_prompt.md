@@ -6,12 +6,12 @@ To generate new scenarios for the CompTIA Simulation Sandbox, use the following 
 
 ## The Prompt
 
-"Act as a CompTIA CySA+ / CASP+ Content Developer. Your goal is to generate a new incident response scenario in JSON format for a SOC simulation sandbox.
+"Act as a CompTIA CySA+ / CASP+ Content Developer. Your goal is to generate a new incident response scenario for a SOC simulation sandbox.
 
-**IMPORTANT: Before generating the JSON, you must first state the 'Ground Truth' answer for each field and provide a detailed 'Malicious Narrative' of exactly what happened. Then, provide a 'Noise Narrative' for 2-3 other users who are performing benign activities that will appear in the logs to act as distractions.**
+**IMPORTANT: Your output must be a JavaScript object that can be appended to the `scenarios` array in `scenarios.js`.**
 
 ### Master List of Principles
-When selecting the 'correct' principles for the checklist, you MUST choose from this list (or add a new relevant one if needed):
+When selecting the 'correct' principles for the checklist, you MUST choose from this list:
 - Phishing / Social Engineering
 - Beaconing / Command & Control
 - Data Exfiltration (Overt Channel)
@@ -32,7 +32,9 @@ When selecting the 'correct' principles for the checklist, you MUST choose from 
 - Unauthorized Privilege Use
 - Pass-the-Hash
 
-The output must be a single JavaScript object following this schema:
+### How to Add a Scenario
+1. Open `scenarios.js`.
+2. Append the following object to the `scenarios` array.
 
 ```javascript
 {
@@ -56,7 +58,7 @@ The output must be a single JavaScript object following this schema:
     }
   },
   principles: ["Phishing / Social Engineering", "Lateral Movement"], // Selection from Master List
-  explanation: "A detailed technical debrief including the malicious narrative and how to distinguish it from the noise."
+  explanation: "A detailed technical debrief explaining the malicious narrative and how to distinguish it from the noise."
 }
 ```
 
