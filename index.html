@@ -127,9 +127,12 @@
                     <i data-lucide="clipboard-list" class="w-5 h-5 text-slate-400"></i>
                     Assessment Panel
                 </h2>
-                <p id="scenario-desc" class="text-sm text-slate-400 mb-6 italic">
-                    Initializing investigation...
-                </p>
+                <div class="mb-6 flex items-center gap-2">
+                    <div id="scenario-hint" class="text-xs text-blue-400 border border-blue-400/30 bg-blue-400/10 px-2 py-1 rounded cursor-help flex items-center gap-1.5 transition-all hover:bg-blue-400/20" title="Initializing investigation...">
+                        <i data-lucide="help-circle" class="w-3.5 h-3.5"></i>
+                        Mouseover for hint
+                    </div>
+                </div>
 
                 <div id="questions-container" class="space-y-6 mb-8">
                     <!-- Questions generated here -->
@@ -1000,7 +1003,7 @@
             const scenarioPrinciples = scenario.principles || [];
             state.currentCasePrinciples = Array.from(new Set([...MASTER_PRINCIPLES, ...scenarioPrinciples]));
 
-            document.getElementById('scenario-desc').textContent = scenario.description;
+            document.getElementById('scenario-hint').title = scenario.description;
             document.getElementById('feedback-section').classList.add('hidden');
 
             const submitBtn = document.getElementById('submit-btn');
