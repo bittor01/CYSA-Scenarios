@@ -39,6 +39,19 @@
         .checkbox-item:hover {
             background-color: rgba(59, 130, 246, 0.1);
         }
+        .feedback-correct {
+            background-color: rgba(34, 197, 94, 0.2) !important;
+            border-color: #22c55e !important;
+        }
+        .feedback-incorrect {
+            background-color: rgba(239, 68, 68, 0.2) !important;
+            border-color: #ef4444 !important;
+        }
+        .feedback-missing {
+            background-color: rgba(234, 179, 8, 0.1) !important;
+            border-color: #eab308 !important;
+            border-style: dashed !important;
+        }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-100 h-screen flex flex-col overflow-hidden">
@@ -130,9 +143,6 @@
                     <div id="principles-checklist" class="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden flex flex-col h-64 scrollable-list">
                         <!-- Checklist generated here -->
                     </div>
-                    <div id="checklist-score" class="mt-2 text-xs font-medium text-slate-500 hidden">
-                        Principles matched: <span id="checklist-matches" class="text-blue-400">0/0</span>
-                    </div>
                 </div>
 
                 <div class="mt-8">
@@ -165,6 +175,8 @@
             "Beaconing / Command & Control",
             "Data Exfiltration (Overt Channel)",
             "Data Exfiltration (Alternate Channel)",
+            "DNS Tunneling / Exfiltration",
+            "ICMP Tunneling / Beaconing",
             "Privilege Escalation",
             "Lateral Movement",
             "Impossible Travel (Geo-velocity violation)",
@@ -176,7 +188,8 @@
             "SQL Injection",
             "Cross-Site Scripting (XSS)",
             "Brute Force / Credential Stuffing",
-            "Unauthorized Privilege Use"
+            "Unauthorized Privilege Use",
+            "Pass-the-Hash"
         ];
 
         const scenarios = [
@@ -189,13 +202,14 @@
                         "2026-05-29 02:14:10 | 10.10.4.52 -> 192.0.2.115:443 | POST /upload HTTP/1.1 | 200 | 4.2GB",
                         "2026-05-29 02:15:00 | 10.10.4.52 -> 192.0.2.115:443 | POST /upload HTTP/1.1 | 200 | 3.8GB"
                     ],
-                    email: ["Normal activity."],
+                    email: ["2026-05-29 09:00:10 | User a.smith checked mail | No attachments."],
                     file_server: [
                         "2026-05-29 01:45:12 | User: d.jones | IP: 10.10.4.52 | Read/Copy | S:\\Finances\\Q2_Proprietary_Data.csv",
                         "2026-05-29 01:46:01 | User: d.jones | IP: 10.10.4.52 | Read/Copy | S:\\R&D\\Blueprints_2026.tar.gz"
                     ],
                     workstations: [
-                        "Host: WKSTN-452 | IP: 10.10.4.52 | Active User: d.jones"
+                        "Host: WKSTN-452 | IP: 10.10.4.52 | Active User: d.jones",
+                        "Host: WKSTN-453 | IP: 10.10.4.53 | Active User: a.smith | Idle"
                     ],
                     auth_logs: [
                         "2026-05-29 01:40:00 | User d.jones | Login Success | IP: 10.10.4.52 | Workstation"
@@ -210,7 +224,7 @@
                     }
                 },
                 principles: ["Insider Threat", "Data Exfiltration (Overt Channel)", "Unauthorized Privilege Use"],
-                explanation: "Correct! User d.jones used their existing access to copy and exfiltrate proprietary data over a standard HTTPS channel."
+                explanation: "Correct! User d.jones used their existing access to copy and exfiltrate proprietary data over a standard HTTPS channel. Noise includes regular workstation activity from a.smith."
             },
             {
                 id: "scen-02",
@@ -218,11 +232,18 @@
                 description: "Alert: Multiple endpoints reporting file encryption alerts.",
                 logs: {
                     proxy: ["2026-06-12 09:12:05 | 10.10.4.88 -> 93.184.216.34:80 | GET /payload.exe"],
-                    email: ["2026-06-12 08:45:00 | Inbound | From: updates@it.net | To: s.rogers@co.com | Link: 93.184.216.34/patch"],
-                    file_server: ["2026-06-12 10:15:22 | User: s.rogers | IP: 10.10.4.88 | Rename -> *.locked"],
+                    email: [
+                        "2026-06-12 08:45:00 | Inbound | From: updates@it.net | To: s.rogers@co.com | Link: 93.184.216.34/patch",
+                        "2026-06-12 08:50:11 | Inbound | From: marketing@co.com | To: all-staff@co.com | Monthly Newsletter"
+                    ],
+                    file_server: [
+                        "2026-06-12 10:15:22 | User: s.rogers | IP: 10.10.4.88 | Rename -> *.locked",
+                        "2026-06-12 10:20:00 | User: b.banner | IP: 10.10.4.90 | Access | S:\\Public\\Images"
+                    ],
                     workstations: [
                         "WKSTN-88 | 10.10.4.88 | payload.exe active",
-                        "WKSTN-89 | 10.10.4.89 | Lateral Move: SMB Admin Share Access from 10.10.4.88"
+                        "WKSTN-89 | 10.10.4.89 | Lateral Move: SMB Admin Share Access from 10.10.4.88",
+                        "WKSTN-90 | 10.10.4.90 | Active User: b.banner | Standard activity"
                     ],
                     auth_logs: ["No anomalies."]
                 },
@@ -230,7 +251,7 @@
                     count: { label: "Infected Endpoints?", type: "number", correct: 2 }
                 },
                 principles: ["Phishing / Social Engineering", "Lateral Movement", "Obfuscation / Encryption", "Persistence"],
-                explanation: "Correct! The attack began with phishing, followed by a payload download and internal spread via SMB lateral movement."
+                explanation: "Correct! The attack began with phishing, followed by internal spread via SMB lateral movement. Noise logs show benign user activity from b.banner."
             },
             {
                 id: "scen-05",
@@ -244,7 +265,8 @@
                     auth_logs: [
                         "2026-09-01 10:00:00 | User t.stark | Login Success | IP: 72.14.213.10 (New York, US)",
                         "2026-09-01 10:12:45 | User t.stark | Login Success | IP: 117.20.14.52 (Bangalore, India)",
-                        "2026-09-01 10:15:00 | User t.stark | Access Granted | S:\\Confidential\\Iron_Legion_Specs.pdf"
+                        "2026-09-01 10:15:00 | User t.stark | Access Granted | S:\\Confidential\\Iron_Legion_Specs.pdf",
+                        "2026-09-01 10:16:11 | User c.barton | Login Success | IP: 10.10.10.11 (Internal)"
                     ]
                 },
                 questions: {
@@ -255,7 +277,7 @@
                     }
                 },
                 principles: ["Impossible Travel (Geo-velocity violation)", "Brute Force / Credential Stuffing", "Unauthorized Privilege Use"],
-                explanation: "Correct! The user account t.stark was used to log in from New York and Bangalore within 12 minutes, which is physically impossible, indicating a credential compromise."
+                explanation: "Correct! The user account t.stark was used to log in from New York and Bangalore within 12 minutes. Noise includes a benign internal login from c.barton."
             }
         ];
 
@@ -264,7 +286,8 @@
             activeAsset: 'proxy',
             answers: {},
             selectedPrinciples: [],
-            isSubmitted: false
+            isSubmitted: false,
+            currentCasePrinciples: []
         };
 
         const assetLabels = {
@@ -307,9 +330,12 @@
             state.selectedPrinciples = [];
             state.isSubmitted = false;
 
+            // Build dynamic principles list for this case
+            const scenarioPrinciples = scenario.principles || [];
+            state.currentCasePrinciples = Array.from(new Set([...MASTER_PRINCIPLES, ...scenarioPrinciples]));
+
             document.getElementById('scenario-desc').textContent = scenario.description;
             document.getElementById('feedback-section').classList.add('hidden');
-            document.getElementById('checklist-score').classList.add('hidden');
 
             const submitBtn = document.getElementById('submit-btn');
             submitBtn.disabled = false;
@@ -357,10 +383,10 @@
             const container = document.getElementById('principles-checklist');
             if (!container) return;
 
-            container.innerHTML = MASTER_PRINCIPLES.map((p, idx) => `
-                <div onclick="togglePrinciple('${p}')" id="p-item-${idx}" class="checkbox-item flex items-center gap-3 p-3 border-b border-slate-700/50 cursor-pointer transition-colors">
+            container.innerHTML = state.currentCasePrinciples.map((p, idx) => `
+                <div onclick="togglePrinciple('${p}')" id="p-item-${idx}" class="checkbox-item flex items-center gap-3 p-3 border-b border-slate-700/50 cursor-pointer transition-all">
                     <div id="p-check-${idx}" class="w-5 h-5 border-2 border-slate-600 rounded flex items-center justify-center transition-all"></div>
-                    <span class="text-sm text-slate-300">${p}</span>
+                    <span id="p-text-${idx}" class="text-sm text-slate-300">${p}</span>
                     <div id="p-feedback-${idx}" class="ml-auto"></div>
                 </div>
             `).join('');
@@ -369,9 +395,8 @@
         function togglePrinciple(p) {
             if (state.isSubmitted) return;
 
-            const idx = MASTER_PRINCIPLES.indexOf(p);
+            const idx = state.currentCasePrinciples.indexOf(p);
             const check = document.getElementById(`p-check-${idx}`);
-            const item = document.getElementById(`p-item-${idx}`);
 
             if (state.selectedPrinciples.includes(p)) {
                 state.selectedPrinciples = state.selectedPrinciples.filter(item => item !== p);
@@ -407,7 +432,6 @@
             const questionKeys = Object.keys(scenario.questions);
 
             state.isSubmitted = true;
-            let qScore = 0;
 
             // Validate questions
             questionKeys.forEach(key => {
@@ -415,7 +439,6 @@
                 const icon = document.getElementById(`icon-${key}`);
                 const correct = state.answers[key] === scenario.questions[key].correct;
                 if (correct) {
-                    qScore++;
                     input.classList.add('border-green-500', 'bg-green-900/20');
                     icon.innerHTML = '<i data-lucide="check-circle" class="text-green-500 w-5 h-5"></i>';
                 } else {
@@ -425,31 +448,32 @@
             });
 
             // Validate principles
-            let pScore = 0;
-            MASTER_PRINCIPLES.forEach((p, idx) => {
+            state.currentCasePrinciples.forEach((p, idx) => {
                 const feedback = document.getElementById(`p-feedback-${idx}`);
                 const item = document.getElementById(`p-item-${idx}`);
                 const check = document.getElementById(`p-check-${idx}`);
+                const text = document.getElementById(`p-text-${idx}`);
+
                 const shouldBeSet = scenario.principles.includes(p);
                 const isSet = state.selectedPrinciples.includes(p);
 
                 if (shouldBeSet && isSet) {
-                    pScore++;
-                    item.classList.add('bg-green-900/10');
-                    feedback.innerHTML = '<i data-lucide="check" class="text-green-500 w-4 h-4"></i>';
+                    // CORRECT SELECTION
+                    item.classList.add('feedback-correct');
+                    text.classList.add('text-green-400', 'font-bold');
+                    feedback.innerHTML = '<i data-lucide="check-circle" class="text-green-500 w-5 h-5"></i>';
                 } else if (shouldBeSet && !isSet) {
-                    item.classList.add('bg-red-900/10');
-                    check.classList.add('border-red-500');
-                    feedback.innerHTML = '<span class="text-xs text-red-500 font-bold uppercase">Missing</span>';
+                    // MISSED PRINCIPLE
+                    item.classList.add('feedback-missing');
+                    text.classList.add('text-yellow-400');
+                    feedback.innerHTML = '<span class="text-[10px] bg-yellow-500/20 text-yellow-500 px-2 py-0.5 rounded font-bold uppercase">Missing</span>';
                 } else if (!shouldBeSet && isSet) {
-                    item.classList.add('bg-red-900/10');
-                    check.classList.add('bg-red-500', 'border-red-500');
-                    feedback.innerHTML = '<i data-lucide="x" class="text-white w-4 h-4"></i>';
+                    // INCORRECT SELECTION
+                    item.classList.add('feedback-incorrect');
+                    text.classList.add('text-red-400', 'line-through');
+                    feedback.innerHTML = '<i data-lucide="x-circle" class="text-red-500 w-5 h-5"></i>';
                 }
             });
-
-            document.getElementById('checklist-score').classList.remove('hidden');
-            document.getElementById('checklist-matches').textContent = `${pScore}/${scenario.principles.length}`;
 
             const feedbackSection = document.getElementById('feedback-section');
             feedbackSection.classList.remove('hidden');
