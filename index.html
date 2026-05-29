@@ -181,82 +181,86 @@
 
         const scenarios = [
             {
-                id: "scen-01",
-                title: "Unauthorized Exfiltration",
-                description: "Alert: High volume outbound data transfers detected outside core business hours.",
+                id: "ir-scenario-2026-dns-tunnel",
+                title: "Operation Silent Whisper: DNS Exfiltration",
+                description: "Anomalous high-frequency DNS TXT queries detected targeting an unclassified external domain from internal network segments.",
                 logs: {
                     proxy: [
-                        "2026-05-29 02:14:10 | 10.10.4.52 -> 192.0.2.115:443 | POST /upload HTTP/1.1 | 200 | 4.2GB",
-                        "2026-05-29 02:15:00 | 10.10.4.52 -> 192.0.2.115:443 | POST /upload HTTP/1.1 | 200 | 3.8GB"
+                    "2026-05-29T14:00:02Z - IP: 192.168.10.12 - URL: https://teams.microsoft.com - Action: Allowed - Category: Business/Collaboration",
+                    "2026-05-29T14:05:32Z - IP: 192.168.10.45 - URL: http://global-policies-review.com/update.html - Action: Allowed - Category: Uncategorized",
+                    "2026-05-29T14:06:00Z - IP: 192.168.10.45 - Proto: UDP/53 - Query: TXT - Name: 01A9F3D4.cdn-cache-update.top - Status: SUCCESS",
+                    "2026-05-29T14:06:31Z - IP: 192.168.10.45 - Proto: UDP/53 - Query: TXT - Name: 02B8E2C1.cdn-cache-update.top - Status: SUCCESS",
+                    "2026-05-29T14:07:02Z - IP: 192.168.10.45 - Proto: UDP/53 - Query: TXT - Name: 03C7D1B0.cdn-cache-update.top - Status: SUCCESS",
+                    "2026-05-29T14:10:45Z - IP: 192.168.10.15 - URL: https://www.google.com/search?q=weather - Action: Allowed - Category: Search Engine",
+                    "2026-05-29T14:15:00Z - IP: 192.168.10.45 - Proto: UDP/53 - Query: TXT - Name: 04E6C0A9.cdn-cache-update.top - Status: SUCCESS",
+                    "2026-05-29T14:16:12Z - IP: 192.168.10.49 - Proto: UDP/53 - Query: TXT - Name: 01F5E4D3.cdn-cache-update.top - Status: SUCCESS",
+                    "2026-05-29T14:16:42Z - IP: 192.168.10.49 - Proto: UDP/53 - Query: TXT - Name: 02A1C9B4.cdn-cache-update.top - Status: SUCCESS",
+                    "2026-05-29T14:17:00Z - IP: 192.168.10.45 - Proto: UDP/53 - Query: TXT - Name: 05A7B3F8.cdn-cache-update.top - Status: SUCCESS"
                     ],
-                    email: ["Normal activity."],
+                    email: [
+                    "2026-05-29T14:01:10Z - Inbound - From: hr-update@global-policies-review.com - To: jdoe@company.com - Subject: URGENT: Revised 2026 Remote Work Policy - Status: Delivered",
+                    "2026-05-29T14:03:22Z - Inbound - From: newsletters@techcrunch.com - To: asmith@company.com - Subject: TechCrunch Daily - Status: Delivered",
+                    "2026-05-29T14:08:15Z - Inbound - From: noreply@github.com - To: dev-team@company.com - Subject: [GitHub] Security Alert - Status: Delivered"
+                    ],
                     file_server: [
-                        "2026-05-29 01:45:12 | User: d.jones | IP: 10.10.4.52 | Read/Copy | S:\\Finances\\Q2_Proprietary_Data.csv",
-                        "2026-05-29 01:46:01 | User: d.jones | IP: 10.10.4.52 | Read/Copy | S:\\R&D\\Blueprints_2026.tar.gz"
+                    "2026-05-29T14:00:05Z - Share Name: \\\\*\\IPC$ - Access Request: Allowed - Source IP: 192.168.10.12 - User: fsmith",
+                    "2026-05-29T14:10:15Z - Share Name: \\\\FILE-SRV-01\\Finance - Access Request: Allowed - Source IP: 192.168.10.45 - User: LOCALRESOURCE\\admin-svc",
+                    "2026-05-29T14:11:02Z - Object Accessed: \\\\FILE-SRV-01\\Finance\\2026_Q2_Forecast.xlsx - Accesses: ReadData - Source IP: 192.168.10.45 - User: LOCALRESOURCE\\admin-svc",
+                    "2026-05-29T14:22:10Z - Share Name: \\\\FILE-SRV-01\\Public - Access Request: Allowed - Source IP: 192.168.10.15 - User: mrogers"
                     ],
                     workstations: [
-                        "Host: WKSTN-452 | IP: 10.10.4.52 | Active User: d.jones"
-                    ],
-                    auth_logs: [
-                        "2026-05-29 01:40:00 | User d.jones | Login Success | IP: 10.10.4.52 | Workstation"
+                    "2026-05-29T14:05:30Z - WKSTN-04 (192.168.10.45) - EventID: 4688 - Process Created: outlook.exe spawned chrome.exe --url http://global-policies-review.com/update.html",
+                    "2026-05-29T14:05:45Z - WKSTN-04 (192.168.10.45) - EventID: 4688 - Process Created: chrome.exe spawned powershell.exe -WindowStyle Hidden -EncodedCommand SQBFAFgAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAA...",
+                    "2026-05-29T14:12:00Z - WKSTN-04 (192.168.10.45) - EventID: 4624 - Successful Logon - User: LOCALRESOURCE\\admin-svc - Logon Type: 3 (Network)",
+                    "2026-05-29T14:14:55Z - WKSTN-02 (192.168.10.12) - EventID: 7036 - Service Status Change: Windows Update Service entered the running state.",
+                    "2026-05-29T14:15:22Z - WKSTN-09 (192.168.10.49) - EventID: 4624 - Successful Network Logon - Source IP: 192.168.10.45 - User: LOCALRESOURCE\\admin-svc - Logon Type: 3 (Network)",
+                    "2026-05-29T14:15:40Z - WKSTN-09 (192.168.10.49) - EventID: 4688 - Process Created: services.exe spawned powershell.exe -WindowStyle Hidden -NoProfile -Command [System.Text.Encoding]::UTF8.GetString..."
                     ]
                 },
                 questions: {
                     vector: {
-                        label: "Initial Access Method?",
-                        type: "select",
-                        options: ["Phishing", "Insider Abuse", "Vulnerability Exploit", "Broken Auth"],
-                        correct: "Insider Abuse"
-                    }
-                },
-                principles: ["Insider Threat", "Data Exfiltration (Overt Channel)", "Unauthorized Privilege Use"],
-                explanation: "Correct! User d.jones used their existing access to copy and exfiltrate proprietary data over a standard HTTPS channel."
-            },
-            {
-                id: "scen-02",
-                title: "Ransomware Spread",
-                description: "Alert: Multiple endpoints reporting file encryption alerts.",
-                logs: {
-                    proxy: ["2026-06-12 09:12:05 | 10.10.4.88 -> 93.184.216.34:80 | GET /payload.exe"],
-                    email: ["2026-06-12 08:45:00 | Inbound | From: updates@it.net | To: s.rogers@co.com | Link: 93.184.216.34/patch"],
-                    file_server: ["2026-06-12 10:15:22 | User: s.rogers | IP: 10.10.4.88 | Rename -> *.locked"],
-                    workstations: [
-                        "WKSTN-88 | 10.10.4.88 | payload.exe active",
-                        "WKSTN-89 | 10.10.4.89 | Lateral Move: SMB Admin Share Access from 10.10.4.88"
+                    label: "What was the initial infection vector used to breach the environment?",
+                    type: "select",
+                    options: [
+                        "Drive-by Download via Compromised Forum",
+                        "Phishing Link via External Email",
+                        "Exploitation of Public-Facing Edge Firewall",
+                        "Malicious USB Drop / Insider Threat"
                     ],
-                    auth_logs: ["No anomalies."]
-                },
-                questions: {
-                    count: { label: "Infected Endpoints?", type: "number", correct: 2 }
-                },
-                principles: ["Phishing / Social Engineering", "Lateral Movement", "Obfuscation / Encryption", "Persistence"],
-                explanation: "Correct! The attack began with phishing, followed by a payload download and internal spread via SMB lateral movement."
-            },
-            {
-                id: "scen-05",
-                title: "Impossible Travel Detection",
-                description: "Alert: Identity Protection alert for user account 't.stark'. Logins detected from disparate geographic locations.",
-                logs: {
-                    proxy: ["Standard traffic."],
-                    email: ["Standard traffic."],
-                    file_server: ["Standard traffic."],
-                    workstations: ["WKSTN-101 | 10.10.10.5 | User: t.stark"],
-                    auth_logs: [
-                        "2026-09-01 10:00:00 | User t.stark | Login Success | IP: 72.14.213.10 (New York, US)",
-                        "2026-09-01 10:12:45 | User t.stark | Login Success | IP: 117.20.14.52 (Bangalore, India)",
-                        "2026-09-01 10:15:00 | User t.stark | Access Granted | S:\\Confidential\\Iron_Legion_Specs.pdf"
-                    ]
-                },
-                questions: {
-                    gap: {
-                        label: "Time gap between disparate logins (minutes)?",
-                        type: "number",
-                        correct: 12
+                    correct: "Phishing Link via External Email"
+                    },
+                    origin: {
+                    label: "Which asset is identified as Patient Zero (Point of Origin)?",
+                    type: "select",
+                    options: [
+                        "WKSTN-02",
+                        "WKSTN-04",
+                        "WKSTN-09",
+                        "FILE-SRV-01"
+                    ],
+                    correct: "WKSTN-04"
+                    },
+                    count: {
+                    label: "How many endpoints are confirmed actively infected/compromised with the malware payload?",
+                    type: "number",
+                    correct: 2
+                    },
+                    beaconing: {
+                    label: "What method is the adversary using for Command and Control (C2) beaconing and data harvesting?",
+                    type: "select",
+                    options: [
+                        "ICMP Echo Request Tunneling (Oversized Payloads)",
+                        "HTTPS POST Request beacons via Web Gateway",
+                        "DNS TXT Query Subdomain Encrypted Tunneling",
+                        "Direct SSH Outbound Connection over Port 22"
+                    ],
+                    correct: "DNS TXT Query Subdomain Encrypted Tunneling"
                     }
                 },
-                principles: ["Impossible Travel (Geo-velocity violation)", "Brute Force / Credential Stuffing", "Unauthorized Privilege Use"],
-                explanation: "Correct! The user account t.stark was used to log in from New York and Bangalore within 12 minutes, which is physically impossible, indicating a credential compromise."
+                explanation: "An analysis of the mail exchange logs indicates that an inbound phishing email from the lookalike domain 'global-policies-review.com' arrived at 14:01:10Z targeting user 'jdoe'. Forensic endpoint event logs reveal that at 14:05:30Z, the user on WKSTN-04 executed the link via Outlook, which subsequently spawned an obfuscated PowerShell session. This endpoint immediately began beaconing out via DNS TXT queries to the anomalous external domain 'cdn-cache-update.top' in 30-second increments. At 14:15:22Z, network event logs trace lateral movement via SMB/RPC from WKSTN-04 to WKSTN-09 using a compromised local service administrator account ('admin-svc'). WKSTN-09 immediately initiated its own high-frequency DNS TXT beaconing behavior, bringing the total number of infected hosts to 2. While FILE-SRV-01 observed unauthorized access and credential testing from WKSTN-04, no active local execution payload was run on the server itself."
             }
+
+
         ];
 
         let state = {
