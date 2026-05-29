@@ -39,6 +39,19 @@
         .checkbox-item:hover {
             background-color: rgba(59, 130, 246, 0.1);
         }
+        .feedback-correct {
+            background-color: rgba(34, 197, 94, 0.2) !important;
+            border-color: #22c55e !important;
+        }
+        .feedback-incorrect {
+            background-color: rgba(239, 68, 68, 0.2) !important;
+            border-color: #ef4444 !important;
+        }
+        .feedback-missing {
+            background-color: rgba(234, 179, 8, 0.1) !important;
+            border-color: #eab308 !important;
+            border-style: dashed !important;
+        }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-100 h-screen flex flex-col overflow-hidden">
@@ -130,9 +143,6 @@
                     <div id="principles-checklist" class="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden flex flex-col h-64 scrollable-list">
                         <!-- Checklist generated here -->
                     </div>
-                    <div id="checklist-score" class="mt-2 text-xs font-medium text-slate-500 hidden">
-                        Principles matched: <span id="checklist-matches" class="text-blue-400">0/0</span>
-                    </div>
                 </div>
 
                 <div class="mt-8">
@@ -165,6 +175,8 @@
             "Beaconing / Command & Control",
             "Data Exfiltration (Overt Channel)",
             "Data Exfiltration (Alternate Channel)",
+            "DNS Tunneling / Exfiltration",
+            "ICMP Tunneling / Beaconing",
             "Privilege Escalation",
             "Lateral Movement",
             "Impossible Travel (Geo-velocity violation)",
@@ -176,7 +188,8 @@
             "SQL Injection",
             "Cross-Site Scripting (XSS)",
             "Brute Force / Credential Stuffing",
-            "Unauthorized Privilege Use"
+            "Unauthorized Privilege Use",
+            "Pass-the-Hash"
         ];
 
         const scenarios = [
@@ -268,7 +281,8 @@
             activeAsset: 'proxy',
             answers: {},
             selectedPrinciples: [],
-            isSubmitted: false
+            isSubmitted: false,
+            currentCasePrinciples: []
         };
 
         const assetLabels = {
@@ -311,9 +325,12 @@
             state.selectedPrinciples = [];
             state.isSubmitted = false;
 
+            // Build dynamic principles list for this case
+            const scenarioPrinciples = scenario.principles || [];
+            state.currentCasePrinciples = Array.from(new Set([...MASTER_PRINCIPLES, ...scenarioPrinciples]));
+
             document.getElementById('scenario-desc').textContent = scenario.description;
             document.getElementById('feedback-section').classList.add('hidden');
-            document.getElementById('checklist-score').classList.add('hidden');
 
             const submitBtn = document.getElementById('submit-btn');
             submitBtn.disabled = false;
@@ -361,10 +378,10 @@
             const container = document.getElementById('principles-checklist');
             if (!container) return;
 
-            container.innerHTML = MASTER_PRINCIPLES.map((p, idx) => `
-                <div onclick="togglePrinciple('${p}')" id="p-item-${idx}" class="checkbox-item flex items-center gap-3 p-3 border-b border-slate-700/50 cursor-pointer transition-colors">
+            container.innerHTML = state.currentCasePrinciples.map((p, idx) => `
+                <div onclick="togglePrinciple('${p}')" id="p-item-${idx}" class="checkbox-item flex items-center gap-3 p-3 border-b border-slate-700/50 cursor-pointer transition-all">
                     <div id="p-check-${idx}" class="w-5 h-5 border-2 border-slate-600 rounded flex items-center justify-center transition-all"></div>
-                    <span class="text-sm text-slate-300">${p}</span>
+                    <span id="p-text-${idx}" class="text-sm text-slate-300">${p}</span>
                     <div id="p-feedback-${idx}" class="ml-auto"></div>
                 </div>
             `).join('');
@@ -373,9 +390,8 @@
         function togglePrinciple(p) {
             if (state.isSubmitted) return;
 
-            const idx = MASTER_PRINCIPLES.indexOf(p);
+            const idx = state.currentCasePrinciples.indexOf(p);
             const check = document.getElementById(`p-check-${idx}`);
-            const item = document.getElementById(`p-item-${idx}`);
 
             if (state.selectedPrinciples.includes(p)) {
                 state.selectedPrinciples = state.selectedPrinciples.filter(item => item !== p);
@@ -411,7 +427,6 @@
             const questionKeys = Object.keys(scenario.questions);
 
             state.isSubmitted = true;
-            let qScore = 0;
 
             // Validate questions
             questionKeys.forEach(key => {
@@ -419,7 +434,6 @@
                 const icon = document.getElementById(`icon-${key}`);
                 const correct = state.answers[key] === scenario.questions[key].correct;
                 if (correct) {
-                    qScore++;
                     input.classList.add('border-green-500', 'bg-green-900/20');
                     icon.innerHTML = '<i data-lucide="check-circle" class="text-green-500 w-5 h-5"></i>';
                 } else {
@@ -429,31 +443,32 @@
             });
 
             // Validate principles
-            let pScore = 0;
-            MASTER_PRINCIPLES.forEach((p, idx) => {
+            state.currentCasePrinciples.forEach((p, idx) => {
                 const feedback = document.getElementById(`p-feedback-${idx}`);
                 const item = document.getElementById(`p-item-${idx}`);
                 const check = document.getElementById(`p-check-${idx}`);
+                const text = document.getElementById(`p-text-${idx}`);
+
                 const shouldBeSet = scenario.principles.includes(p);
                 const isSet = state.selectedPrinciples.includes(p);
 
                 if (shouldBeSet && isSet) {
-                    pScore++;
-                    item.classList.add('bg-green-900/10');
-                    feedback.innerHTML = '<i data-lucide="check" class="text-green-500 w-4 h-4"></i>';
+                    // CORRECT SELECTION
+                    item.classList.add('feedback-correct');
+                    text.classList.add('text-green-400', 'font-bold');
+                    feedback.innerHTML = '<i data-lucide="check-circle" class="text-green-500 w-5 h-5"></i>';
                 } else if (shouldBeSet && !isSet) {
-                    item.classList.add('bg-red-900/10');
-                    check.classList.add('border-red-500');
-                    feedback.innerHTML = '<span class="text-xs text-red-500 font-bold uppercase">Missing</span>';
+                    // MISSED PRINCIPLE
+                    item.classList.add('feedback-missing');
+                    text.classList.add('text-yellow-400');
+                    feedback.innerHTML = '<span class="text-[10px] bg-yellow-500/20 text-yellow-500 px-2 py-0.5 rounded font-bold uppercase">Missing</span>';
                 } else if (!shouldBeSet && isSet) {
-                    item.classList.add('bg-red-900/10');
-                    check.classList.add('bg-red-500', 'border-red-500');
-                    feedback.innerHTML = '<i data-lucide="x" class="text-white w-4 h-4"></i>';
+                    // INCORRECT SELECTION
+                    item.classList.add('feedback-incorrect');
+                    text.classList.add('text-red-400', 'line-through');
+                    feedback.innerHTML = '<i data-lucide="x-circle" class="text-red-500 w-5 h-5"></i>';
                 }
             });
-
-            document.getElementById('checklist-score').classList.remove('hidden');
-            document.getElementById('checklist-matches').textContent = `${pScore}/${scenario.principles.length}`;
 
             const feedbackSection = document.getElementById('feedback-section');
             feedbackSection.classList.remove('hidden');
