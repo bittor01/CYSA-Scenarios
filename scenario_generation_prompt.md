@@ -1,56 +1,50 @@
 # Scenario Generation Prompt
 
-To generate new scenarios for the CompTIA Simulation Sandbox, use the following prompt with an AI assistant. This prompt is designed to ensure consistency and technical accuracy by requiring the AI to define the "Ground Truth" before generating the logs.
+To generate new scenarios for the CompTIA Simulation Sandbox, use the following prompt with an AI assistant. This prompt is designed to ensure technical accuracy and consistency across log sources.
 
 ---
 
 ## The Prompt
 
-"Act as a CompTIA Security+ / CySA+ Exam Content Developer. Your goal is to generate a new incident response scenario in JSON format for a SOC simulation sandbox.
+"Act as a CompTIA Security+ / CySA+ / CASP+ Content Developer. Your goal is to generate a new incident response scenario in JSON format for a SOC simulation sandbox.
 
-**IMPORTANT: Before generating the JSON, you must first state the 'Ground Truth' answer for each field (Initial Attack Vector, Affected User, Malicious Artifact, Threat Source) and briefly explain the logic of the incident. This ensures the logs you generate are consistent with the solution.**
+**IMPORTANT: Before generating the JSON, you must first state the 'Ground Truth' answer for each field and briefly explain the logic of the incident (Attack Vector, Point of Origin, Affected Assets, Beaconing Method). This ensures the logs you generate are consistent with the solution.**
 
 The output must be a single JavaScript object following this schema:
 
 ```javascript
 {
   id: "unique-string-id",
-  title: "Scenario Title",
+  title: "Scenario Title", // Will be hidden from user until submission
   description: "Short high-level alert description.",
   logs: {
-    proxy: ["Log line 1", "Log line 2"],
-    email: ["Log line 1", "Log line 2"],
-    file_server: ["Log line 1", "Log line 2"],
-    workstations: ["Log line 1", "Log line 2"]
+    proxy: ["Log line 1", "Log line 2"], // Label: Web Gateway
+    email: ["Log line 1", "Log line 2"], // Label: Mail Exchange
+    file_server: ["Log line 1", "Log line 2"], // Label: File Repository
+    workstations: ["Log line 1", "Log line 2"] // Label: Endpoints
   },
   questions: {
+    // Keys can be anything.
+    // Support types: 'select' (requires options array) or 'number' (for counts)
     vector: {
-      label: "What was the initial attack vector?",
+      label: "Initial Infection Vector?",
+      type: "select",
       options: ["Option A", "Option B", "Option C", "Option D"],
       correct: "Option B"
     },
-    user: {
-      label: "Which corporate identity is implicated?",
-      options: ["Option A", "Option B", "Option C", "Option D"],
-      correct: "Option A"
-    },
-    artifact: {
-      label: "What malicious artifact or data file was targeted?",
-      options: ["Option A", "Option B", "Option C", "Option D"],
-      correct: "Option C"
-    },
-    source: {
-      label: "Where did the threat originate or destination IP?",
-      options: ["Option A", "Option B", "Option C", "Option D"],
-      correct: "Option D"
+    count: {
+      label: "How many endpoints are confirmed infected?",
+      type: "number",
+      correct: 3
     }
+    // ... add more as needed (e.g., origin, artifact, source)
   },
-  explanation: "A detailed architectural explanation of the incident and why the answers are correct."
+  explanation: "A detailed technical debrief of the incident and why the answers are correct."
 }
 ```
 
 **Technical Guidelines:**
-1. **Consistency**: Ensure timestamps across different logs align with the narrative.
-2. **Authenticity**: Use realistic log formats (e.g., Syslog, Apache Access Logs, Windows Event IDs).
-3. **Complexity**: Include "noise" logs (normal activity) to make the user hunt for the indicators of compromise (IoCs).
-4. **Variety**: Scenarios can include SQL Injection, Password Spraying, Ransomware, Man-in-the-Middle, etc."
+1. **Diverse Vectors**: Include DNS Exfiltration (TXT/CNAME queries), ICMP Tunneling (oversized pings), Beaconing (periodic HEARTBEATS), and Insider Threats (unauthorized local copies/uploads).
+2. **Temporal Consistency**: Ensure timestamps align across different logs.
+3. **Complex Indicators**: Include lateral movement (SMB/RDP logs between endpoints) to justify 'infection count' questions.
+4. **Subtlety**: Mix malicious entries with normal 'noise' (e.g., standard OS updates, benign web browsing)."

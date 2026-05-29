@@ -1,31 +1,30 @@
 # CompTIA Simulation Sandbox
 
-A single-file, interactive Cybersecurity Incident Response Simulation Application designed for CompTIA exam preparation (Security+, CySA+, CASP+).
+A single-file, interactive Cybersecurity Incident Response Simulation Application designed for CompTIA exam preparation.
 
 ## Features
 
-- **SOC Aesthetic**: Modern Security Operations Center dark theme.
-- **Interactive Asset Network**: Toggle between Proxy, Email, File Servers, and Workstations to investigate logs.
-- **Dynamic Scenarios**: Switch between different incident types (Exfiltration, Ransomware, etc.).
-- **Immediate Feedback**: Submit your analysis and receive instant validation and architectural explanations.
-- **Self-Contained**: Runs entirely in `index.html` with no backend required. Perfect for GitHub Pages.
+- **SOC Observation Dashboard**: Monitor logs from Web Gateways, Mail Exchanges, File Repositories, and Endpoints.
+- **Diverse Attack Patterns**: Scenarios include DNS Exfiltration, ICMP Tunneling, Ransomware, and Insider Threats.
+- **Interactive Randomizer**: Start a random investigation to test your detection skills without knowing the scenario type in advance.
+- **Dynamic Assessment**: Handle complex questions like "How many endpoints are infected?" using number and selection inputs.
+- **Technical Debriefs**: Receive instant validation and architectural explanations for every investigation.
 
 ## How to Use
 
-1. Open `index.html` in any modern web browser.
-2. Select a scenario from the dropdown menu in the header.
-3. Click on different assets in the "Asset Network" grid to view their specific logs in the terminal.
-4. Answer the assessment questions in the right-hand panel.
-5. Click **Submit Analysis** to see your score and the architectural explanation of the incident.
+1. Open `index.html` in a modern browser.
+2. Click **Random Investigation** to jump into a new case, or select an investigation by ID from the header.
+3. Toggle between network nodes in the **Network Observation Nodes** grid to hunt for Indicators of Compromise (IoCs).
+4. Look for patterns:
+    - **Beaconing**: Periodic logs to the same external IP/Domain.
+    - **Exfiltration**: Abnormal DNS TXT queries or oversized ICMP packets.
+    - **Lateral Movement**: Evidence of the same malicious process on multiple endpoints.
+5. Submit your assessment to see the **Technical Debrief**.
 
 ## Adding New Scenarios
 
-To add more scenarios, you can use the AI prompt provided in `scenario_generation_prompt.md`.
-
-1. Copy the prompt from `scenario_generation_prompt.md`.
-2. Paste it into an AI assistant (like ChatGPT, Claude, or Gemini).
-3. Once the AI generates the JSON object, add it to the `scenarios` array in the `<script>` tag of `index.html`.
+Use the provided AI prompt in `scenario_generation_prompt.md` to generate more cases. Add the resulting objects to the `scenarios` array in the `index.html` script tag.
 
 ## Deployment
 
-Simply push this repository to GitHub and enable **GitHub Pages** in the repository settings to host your simulation live.
+Push this repository to GitHub and enable **GitHub Pages** for a live, shareable link.
