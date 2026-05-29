@@ -48,7 +48,12 @@
             <h1 class="text-xl font-bold tracking-tight">CompTIA Simulation Sandbox</h1>
         </div>
         <div class="flex items-center gap-4">
-            <label for="scenario-select" class="text-sm font-medium text-slate-400 uppercase tracking-wider">Active Scenario:</label>
+            <button onclick="startRandomInvestigation()" class="bg-blue-600 hover:bg-blue-500 text-sm font-bold py-1.5 px-4 rounded transition-colors flex items-center gap-2">
+                <i data-lucide="shuffle" class="w-4 h-4"></i>
+                Random Investigation
+            </button>
+            <div class="h-6 w-px bg-slate-700"></div>
+            <label for="scenario-select" class="text-sm font-medium text-slate-400 uppercase tracking-wider">Active:</label>
             <select id="scenario-select" class="bg-slate-700 border border-slate-600 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all">
                 <!-- Options populated via JS -->
             </select>
@@ -63,24 +68,24 @@
             <div class="mb-6">
                 <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
                     <i data-lucide="layout-grid" class="w-5 h-5 text-slate-400"></i>
-                    Asset Network
+                    Network Observation Nodes
                 </h2>
                 <div class="grid grid-cols-4 gap-4" id="asset-grid">
                     <button onclick="selectAsset('proxy')" id="asset-proxy" class="asset-card flex flex-col items-center justify-center p-4 bg-slate-800 border border-slate-700 rounded-lg hover:border-slate-500 transition-all group">
                         <i data-lucide="server" class="w-8 h-8 mb-2 text-slate-400 group-hover:text-blue-400"></i>
-                        <span class="text-sm font-medium">Proxy Server</span>
+                        <span class="text-sm font-medium">Web Gateway</span>
                     </button>
                     <button onclick="selectAsset('email')" id="asset-email" class="asset-card flex flex-col items-center justify-center p-4 bg-slate-800 border border-slate-700 rounded-lg hover:border-slate-500 transition-all group">
                         <i data-lucide="mail" class="w-8 h-8 mb-2 text-slate-400 group-hover:text-blue-400"></i>
-                        <span class="text-sm font-medium">Email Server</span>
+                        <span class="text-sm font-medium">Mail Exchange</span>
                     </button>
                     <button onclick="selectAsset('file_server')" id="asset-file_server" class="asset-card flex flex-col items-center justify-center p-4 bg-slate-800 border border-slate-700 rounded-lg hover:border-slate-500 transition-all group">
                         <i data-lucide="hard-drive" class="w-8 h-8 mb-2 text-slate-400 group-hover:text-blue-400"></i>
-                        <span class="text-sm font-medium">File Server</span>
+                        <span class="text-sm font-medium">File Repository</span>
                     </button>
                     <button onclick="selectAsset('workstations')" id="asset-workstations" class="asset-card flex flex-col items-center justify-center p-4 bg-slate-800 border border-slate-700 rounded-lg hover:border-slate-500 transition-all group">
                         <i data-lucide="monitor" class="w-8 h-8 mb-2 text-slate-400 group-hover:text-blue-400"></i>
-                        <span class="text-sm font-medium">Workstations</span>
+                        <span class="text-sm font-medium">Endpoints</span>
                     </button>
                 </div>
             </div>
@@ -88,7 +93,7 @@
             <div class="flex-1 flex flex-col min-h-[400px]">
                 <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">
                     <i data-lucide="terminal" class="w-5 h-5 text-slate-400"></i>
-                    Log Terminal - <span id="active-asset-label" class="text-blue-400">Proxy Server</span>
+                    Log Stream - <span id="active-asset-label" class="text-blue-400">Web Gateway</span>
                 </h2>
                 <div class="flex-1 bg-black rounded-lg border border-slate-700 p-4 font-mono text-sm text-green-400 overflow-y-auto log-container terminal-glow" id="log-terminal">
                     <!-- Logs populated here -->
@@ -104,7 +109,7 @@
                     Incident Assessment
                 </h2>
                 <p id="scenario-desc" class="text-sm text-slate-400 mb-6 italic">
-                    Loading scenario...
+                    Loading investigation data...
                 </p>
 
                 <div id="questions-container" class="space-y-6">
@@ -124,11 +129,11 @@
                         <p id="feedback-msg" class="text-sm"></p>
                     </div>
                     <div class="bg-slate-800 border border-slate-700 p-4 rounded-lg">
-                        <h4 class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-2">Architectural Explanation</h4>
+                        <h4 class="text-xs uppercase tracking-widest text-slate-500 font-bold mb-2">Technical Debrief</h4>
                         <p id="explanation-text" class="text-sm leading-relaxed text-slate-300"></p>
                     </div>
                     <button onclick="resetScenario()" class="mt-4 w-full border border-slate-600 hover:bg-slate-800 text-slate-300 py-2 rounded-lg text-sm transition-all">
-                        Reset Scenario
+                        Restart Investigation
                     </button>
                 </div>
             </div>
@@ -139,7 +144,7 @@
         const scenarios = [
             {
                 id: "scen-01",
-                title: "Scenario 1: Unauthorized Exfiltration",
+                title: "Unauthorized Exfiltration",
                 description: "Alert: High volume outbound data transfers detected outside core business hours.",
                 logs: {
                     proxy: [
@@ -161,74 +166,177 @@
                 },
                 questions: {
                     vector: {
-                        label: "What was the initial attack vector?",
+                        label: "What is the primary infection vector or root cause?",
+                        type: "select",
                         options: ["Phishing Link", "Credential Stuffing", "Insider Threat / Data Theft", "SQL Injection"],
                         correct: "Insider Threat / Data Theft"
                     },
-                    user: {
-                        label: "Which corporate identity is implicated?",
-                        options: ["a.smith", "d.jones", "admin_backup", "t.stark"],
-                        correct: "d.jones"
+                    origin: {
+                        label: "Point of Origin (Identity or Asset)?",
+                        type: "select",
+                        options: ["External IP 192.0.2.115", "User d.jones", "Mail Exchange", "WKSTN-452"],
+                        correct: "User d.jones"
+                    },
+                    count: {
+                        label: "How many endpoints are currently confirmed compromised?",
+                        type: "number",
+                        correct: 1
                     },
                     artifact: {
-                        label: "What malicious artifact or data file was targeted?",
-                        options: ["malware.exe", "Q2_Proprietary_Data.csv", "invoice.pdf.lnk", "shadow_copy.bak"],
+                        label: "What artifact was targeted for exfiltration?",
+                        type: "select",
+                        options: ["malware.exe", "Q2_Proprietary_Data.csv", "Blueprints_2026.tar.gz", "shadow_copy.bak"],
                         correct: "Q2_Proprietary_Data.csv"
-                    },
-                    source: {
-                        label: "Where did the threat originate or destination IP?",
-                        options: ["External IP (192.0.2.115)", "Internal Workstation", "Malicious Email Domain", "Compromised VPN Pool"],
-                        correct: "External IP (192.0.2.115)"
                     }
                 },
-                explanation: "Correct! User d.jones copied sensitive corporate files locally from the File Server and then directly exfiltrated them to an external IP address over HTTPS, bypassing endpoint controls."
+                explanation: "Correct! User d.jones copied sensitive files from the File Repository and exfiltrated them to an external IP via HTTPS. Only one workstation (WKSTN-452) was used."
             },
             {
                 id: "scen-02",
-                title: "Scenario 2: Ransomware Outbreak",
-                description: "Alert: Multiple workstations reporting encrypted files and ransom notes. Unusual SMB traffic detected.",
+                title: "Ransomware Outbreak",
+                description: "Alert: Multiple endpoints reporting encrypted files. Unusual SMB traffic detected internally.",
                 logs: {
                     proxy: [
                         "2026-06-12 09:12:05 | 10.10.4.88 -> 93.184.216.34:80 | GET /payload.exe | 200 | 1.2MB",
                         "2026-06-12 10:05:44 | 10.10.4.88 -> dev-c2-control.net:443 | ESTABLISHED | 443 | 12KB"
                     ],
                     email: [
-                        "2026-06-12 08:45:00 | Inbound | From: it-support@fake-company.com | To: s.rogers@company.com | Subject: URGENT: Security Update Required | Link: http://10.10.4.88/update",
+                        "2026-06-12 08:45:00 | Inbound | From: updates@trusted-vendor.com | To: s.rogers@company.com | Subject: Security Patch | Link: http://93.184.216.34/patch",
                         "2026-06-12 08:46:12 | User s.rogers clicked link in email."
                     ],
                     file_server: [
                         "2026-06-12 10:15:22 | User: s.rogers | IP: 10.10.4.88 | Write/Rename | S:\\HR\\Salaries.xlsx -> S:\\HR\\Salaries.xlsx.locked",
-                        "2026-06-12 10:15:25 | User: s.rogers | IP: 10.10.4.88 | Write/Rename | S:\\HR\\Recruitment.docx -> S:\\HR\\Recruitment.docx.locked"
+                        "2026-06-12 10:18:05 | User: s.rogers | IP: 10.10.4.88 | Write/Rename | S:\\Shared\\Public.zip -> S:\\Shared\\Public.zip.locked"
                     ],
                     workstations: [
-                        "Host: WKSTN-88 | IP: 10.10.4.88 | Active User: s.rogers",
-                        "2026-06-12 09:13:01 | Process Start: C:\\Users\\s.rogers\\Downloads\\payload.exe | PID: 4412",
-                        "2026-06-12 09:14:00 | Alert: Cryptographic activity detected on C:\\Users\\s.rogers\\Documents"
+                        "Host: WKSTN-88 | IP: 10.10.4.88 | Active User: s.rogers | Process Start: payload.exe",
+                        "Host: WKSTN-89 | IP: 10.10.4.89 | Active User: t.stark | Alert: C:\\Users\\t.stark\\Documents\\encrypted",
+                        "Host: WKSTN-90 | IP: 10.10.4.90 | Active User: n.romanoff | Alert: C:\\Users\\n.romanoff\\Desktop\\note.txt"
                     ]
                 },
                 questions: {
                     vector: {
-                        label: "What was the initial attack vector?",
-                        options: ["Brute Force", "Spear Phishing Link", "Unsecured Wi-Fi", "USB Drop"],
+                        label: "Initial Infection Vector?",
+                        type: "select",
+                        options: ["Brute Force", "Spear Phishing Link", "Watering Hole Attack", "Malicious USB"],
                         correct: "Spear Phishing Link"
                     },
-                    user: {
-                        label: "Which corporate identity is implicated?",
-                        options: ["d.jones", "s.rogers", "b.banner", "n.romanoff"],
-                        correct: "s.rogers"
+                    origin: {
+                        label: "Which endpoint was the Patient Zero?",
+                        type: "select",
+                        options: ["WKSTN-88", "WKSTN-89", "WKSTN-90", "File Repository"],
+                        correct: "WKSTN-88"
                     },
-                    artifact: {
-                        label: "What malicious artifact or file was executed?",
-                        options: ["payload.exe", "update.zip", "invoice.pdf", "macro.docm"],
-                        correct: "payload.exe"
+                    count: {
+                        label: "Total number of confirmed infected endpoints?",
+                        type: "number",
+                        correct: 3
                     },
                     source: {
-                        label: "Which IP address served the malicious payload?",
+                        label: "External Command & Control (C2) Source IP?",
+                        type: "select",
                         options: ["10.10.4.88", "93.184.216.34", "192.0.2.1", "172.16.0.5"],
                         correct: "93.184.216.34"
                     }
                 },
-                explanation: "Correct! The incident began with a spear phishing email to s.rogers, who clicked a link to download a malicious payload. The payload then encrypted files on both the local workstation and the shared network drive."
+                explanation: "Correct! The infection started on WKSTN-88 via a phishing link and spread to WKSTN-89 and WKSTN-90. The File Repository was also impacted via network shares."
+            },
+            {
+                id: "scen-03",
+                title: "DNS Exfiltration",
+                description: "Alert: Abnormal DNS traffic volume detected. Multiple TXT record queries to an unknown domain.",
+                logs: {
+                    proxy: [
+                        "2026-07-04 14:00:00 | 10.10.5.10 -> 8.8.8.8:53 | DNS Query: d3NoLWV4ZmlsdHJhdGU=.evil-domain.com | TXT",
+                        "2026-07-04 14:00:01 | 10.10.5.10 -> 8.8.8.8:53 | DNS Query: bXktc2VjcmV0LWRhdGE=.evil-domain.com | TXT",
+                        "2026-07-04 14:01:05 | 10.10.5.11 -> 8.8.8.8:53 | DNS Query: dXNlci1wYXNzd29yZHM=.evil-domain.com | TXT"
+                    ],
+                    email: [
+                        "No anomalous mail logs found."
+                    ],
+                    file_server: [
+                        "2026-07-04 13:45:00 | User: b.wayne | IP: 10.10.5.10 | Read | C:\\Users\\b.wayne\\Documents\\Vault_Access.txt"
+                    ],
+                    workstations: [
+                        "Host: WKSTN-510 | IP: 10.10.5.10 | Active User: b.wayne | Process: nslookup.exe",
+                        "Host: WKSTN-511 | IP: 10.10.5.11 | Active User: k.kent | Process: nslookup.exe",
+                        "Host: WKSTN-512 | IP: 10.10.5.12 | Active User: d.prince | Process: Idle"
+                    ]
+                },
+                questions: {
+                    method: {
+                        label: "Exfiltration Method?",
+                        type: "select",
+                        options: ["HTTP POST", "DNS Tunneling / TXT Records", "ICMP Payloads", "SMTP Attachment"],
+                        correct: "DNS Tunneling / TXT Records"
+                    },
+                    count: {
+                        label: "Number of endpoints confirmed beaconing/exfiltrating?",
+                        type: "number",
+                        correct: 2
+                    },
+                    domain: {
+                        label: "Target Exfiltration Domain?",
+                        type: "select",
+                        options: ["evil-domain.com", "google-analytics.co", "microsoft-update.net", "cdn-check.biz"],
+                        correct: "evil-domain.com"
+                    },
+                    origin: {
+                        label: "Primary Point of Origin?",
+                        type: "select",
+                        options: ["WKSTN-510", "WKSTN-511", "WKSTN-512", "Web Gateway"],
+                        correct: "WKSTN-510"
+                    }
+                },
+                explanation: "Correct! The attackers used DNS TXT records to tunnel data out of the network. Both WKSTN-510 and WKSTN-511 were observed making these queries."
+            },
+            {
+                id: "scen-04",
+                title: "ICMP Tunneling & Beaconing",
+                description: "Alert: Unusual ICMP (Ping) traffic detected. Large packet sizes and consistent heartbeat intervals.",
+                logs: {
+                    proxy: [
+                        "2026-08-15 22:00:10 | 10.10.6.22 -> 203.0.113.42 | ICMP Echo Request | 1500 bytes | Heartbeat",
+                        "2026-08-15 22:00:40 | 10.10.6.22 -> 203.0.113.42 | ICMP Echo Request | 1500 bytes | Heartbeat",
+                        "2026-08-15 22:01:10 | 10.10.6.22 -> 203.0.113.42 | ICMP Echo Request | 1500 bytes | Heartbeat"
+                    ],
+                    email: [
+                        "No anomalous mail logs found."
+                    ],
+                    file_server: [
+                        "2026-08-15 21:30:12 | User: a.curry | IP: 10.10.6.22 | Access | S:\\Strategy\\Atlantis_Defense.pdf"
+                    ],
+                    workstations: [
+                        "Host: WKSTN-622 | IP: 10.10.6.22 | Active User: a.curry | Beacon: Confirmed",
+                        "Host: WKSTN-623 | IP: 10.10.6.23 | Active User: v.stone | Beacon: Idle"
+                    ]
+                },
+                questions: {
+                    method: {
+                        label: "Exfiltration Protocol?",
+                        type: "select",
+                        options: ["TCP", "UDP", "ICMP", "SCTP"],
+                        correct: "ICMP"
+                    },
+                    behavior: {
+                        label: "Observed Network Behavior?",
+                        type: "select",
+                        options: ["Data Burst", "Beaconing / Heartbeat", "Port Scanning", "SMB Brute Force"],
+                        correct: "Beaconing / Heartbeat"
+                    },
+                    count: {
+                        label: "Number of endpoints confirmed compromised?",
+                        type: "number",
+                        correct: 1
+                    },
+                    target: {
+                        label: "Threat Destination IP?",
+                        type: "select",
+                        options: ["203.0.113.42", "192.168.1.1", "8.8.8.8", "10.10.6.1"],
+                        correct: "203.0.113.42"
+                    }
+                },
+                explanation: "Correct! The compromised workstation (WKSTN-622) used oversized ICMP packets for beaconing and data exfiltration to a remote IP."
             }
         ];
 
@@ -240,34 +348,39 @@
         };
 
         const assetLabels = {
-            proxy: "Proxy Server",
-            email: "Email Server",
-            file_server: "File Server",
-            workstations: "Workstations"
+            proxy: "Web Gateway",
+            email: "Mail Exchange",
+            file_server: "File Repository",
+            workstations: "Endpoints"
         };
 
         function init() {
             try {
                 populateScenarioDropdown();
-                loadScenario(state.currentScenarioId);
+                loadScenario(scenarios[0].id);
                 if (window.lucide) {
                     lucide.createIcons();
-                } else {
-                    console.error("Lucide icons not loaded.");
                 }
             } catch (err) {
                 console.error("Initialization failed:", err);
-                document.getElementById('scenario-desc').textContent = "Error loading simulation. Please check the console.";
+                document.getElementById('scenario-desc').textContent = "Error loading simulation.";
             }
         }
 
         function populateScenarioDropdown() {
             const select = document.getElementById('scenario-select');
             if (!select) return;
-            select.innerHTML = scenarios.map(s => `<option value="${s.id}">${s.title}</option>`).join('');
+            select.innerHTML = scenarios.map((s, idx) => `<option value="${s.id}">Investigation ${String(idx + 1).padStart(2, '0')}</option>`).join('');
             select.addEventListener('change', (e) => {
                 loadScenario(e.target.value);
             });
+        }
+
+        function startRandomInvestigation() {
+            const randomIndex = Math.floor(Math.random() * scenarios.length);
+            const scenario = scenarios[randomIndex];
+            document.getElementById('scenario-select').value = scenario.id;
+            loadScenario(scenario.id);
         }
 
         function loadScenario(id) {
@@ -283,61 +396,72 @@
 
             const feedbackEl = document.getElementById('feedback-section');
             if (feedbackEl) feedbackEl.classList.add('hidden');
-            document.getElementById('submit-btn').disabled = false;
-            document.getElementById('submit-btn').classList.remove('opacity-50', 'cursor-not-allowed');
+
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
 
             renderQuestions(scenario);
             selectAsset('proxy');
 
-            // Re-initialize icons if needed
-            if (window.lucide) {
-                lucide.createIcons();
-            }
+            if (window.lucide) lucide.createIcons();
         }
 
         function renderQuestions(scenario) {
             const container = document.getElementById('questions-container');
             if (!container) return;
-            container.innerHTML = Object.entries(scenario.questions).map(([key, q]) => `
-                <div class="question-block" id="q-block-${key}">
-                    <label class="block text-sm font-medium text-slate-300 mb-2">${q.label}</label>
-                    <div class="relative">
+
+            container.innerHTML = Object.entries(scenario.questions).map(([key, q]) => {
+                let inputHtml = '';
+                if (q.type === 'select') {
+                    inputHtml = `
                         <select
                             onchange="updateAnswer('${key}', this.value)"
-                            id="select-${key}"
+                            id="input-${key}"
                             class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                         >
-                            <option value="" disabled selected>Select an answer...</option>
+                            <option value="" disabled selected>Select findings...</option>
                             ${q.options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
                         </select>
                         <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
                             <i data-lucide="chevron-down" class="w-4 h-4"></i>
                         </div>
-                        <div id="icon-${key}" class="absolute -right-8 top-1/2 -translate-y-1/2"></div>
+                    `;
+                } else if (q.type === 'number') {
+                    inputHtml = `
+                        <input
+                            type="number"
+                            placeholder="Enter count..."
+                            onchange="updateAnswer('${key}', parseInt(this.value))"
+                            id="input-${key}"
+                            class="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                        >
+                    `;
+                }
+
+                return `
+                    <div class="question-block relative" id="q-block-${key}">
+                        <label class="block text-sm font-medium text-slate-300 mb-2">${q.label}</label>
+                        <div class="relative">
+                            ${inputHtml}
+                            <div id="icon-${key}" class="absolute -right-8 top-1/2 -translate-y-1/2"></div>
+                        </div>
                     </div>
-                </div>
-            `).join('');
-            if (window.lucide) {
-                lucide.createIcons();
-            }
+                `;
+            }).join('');
+
+            if (window.lucide) lucide.createIcons();
         }
 
         function selectAsset(assetKey) {
             state.activeAsset = assetKey;
-
-            // Update asset cards UI
-            document.querySelectorAll('.asset-card').forEach(card => {
-                card.classList.remove('active');
-            });
+            document.querySelectorAll('.asset-card').forEach(card => card.classList.remove('active'));
             document.getElementById(`asset-${assetKey}`).classList.add('active');
-
-            // Update label
             document.getElementById('active-asset-label').textContent = assetLabels[assetKey];
 
-            // Update logs
             const terminal = document.getElementById('log-terminal');
             const scenario = scenarios.find(s => s.id === state.currentScenarioId);
-            const logs = scenario.logs[assetKey];
+            const logs = scenario.logs[assetKey] || ["No logs available for this node."];
 
             terminal.innerHTML = logs.map(line => `<div class="mb-1 border-b border-white/5 pb-1 last:border-0">> ${line}</div>`).join('');
             terminal.scrollTop = 0;
@@ -353,11 +477,13 @@
 
             let allAnswered = true;
             questionKeys.forEach(key => {
-                if (!state.answers[key]) allAnswered = false;
+                if (state.answers[key] === undefined || state.answers[key] === null || state.answers[key] === "") {
+                    allAnswered = false;
+                }
             });
 
             if (!allAnswered) {
-                alert("Please answer all questions before submitting.");
+                alert("Complete the investigation before submitting.");
                 return;
             }
 
@@ -365,23 +491,20 @@
             let score = 0;
 
             questionKeys.forEach(key => {
-                const select = document.getElementById(`select-${key}`);
+                const input = document.getElementById(`input-${key}`);
                 const iconContainer = document.getElementById(`icon-${key}`);
                 const isCorrect = state.answers[key] === scenario.questions[key].correct;
 
                 if (isCorrect) {
                     score++;
-                    select.classList.remove('border-slate-700', 'border-red-500');
-                    select.classList.add('border-green-500', 'bg-green-900/20');
+                    input.classList.add('border-green-500', 'bg-green-900/20');
                     iconContainer.innerHTML = '<i data-lucide="check-circle" class="text-green-500 w-5 h-5"></i>';
                 } else {
-                    select.classList.remove('border-slate-700', 'border-green-500');
-                    select.classList.add('border-red-500', 'bg-red-900/20');
+                    input.classList.add('border-red-500', 'bg-red-900/20');
                     iconContainer.innerHTML = '<i data-lucide="x-circle" class="text-red-500 w-5 h-5"></i>';
                 }
             });
 
-            // Show feedback
             const feedbackSection = document.getElementById('feedback-section');
             const feedbackBanner = document.getElementById('feedback-banner');
             const feedbackTitle = document.getElementById('feedback-title');
@@ -393,22 +516,18 @@
 
             if (score === questionKeys.length) {
                 feedbackBanner.className = "p-4 rounded-lg border mb-4 bg-green-900/20 border-green-500 text-green-400";
-                feedbackTitle.textContent = "Analysis Successful";
-                feedbackMsg.textContent = `Excellent work! You identified all indicators of compromise correctly (${score}/${questionKeys.length}).`;
+                feedbackTitle.textContent = "Analysis Verified";
+                feedbackMsg.textContent = `All indicators identified correctly (${score}/${questionKeys.length}).`;
             } else {
                 feedbackBanner.className = "p-4 rounded-lg border mb-4 bg-red-900/20 border-red-500 text-red-400";
                 feedbackTitle.textContent = "Analysis Incomplete";
-                feedbackMsg.textContent = `You found ${score} out of ${questionKeys.length} indicators. Review the explanation below to improve your detection skills.`;
+                feedbackMsg.textContent = `Found ${score} out of ${questionKeys.length} indicators. Check the debrief.`;
             }
 
             document.getElementById('submit-btn').disabled = true;
             document.getElementById('submit-btn').classList.add('opacity-50', 'cursor-not-allowed');
 
-            if (window.lucide) {
-                lucide.createIcons();
-            }
-
-            // Scroll feedback into view
+            if (window.lucide) lucide.createIcons();
             feedbackSection.scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -416,7 +535,6 @@
             loadScenario(state.currentScenarioId);
         }
 
-        // Initialize on load
         window.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
