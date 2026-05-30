@@ -2,7 +2,6 @@ const MASTER_PRINCIPLES = [
     "Phishing / Social Engineering",
     "Beaconing / Command & Control",
     "Data Exfiltration (Overt Channel)",
-    "Data Exfiltration (Alternate Channel)",
     "DNS Tunneling / Exfiltration",
     "ICMP Tunneling / Beaconing",
     "Privilege Escalation",
@@ -526,7 +525,7 @@ const scenarios = [
                 correct: "Issuing an inbound HTTP GET request to download the staged archive from the public web root"
             }
         },
-        principles: ["Data Exfiltration (Alternate Channel)", "Reconnaissance / Scanning"],
+        principles: ["DNS Tunneling / Exfiltration", "Reconnaissance / Scanning"],
         explanation: "At 11:15:30Z, an external threat actor at IP 198.51.100.77 initiated a massive 42KB HTTP POST payload targeting the /api/v2/document-parser API endpoint on WEB-SRV-01. This request triggered an unauthenticated zero-day remote code execution vulnerability, forcing the IIS web worker process (w3wp.exe) to spawn cmd.exe. Running commands as IIS_IUSRS, the attacker accessed D:\\Corporate_Vault\\HR_Payroll_2026.csv, zipped it via PowerShell, and relocated it into the public-facing directory C:\\inetpub\\wwwroot\\assets\\images\\.system_temp\\, hiding the folder using attrib.exe +h. The attacker then completed the exfiltration at 11:32:45Z via an inbound HTTP GET request directly to the staged file path, effectively bypassing outbound egress controls by using the server's legitimate incoming web traffic. Telemetry also shows noisy internal auditing traffic from sec-audit-01 scanning the web app, which is benign and matches corporate security scanning schedules."
     },
     {
@@ -643,6 +642,7 @@ const scenarios = [
                 "2026-05-29T15:22:10Z - IP: 192.168.10.122 - URL: https://socialmedia.example.com/hub/developer-discussions - Action: Allowed - Category: Social Media - Bytes: 45000"
             ],
             email: [
+                "2026-05-29T14:05:00Z - Inbound - From: security@company-portal-auth.com - To: jdoe@company.com - Subject: Action Required: Re-authenticate Session - Status: Delivered",
                 "2026-05-29T14:30:00Z - Inbound - From: external-vendor@supplies.com - To: jdoe@company.com - Subject: Order Shipped Confirmation - Status: Delivered"
             ],
             file_server: [
@@ -651,7 +651,8 @@ const scenarios = [
             ],
             workstations: [
                 "2026-05-29T14:02:15Z - WKSTN-22 (192.168.10.122) - EventID: 4688 - Process Created: explorer.exe spawned chrome.exe --new-window https://socialmedia.example.com/hub/developer-discussions",
-                '2026-05-29T14:14:05Z - WKSTN-08 (192.168.10.88) - EventID: 4688 - Process Created: explorer.exe spawned powershell.exe -WindowStyle Hidden -Command "while($true) { Invoke-WebRequest -Uri \'https://socialmedia.example.com/company-feed/posts?id=8831\' -UseBasicParsing; Start-Sleep -Seconds 60 }"'
+                "2026-05-29T14:08:15Z - WKSTN-08 (192.168.10.88) - EventID: 4688 - Process Created: outlook.exe spawned chrome.exe --url http://company-portal-auth.com/login",
+                '2026-05-29T14:14:05Z - WKSTN-08 (192.168.10.88) - EventID: 4688 - Process Created: chrome.exe spawned powershell.exe -WindowStyle Hidden -Command "while($true) { Invoke-WebRequest -Uri \'https://socialmedia.example.com/company-feed/posts?id=8831\' -UseBasicParsing; Start-Sleep -Seconds 60 }"'
             ],
             auth_logs: [
                 "2026-05-29T14:00:10Z - IdP_Auth - User: asmith@company.com - App: O365 Portal - AuthMethod: Password+MFA - Status: Success - Country: USA - IP: 104.244.42.1",
@@ -697,7 +698,7 @@ const scenarios = [
             }
         },
         principles: ["Impossible Travel (Geo-velocity violation)", "Beaconing / Command & Control"],
-        explanation: "At 14:10:15Z, user jdoe authenticated legitimately from New York, USA. Just 2 minutes and 30 seconds later, at 14:12:45Z, a second login event was authorized using jdoe's active session token from Sofia, Bulgaria. Because traveling 4,700 miles in under three minutes is physically impossible, this confirms a Session Hijack compromise. Shortly after at 14:14:05Z, jdoe's active workstation WKSTN-08 spawned a persistent, hidden background PowerShell process that began polling socialmedia.example.com/company-feed/posts exactly every 60 seconds with identical 1024-byte payloads to establish a reliable C2 channel. Meanwhile, developer kbaker browsed the same social media domain for technical discussions at erratic times with widely varying payload sizes, providing benign background noise."
+        explanation: "At 14:10:15Z, user jdoe authenticated legitimately from New York, USA. Just 2 minutes and 30 seconds later, at 14:12:45Z, a second login event was authorized using jdoe's active session token from Sofia, Bulgaria. Because traveling 4,700 miles in under three minutes is physically impossible, this confirms a Session Hijack compromise. Correlating the telemetry, jdoe received a phishing email at 14:05:00Z designed to harvest OAuth tokens and drop a silent payload. After the token was successfully stolen and utilized from Bulgaria, the local payload executed on WKSTN-08 at 14:14:05Z, spawning a persistent background PowerShell process that began polling socialmedia.example.com/company-feed/posts exactly every 60 seconds. Meanwhile, developer kbaker browsed the same social media domain for technical discussions at erratic times with widely varying payload sizes, providing benign background noise."
     },
     {
         id: "ir-scenario-2026-cicd-supply-chain",
@@ -784,7 +785,7 @@ const scenarios = [
                 correct: "A newly spawned, hidden public repository on the internal Git server (git.example.com)"
             }
         },
-        principles: ["Data Exfiltration (Alternate Channel)", "Unauthorized Privilege Use"],
+        principles: ["Data Exfiltration (Overt Channel)", "Unauthorized Privilege Use"],
         explanation: "At 15:12:00Z, user 'jdoe' on WKSTN-08 executed 'npm install' which downloaded a compromised library dependency: 'utility-math-helper'. This package utilized a malicious postinstall script hook, forcing the legitimate 'node.exe' runtime process to spawn a rogue 'cmd.exe' child shell. Operating under jdoe's active developer privileges, the script located a sensitive financial backup ('financial_export_2026.db') on the local D:\\ partition at 15:15:22Z. Utilizing jdoe's cached Git credentials and API tokens, the script initiated a remote API call to create an unauthorized public repository ('public-mirrors/temp-patch') directly on the company's internal Git platform ('git.example.com'). The script then executed a Git push command at 15:25:00Z to upload the database, successfully bypassing DLP exfiltration filters since the internal domain is trusted. The external attacker at IP 198.51.100.99 subsequently performed an anonymous HTTPS GET request at 15:28:00Z to pull down the database from the public-facing repository."
     }
 ];

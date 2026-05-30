@@ -15,7 +15,6 @@ When selecting the 'correct' principles for the checklist, you MUST choose from 
 - Phishing / Social Engineering
 - Beaconing / Command & Control
 - Data Exfiltration (Overt Channel)
-- Data Exfiltration (Alternate Channel)
 - DNS Tunneling / Exfiltration
 - ICMP Tunneling / Beaconing
 - Privilege Escalation
