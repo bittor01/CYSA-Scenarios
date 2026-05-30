@@ -5,24 +5,35 @@ scenarios.push({
     logs: {
         proxy: [
             "2026-05-29T10:00:05Z - IP: 192.168.10.15 - URL: https://identity.okta.com/oauth2 - Status: 200",
-            "2026-05-29T10:15:22Z - IP: 192.168.10.15 - URL: https://github.com/company-org - Action: Allowed - Bytes: 15320"
+            "2026-05-29T10:15:22Z - IP: 192.168.10.15 - URL: https://github.com/company-org - Action: Allowed - Bytes: 15320",
+            "2026-05-29T10:30:45Z - IP: 192.168.10.10 - URL: https://slack.com/api/rtm.start - Action: Allowed - Bytes: 3100",
+            "2026-05-29T11:00:12Z - IP: 192.168.10.12 - URL: https://teams.microsoft.com - Action: Allowed - Bytes: 12450",
+            "2026-05-29T11:15:30Z - IP: 192.168.10.45 - URL: https://outlook.office.com/mapi - Action: Allowed - Bytes: 9200"
         ],
         email: [
-            "2026-05-29T10:30:00Z - Internal - From: it-security@company.com - To: admin-team@company.com - Subject: Critical: Potential Credential Dump on WKSTN-05 - Status: Delivered"
+            "2026-05-29T10:30:00Z - Internal - From: it-security@example.com - To: admin-team@example.com - Subject: Critical: Potential Credential Dump on WKSTN-05 - Status: Delivered",
+            "2026-05-29T10:45:00Z - Inbound - From: newsletters@techcrunch.com - To: asmith@example.com - Subject: TechCrunch Daily - Status: Delivered",
+            "2026-05-29T11:00:00Z - Internal - From: hr@example.com - To: kbaker@example.com - Subject: RE: Access Request Form - Status: Sent"
         ],
         file_server: [
             "2026-05-29T11:05:00Z - Share Name: \\\\DB-SRV-01\\ADMIN$ - Action: Write - File: PSEXESVC.exe - User: COMPANY\\helpdesk-admin",
-            "2026-05-29T11:05:10Z - Share Name: \\\\DB-SRV-02\\ADMIN$ - Action: Write - File: PSEXESVC.exe - User: COMPANY\\helpdesk-admin"
+            "2026-05-29T11:05:10Z - Share Name: \\\\DB-SRV-02\\ADMIN$ - Action: Write - File: PSEXESVC.exe - User: COMPANY\\helpdesk-admin",
+            "2026-05-29T11:20:15Z - Share Name: \\\\FILE-SRV-01\\Public - Access Request: Allowed - Source IP: 192.168.10.10 - User: COMPANY\\asmith",
+            "2026-05-29T11:45:11Z - Share Name: \\\\FILE-SRV-01\\IT_Admin - Access Request: Allowed - Source IP: 192.168.10.15 - User: COMPANY\\kbaker"
         ],
         workstations: [
             "2026-05-29T09:30:12Z - WKSTN-03 (192.168.10.14) - EventID: 4624 - Successful Logon - User: COMPANY\\rjones",
             "2026-05-29T10:45:00Z - WKSTN-05 (192.168.10.15) - EventID: 4688 - Process Created: cmd.exe spawned psexec.exe \\\\DB-SRV-01 -u helpdesk-admin -p [REDACTED] cmd.exe",
             "2026-05-29T11:05:05Z - DB-SRV-01 (192.168.10.99) - EventID: 7045 - A service was installed in the system. Service Name: PSEXESVC - Service File Name: %SystemRoot%\\PSEXESVC.exe",
+            "2026-05-29T11:08:12Z - WKSTN-01 (192.168.10.10) - EventID: 4688 - Process Created: explorer.exe spawned slack.exe",
+            "2026-05-29T11:10:00Z - DB-SRV-01 (192.168.10.99) - EventID: 4688 - Process Created: PSEXESVC.exe spawned cmd.exe",
             "2026-05-29T11:15:40Z - WKSTN-03 (192.168.10.14) - EventID: 4800 - Workstation Locked"
         ],
         auth_logs: [
             "2026-05-29T08:45:10Z - WKSTN-05 (192.168.10.15) - EventID: 4624 - Successful Logon - User: COMPANY\\helpdesk-admin",
-            "2026-05-29T11:05:02Z - DB-SRV-01 (192.168.10.99) - EventID: 4624 - Successful Logon - User: COMPANY\\helpdesk-admin - Logon Type: 3 (Network) - Source IP: 192.168.10.15"
+            "2026-05-29T11:05:02Z - DB-SRV-01 (192.168.10.99) - EventID: 4624 - Successful Logon - User: COMPANY\\helpdesk-admin - Logon Type: 3 (Network) - Source IP: 192.168.10.15",
+            "2026-05-29T11:20:00Z - WKSTN-02 (192.168.10.12) - EventID: 4624 - Successful Logon - User: COMPANY\\fsmith",
+            "2026-05-29T11:42:15Z - DB-SRV-02 (192.168.10.100) - EventID: 4624 - Successful Network Logon - User: COMPANY\\helpdesk-admin - Source: 192.168.10.15"
         ]
     },
     questions: {
@@ -61,5 +72,5 @@ scenarios.push({
         }
     },
     principles: ["Lateral Movement", "Unauthorized Privilege Use", "Persistence"],
-    explanation: "The attacker, having compromised the 'helpdesk-admin' credentials on WKSTN-05, utilized the legitimate Sysinternals PsExec tool to pivot to DB-SRV-01. This movement involved an initial SMB connection to the target's ADMIN$ share (Event ID 4624, Logon Type 3) to copy the 'PSEXESVC.exe' executable. The tool then automatically registered and started a new service ('PSEXESVC') on the target to execute the command-line shell. This is a common technique for lateral movement that leaves distinct fingerprints in both the file system and the system event logs (Event ID 7045)."
+    explanation: "The attacker, having compromised the 'helpdesk-admin' credentials on WKSTN-05, utilized the legitimate Sysinternals PsExec tool to pivot to DB-SRV-01. This involved an initial SMB connection to the target's ADMIN$ share (Event ID 4624, Logon Type 3) to copy the 'PSEXESVC.exe' executable. The tool then automatically registered and started a new service ('PSEXESVC') on the target. Benign noise includes standard helpdesk activity and administrative logins from IT staff like kbaker."
 });

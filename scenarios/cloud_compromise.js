@@ -5,28 +5,38 @@ scenarios.push({
     logs: {
         proxy: [
             "2026-05-29T15:30:45Z - IP: 192.168.10.12 - URL: https://teams.microsoft.com - Action: Allowed - Bytes: 12450",
-            "2026-05-29T16:00:10Z - IP: 198.51.100.22 - URL: https://s3.amazonaws.com/company-legal-vault - Action: Allowed - Action: ListBucket",
+            "2026-05-29T16:00:10Z - IP: 198.51.100.22 - URL: https://s3.amazonaws.example.com/company-legal-vault - Action: Allowed - Action: ListBucket",
             "2026-05-29T16:02:15Z - IP: 192.168.10.10 - URL: https://slack.com/api/rtm.start - Action: Allowed - Bytes: 3100",
-            "2026-05-29T16:05:00Z - IP: 198.51.100.22 - URL: https://s3.amazonaws.com/company-legal-vault/M_and_A_2026.zip - Action: Allowed - Action: GetObject - Bytes: 450000000",
-            "2026-05-29T16:15:00Z - IP: 198.51.100.22 - URL: https://s3.amazonaws.com/company-legal-vault/Trade_Secrets.pdf - Action: Allowed - Action: GetObject - Bytes: 12500000",
-            "2026-05-29T16:20:00Z - IP: 198.51.100.22 - URL: https://c2-cloud-panel.net/heartbeat - Action: Allowed - Bytes: 350"
+            "2026-05-29T16:05:00Z - IP: 198.51.100.22 - URL: https://s3.amazonaws.example.com/company-legal-vault/M_and_A_2026.zip - Action: Allowed - Action: GetObject - Bytes: 450000000",
+            "2026-05-29T16:08:12Z - IP: 192.168.10.45 - URL: https://outlook.office.com/mapi - Action: Allowed - Bytes: 12400",
+            "2026-05-29T16:15:00Z - IP: 198.51.100.22 - URL: https://s3.amazonaws.example.com/company-legal-vault/Trade_Secrets.pdf - Action: Allowed - Action: GetObject - Bytes: 12500000",
+            "2026-05-29T16:20:00Z - IP: 198.51.100.22 - URL: https://c2-cloud-panel.example.net/heartbeat - Action: Allowed - Bytes: 350",
+            "2026-05-29T16:21:00Z - IP: 198.51.100.22 - URL: https://c2-cloud-panel.example.net/heartbeat - Action: Allowed - Bytes: 350",
+            "2026-05-29T16:30:45Z - IP: 192.168.10.14 - URL: https://github.com/company-org - Action: Allowed - Bytes: 15300",
+            "2026-05-29T16:45:00Z - IP: 192.168.10.10 - URL: https://canva.example.com/design - Action: Allowed - Bytes: 450000"
         ],
         email: [
-            "2026-05-29T15:40:00Z - Inbound - From: notifications@slack.com - To: admin-root@company.com - Subject: You have unread messages - Status: Delivered",
-            "2026-05-29T15:55:00Z - Inbound - From: alerts@aws-security.com - To: soc-alerts@company.com - Subject: [CRITICAL] MFA Bypass Detected: Root Account - Status: Delivered",
-            "2026-05-29T16:30:00Z - Outbound - From: admin-root@company.com - To: ceo@company.com - Subject: RE: Cloud Migration Update - Status: Sent"
+            "2026-05-29T15:40:00Z - Inbound - From: notifications@slack.com - To: admin-root@example.com - Subject: You have unread messages - Status: Delivered",
+            "2026-05-29T15:55:00Z - Inbound - From: alerts@aws-security.example.com - To: soc-alerts@example.com - Subject: [CRITICAL] MFA Bypass Detected: Root Account - Status: Delivered",
+            "2026-05-29T16:10:00Z - Inbound - From: notifications@github.com - To: admin-root@example.com - Subject: [GitHub] New Personal Access Token Created - Status: Delivered",
+            "2026-05-29T16:30:00Z - Outbound - From: admin-root@example.com - To: ceo@example.com - Subject: RE: Cloud Migration Update - Status: Sent"
         ],
         file_server: [
             "2026-05-29T15:20:15Z - Share Name: \\\\FILE-SRV-01\\Public - Access Request: Allowed - Source IP: 192.168.10.10 - User: COMPANY\\asmith",
+            "2026-05-29T16:00:00Z - Local Disk Access: D:\\Cloud_Sync\\Legal_Vault_Local\\ - Accesses: ReadData - User: SERVICE\\cloud-sync-svc",
             "2026-05-29T16:10:00Z - Cloud_Sync - Service: AWS S3 Connector - Status: Synced - Bucket: company-legal-vault"
         ],
         workstations: [
             "2026-05-29T15:01:22Z - WKSTN-01 (192.168.10.10) - EventID: 4688 - Process Created: explorer.exe spawned slack.exe",
-            "2026-05-29T16:00:00Z - Cloud_Console - IP: 198.51.100.22 - Action: AWS Management Console Login - User: admin-root@company.com"
+            "2026-05-29T16:00:00Z - Cloud_Console - IP: 198.51.100.22 - Action: AWS Management Console Login - User: admin-root@example.com",
+            "2026-05-29T16:05:00Z - WKSTN-04 (192.168.10.45) - EventID: 4688 - Process Created: explorer.exe spawned chrome.exe --url https://console.aws.amazon.com",
+            "2026-05-29T16:30:12Z - WKSTN-01 (192.168.10.10) - EventID: 4800 - Workstation Locked - User: COMPANY\\asmith"
         ],
         auth_logs: [
-            "2026-05-29T15:54:10Z - Cloud_Auth - User: admin-root@company.com - Status: Success - IP: 198.51.100.22 - MFA: BYPASSED - Method: Session_Token_Injection",
-            "2026-05-29T15:58:00Z - Cloud_Auth - User: admin-root@company.com - Action: PolicyChanged - Effect: Allow - Resource: s3:*"
+            "2026-05-29T15:54:10Z - Cloud_Auth - User: admin-root@example.com - Status: Success - IP: 198.51.100.22 - MFA: BYPASSED - Method: Session_Token_Injection",
+            "2026-05-29T15:58:00Z - Cloud_Auth - User: admin-root@example.com - Action: PolicyChanged - Effect: Allow - Resource: s3:*",
+            "2026-05-29T16:15:32Z - WKSTN-04 (192.168.10.45) - EventID: 4624 - Successful Logon - User: COMPANY\\jdoe",
+            "2026-05-29T16:45:10Z - IdP_Auth - User: asmith@example.com - App: O365 - Status: Success - Source: 192.168.10.10"
         ]
     },
     questions: {
@@ -65,5 +75,5 @@ scenarios.push({
         }
     },
     principles: ["Unauthorized Privilege Use", "Data Exfiltration (Overt Channel)", "Beaconing / Command & Control"],
-    explanation: "The attacker gained access to the cloud environment by injecting a stolen session token to bypass MFA for the 'admin-root' account. Once authenticated from an external IP (198.51.100.22), the attacker modified IAM policies to grant themselves full S3 access. They then proceeded to download several hundred megabytes of sensitive documents from the 'company-legal-vault' bucket. The attacker also established a C2 heartbeat to 'c2-cloud-panel.net', indicating that the compromised administrator session was being systematically used for command and control."
+    explanation: "The attacker gained access to the cloud environment by injecting a stolen session token to bypass MFA for the 'admin-root' account. Once authenticated from an external IP (198.51.100.22), the attacker modified IAM policies to grant themselves full S3 access. They then proceeded to download several hundred megabytes of sensitive documents from the 'company-legal-vault' bucket. The attacker also established a C2 heartbeat to 'c2-cloud-panel.example.net'. Benign noise includes legitimate cloud sync processes and standard administrative activity from other users."
 });
