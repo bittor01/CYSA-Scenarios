@@ -6,7 +6,8 @@
     <title>CompTIA Simulation Sandbox</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="scenarios.js"></script>
+    <script src="principles.js"></script>
+    <script src="scenarios/manifest.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
 
@@ -195,12 +196,34 @@
             auth_logs: "Auth Logs"
         };
 
-        function init() {
+        async function init() {
             try {
-                if (typeof scenarios === 'undefined') {
-                    console.error("scenarios.js not loaded!");
+                if (typeof scenarioManifest === 'undefined') {
+                    console.error("scenarios/manifest.js not loaded!");
                     return;
                 }
+
+                // Dynamically load each scenario from the manifest
+                const loadPromises = scenarioManifest.map(filename => {
+                    return new Promise((resolve, reject) => {
+                        const script = document.createElement('script');
+                        script.src = `scenarios/${filename}`;
+                        script.onload = resolve;
+                        script.onerror = reject;
+                        document.head.appendChild(script);
+                    });
+                });
+
+                await Promise.all(loadPromises);
+
+                // Scenarios are pushed to the global array as scripts finish loading.
+                // We don't strictly need them sorted, but let's ensure Case 01 is always first if possible.
+
+                if (typeof scenarios === 'undefined' || scenarios.length === 0) {
+                    console.error("No scenarios loaded!");
+                    return;
+                }
+
                 populateScenarioDropdown();
                 loadScenario(scenarios[0].id);
                 if (window.lucide) lucide.createIcons();
