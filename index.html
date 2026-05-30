@@ -216,8 +216,13 @@
 
                 await Promise.all(loadPromises);
 
-                // Scenarios are pushed to the global array as scripts finish loading.
-                // We don't strictly need them sorted, but let's ensure Case 01 is always first if possible.
+                // Sort scenarios based on the order in the manifest for deterministic UI
+                const manifestOrder = scenarioManifest.map(f => f.replace('.js', ''));
+                scenarios.sort((a, b) => {
+                    const nameA = a.id.replace('ir-scenario-2026-', '').replace(/-/g, '_');
+                    const nameB = b.id.replace('ir-scenario-2026-', '').replace(/-/g, '_');
+                    return manifestOrder.indexOf(nameA) - manifestOrder.indexOf(nameB);
+                });
 
                 if (typeof scenarios === 'undefined' || scenarios.length === 0) {
                     console.error("No scenarios loaded!");
