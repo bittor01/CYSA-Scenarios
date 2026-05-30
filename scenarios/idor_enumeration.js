@@ -4,26 +4,37 @@ scenarios.push({
     description: "Sequential access patterns detected on the payroll document-retrieval endpoint, originating from an authenticated but unauthorized user account.",
     logs: {
         proxy: [
-            "2026-05-29T13:00:05Z - IP: 192.168.10.33 - URL: https://portal.company.local/api/v1/payroll/get?id=1055 - Status: 200 - Bytes: 45000",
-            "2026-05-29T13:01:20Z - IP: 192.168.10.33 - URL: https://portal.company.local/api/v1/payroll/get?id=1054 - Status: 200 - Bytes: 45000",
-            "2026-05-29T13:01:35Z - IP: 192.168.10.33 - URL: https://portal.company.local/api/v1/payroll/get?id=1053 - Status: 200 - Bytes: 45000",
-            "2026-05-29T13:01:50Z - IP: 192.168.10.33 - URL: https://portal.company.local/api/v1/payroll/get?id=1052 - Status: 200 - Bytes: 45000",
-            "2026-05-29T13:02:05Z - IP: 192.168.10.33 - URL: https://portal.company.local/api/v1/payroll/get?id=1051 - Status: 200 - Bytes: 45000",
-            "2026-05-29T13:10:00Z - IP: 192.168.10.33 - URL: https://portal.company.local/dashboard - Status: 200 - Bytes: 1240"
+            "2026-05-29T12:45:12Z - IP: 192.168.10.14 - URL: https://github.com/company-org - Action: Allowed - Bytes: 15320",
+            "2026-05-29T13:00:05Z - IP: 192.168.10.33 - URL: https://portal.company.local/api/v1/payroll/get?id=1055 - Action: Allowed - Status: 200 - Bytes: 45000",
+            "2026-05-29T13:01:20Z - IP: 192.168.10.33 - URL: https://portal.company.local/api/v1/payroll/get?id=1054 - Action: Allowed - Status: 200 - Bytes: 45000",
+            "2026-05-29T13:01:35Z - IP: 192.168.10.33 - URL: https://portal.company.local/api/v1/payroll/get?id=1053 - Action: Allowed - Status: 200 - Bytes: 45000",
+            "2026-05-29T13:01:50Z - IP: 192.168.10.33 - URL: https://portal.company.local/api/v1/payroll/get?id=1052 - Action: Allowed - Status: 200 - Bytes: 45000",
+            "2026-05-29T13:02:05Z - IP: 192.168.10.33 - URL: https://portal.company.local/api/v1/payroll/get?id=1051 - Action: Allowed - Status: 200 - Bytes: 45000",
+            "2026-05-29T13:05:45Z - IP: 192.168.10.10 - URL: https://slack.com/api/rtm.start - Action: Allowed - Bytes: 3100",
+            "2026-05-29T13:10:00Z - IP: 192.168.10.33 - URL: https://portal.company.local/dashboard - Action: Allowed - Status: 200 - Bytes: 1240",
+            "2026-05-29T13:15:22Z - IP: 192.168.10.12 - URL: https://teams.microsoft.com - Action: Allowed - Bytes: 12450"
         ],
         email: [
-            "2026-05-29T12:45:00Z - Inbound - From: notifications@bamboohr.com - To: mrogers@company.com - Subject: Your Q2 Paystub is now available - Status: Delivered"
+            "2026-05-29T12:30:00Z - Inbound - From: notifications@slack.com - To: mrogers@company.com - Subject: You have unread messages - Status: Delivered",
+            "2026-05-29T12:45:00Z - Inbound - From: notifications@bamboohr.com - To: mrogers@company.com - Subject: Your Q2 Paystub is now available - Status: Delivered",
+            "2026-05-29T13:05:12Z - Outbound - From: mrogers@company.com - To: client-ext@partner.com - Subject: RE: Project Scope - Status: Sent"
         ],
         file_server: [
+            "2026-05-29T12:20:15Z - Share Name: \\\\FILE-SRV-01\\Public - Access Request: Allowed - Source IP: 192.168.10.10 - User: COMPANY\\asmith",
             "2026-05-29T13:00:00Z - Local Disk Access: E:\\Payroll_Docs\\2026\\Q2\\Paystub_1055.pdf - Accesses: ReadData - User: IIS_IUSRS\\DefaultAppPool",
             "2026-05-29T13:01:20Z - Local Disk Access: E:\\Payroll_Docs\\2026\\Q2\\Paystub_1054.pdf - Accesses: ReadData - User: IIS_IUSRS\\DefaultAppPool",
-            "2026-05-29T13:01:35Z - Local Disk Access: E:\\Payroll_Docs\\2026\\Q2\\Paystub_1053.pdf - Accesses: ReadData - User: IIS_IUSRS\\DefaultAppPool"
+            "2026-05-29T13:01:35Z - Local Disk Access: E:\\Payroll_Docs\\2026\\Q2\\Paystub_1053.pdf - Accesses: ReadData - User: IIS_IUSRS\\DefaultAppPool",
+            "2026-05-29T13:15:45Z - Share Name: \\\\FILE-SRV-01\\HR - Access Request: Allowed - Source IP: 192.168.10.33 - User: COMPANY\\mrogers"
         ],
         workstations: [
-            "2026-05-29T13:00:00Z - WKSTN-03 (192.168.10.33) - EventID: 4688 - Process Created: chrome.exe spawned"
+            "2026-05-29T09:01:22Z - WKSTN-01 (192.168.10.10) - EventID: 4688 - Process Created: explorer.exe spawned slack.exe",
+            "2026-05-29T13:00:00Z - WKSTN-03 (192.168.10.33) - EventID: 4688 - Process Created: chrome.exe spawned",
+            "2026-05-29T13:30:12Z - WKSTN-03 (192.168.10.33) - EventID: 4800 - Workstation Locked - User: COMPANY\\mrogers"
         ],
         auth_logs: [
-            "2026-05-29T08:30:00Z - Web_Auth - User: mrogers@company.com - App: Employee Portal - Status: Success - Source IP: 192.168.10.33"
+            "2026-05-29T08:30:00Z - WKSTN-03 (192.168.10.33) - EventID: 4624 - Successful Logon - User: COMPANY\\mrogers",
+            "2026-05-29T08:45:10Z - WKSTN-02 (192.168.10.12) - EventID: 4624 - Successful Logon - User: COMPANY\\fsmith",
+            "2026-05-29T12:55:00Z - Web_Auth - User: mrogers@company.com - App: Employee Portal - Status: Success - Source IP: 192.168.10.33"
         ]
     },
     questions: {
