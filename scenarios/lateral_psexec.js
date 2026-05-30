@@ -4,7 +4,8 @@ scenarios.push({
     description: "Anomalous service creation and remote execution events detected on database servers, originating from a compromised administrator workstation.",
     logs: {
         proxy: [
-            "2026-05-29T10:00:05Z - IP: 192.168.10.15 - URL: https://identity.okta.com/oauth2 - Status: 200"
+            "2026-05-29T10:00:05Z - IP: 192.168.10.15 - URL: https://identity.okta.com/oauth2 - Status: 200",
+            "2026-05-29T10:15:22Z - IP: 192.168.10.15 - URL: https://github.com/company-org - Action: Allowed - Bytes: 15320"
         ],
         email: [
             "2026-05-29T10:30:00Z - Internal - From: it-security@company.com - To: admin-team@company.com - Subject: Critical: Potential Credential Dump on WKSTN-05 - Status: Delivered"
@@ -14,10 +15,13 @@ scenarios.push({
             "2026-05-29T11:05:10Z - Share Name: \\\\DB-SRV-02\\ADMIN$ - Action: Write - File: PSEXESVC.exe - User: COMPANY\\helpdesk-admin"
         ],
         workstations: [
+            "2026-05-29T09:30:12Z - WKSTN-03 (192.168.10.14) - EventID: 4624 - Successful Logon - User: COMPANY\\rjones",
             "2026-05-29T10:45:00Z - WKSTN-05 (192.168.10.15) - EventID: 4688 - Process Created: cmd.exe spawned psexec.exe \\\\DB-SRV-01 -u helpdesk-admin -p [REDACTED] cmd.exe",
-            "2026-05-29T11:05:05Z - DB-SRV-01 (192.168.10.99) - EventID: 7045 - A service was installed in the system. Service Name: PSEXESVC - Service File Name: %SystemRoot%\\PSEXESVC.exe"
+            "2026-05-29T11:05:05Z - DB-SRV-01 (192.168.10.99) - EventID: 7045 - A service was installed in the system. Service Name: PSEXESVC - Service File Name: %SystemRoot%\\PSEXESVC.exe",
+            "2026-05-29T11:15:40Z - WKSTN-03 (192.168.10.14) - EventID: 4800 - Workstation Locked"
         ],
         auth_logs: [
+            "2026-05-29T08:45:10Z - WKSTN-05 (192.168.10.15) - EventID: 4624 - Successful Logon - User: COMPANY\\helpdesk-admin",
             "2026-05-29T11:05:02Z - DB-SRV-01 (192.168.10.99) - EventID: 4624 - Successful Logon - User: COMPANY\\helpdesk-admin - Logon Type: 3 (Network) - Source IP: 192.168.10.15"
         ]
     },

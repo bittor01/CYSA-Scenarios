@@ -4,12 +4,14 @@ scenarios.push({
     description: "Multiple Remote Desktop (RDP) sessions initiated from a standard workstation to internal server segments following a local credential compromise.",
     logs: {
         proxy: [
-            "2026-05-29T14:02:14Z - IP: 192.168.10.45 - URL: https://identity.okta.com/oauth2 - Status: 200"
+            "2026-05-29T14:02:14Z - IP: 192.168.10.45 - URL: https://identity.okta.com/oauth2 - Status: 200",
+            "2026-05-29T14:15:22Z - IP: 192.168.10.45 - URL: https://outlook.office.com/mapi - Action: Allowed - Bytes: 8940"
         ],
         email: [
             "2026-05-29T13:45:00Z - Inbound - From: security@company.com - To: jdoe@company.com - Subject: Notice: Unusual Login to your Workstation - Status: Delivered"
         ],
         file_server: [
+            "2026-05-29T14:20:15Z - Share Name: \\\\FILE-SRV-01\\Public - Access Request: Allowed - Source IP: 192.168.10.10 - User: COMPANY\\asmith",
             "2026-05-29T15:20:00Z - Local Disk Access: C:\\Windows\\Temp\\dump.zip - Accesses: WriteData - User: COMPANY\\jdoe (via RDP on FILE-SRV-01)"
         ],
         workstations: [
@@ -17,6 +19,7 @@ scenarios.push({
             "2026-05-29T15:10:00Z - WKSTN-04 (192.168.10.45) - EventID: 4688 - Process Created: explorer.exe spawned mstsc.exe /v:192.168.10.150"
         ],
         auth_logs: [
+            "2026-05-29T08:00:15Z - WKSTN-01 (192.168.10.10) - EventID: 4624 - Successful Logon - User: COMPANY\\asmith",
             "2026-05-29T14:40:05Z - WEB-SRV-01 (192.168.10.80) - EventID: 4624 - Successful Logon - User: COMPANY\\jdoe - Logon Type: 10 (RemoteInteractive/RDP) - Source IP: 192.168.10.45",
             "2026-05-29T15:10:05Z - FILE-SRV-01 (192.168.10.150) - EventID: 4624 - Successful Logon - User: COMPANY\\jdoe - Logon Type: 10 (RemoteInteractive/RDP) - Source IP: 192.168.10.45"
         ]

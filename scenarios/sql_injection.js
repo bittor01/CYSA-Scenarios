@@ -4,26 +4,41 @@ scenarios.push({
     description: "Anomalous database-error patterns detected in web gateway logs alongside high-volume data transfers from the public-facing e-commerce portal.",
     logs: {
         proxy: [
-            "2026-05-29T10:00:05Z - IP: 192.168.10.15 - URL: https://shop.company.com/products?cat=1 - Status: 200 - Bytes: 1240",
-            "2026-05-29T10:02:12Z - IP: 203.0.113.5 - URL: https://shop.company.com/products?cat=1' - Status: 500 - Bytes: 450",
-            "2026-05-29T10:03:45Z - IP: 203.0.113.5 - URL: https://shop.company.com/products?cat=1'-- - Status: 200 - Bytes: 1240",
-            "2026-05-29T10:05:22Z - IP: 203.0.113.5 - URL: https://shop.company.com/products?cat=1' ORDER BY 10-- - Status: 500 - Bytes: 450",
-            "2026-05-29T10:10:00Z - IP: 192.168.10.44 - URL: https://shop.company.com/products?cat=2 - Status: 200 - Bytes: 1350",
-            "2026-05-29T10:12:15Z - IP: 203.0.113.5 - URL: https://shop.company.com/products?cat=1' UNION SELECT username,password,null FROM users-- - Status: 200 - Bytes: 85000",
-            "2026-05-29T10:15:30Z - IP: 203.0.113.5 - URL: https://shop.company.com/products?cat=1' UNION SELECT credit_card,cvv,null FROM payments-- - Status: 200 - Bytes: 152000",
-            "2026-05-29T10:20:00Z - IP: 192.168.10.15 - URL: https://shop.company.com/checkout - Status: 200 - Bytes: 2400"
+            "2026-05-29T09:45:12Z - IP: 192.168.10.14 - URL: https://github.com/company-org - Action: Allowed - Category: IT/Development - Bytes: 15320",
+            "2026-05-29T10:00:05Z - IP: 192.168.10.15 - URL: https://shop.company.com/products?cat=1 - Action: Allowed - Status: 200 - Bytes: 1240",
+            "2026-05-29T10:01:30Z - IP: 74.125.22.14 - URL: https://shop.company.com/index.html - Action: Allowed - Status: 200 - Bytes: 4500",
+            "2026-05-29T10:02:12Z - IP: 203.0.113.5 - URL: https://shop.company.com/products?cat=1' - Action: Allowed - Status: 500 - Category: Shopping - Bytes: 450",
+            "2026-05-29T10:03:45Z - IP: 203.0.113.5 - URL: https://shop.company.com/products?cat=1'-- - Action: Allowed - Status: 200 - Category: Shopping - Bytes: 1240",
+            "2026-05-29T10:05:22Z - IP: 203.0.113.5 - URL: https://shop.company.com/products?cat=1' ORDER BY 10-- - Action: Allowed - Status: 500 - Category: Shopping - Bytes: 450",
+            "2026-05-29T10:06:40Z - IP: 8.8.8.8 - URL: https://shop.company.com/favicon.ico - Action: Allowed - Status: 200 - Bytes: 850",
+            "2026-05-29T10:10:00Z - IP: 192.168.10.44 - URL: https://shop.company.com/products?cat=2 - Action: Allowed - Status: 200 - Category: Shopping - Bytes: 1350",
+            "2026-05-29T10:12:15Z - IP: 203.0.113.5 - URL: https://shop.company.com/products?cat=1' UNION SELECT username,password,null FROM users-- - Action: Allowed - Status: 200 - Category: Shopping - Bytes: 85000",
+            "2026-05-29T10:14:02Z - IP: 192.168.10.15 - URL: https://identity.okta.com/oauth2 - Action: Allowed - Category: Identity - Bytes: 1450",
+            "2026-05-29T10:15:30Z - IP: 203.0.113.5 - URL: https://shop.company.com/products?cat=1' UNION SELECT credit_card,cvv,null FROM payments-- - Action: Allowed - Status: 200 - Category: Shopping - Bytes: 152000",
+            "2026-05-29T10:20:00Z - IP: 192.168.10.15 - URL: https://shop.company.com/checkout - Action: Allowed - Status: 200 - Category: Shopping - Bytes: 2400",
+            "2026-05-29T10:25:12Z - IP: 192.168.10.12 - URL: https://teams.microsoft.com - Action: Allowed - Category: Business - Bytes: 12450"
         ],
         email: [
-            "2026-05-29T09:45:00Z - Inbound - From: support@shop-monitor.com - To: it-admin@company.com - Subject: Alert: Increased 500 Errors on shop.company.com - Status: Delivered"
+            "2026-05-29T09:40:00Z - Inbound - From: notifications@slack.com - To: asmith@company.com - Subject: You have unread messages - Status: Delivered",
+            "2026-05-29T09:45:00Z - Inbound - From: support@shop-monitor.com - To: it-admin@company.com - Subject: Alert: Increased 500 Errors on shop.company.com - Status: Delivered",
+            "2026-05-29T10:05:12Z - Outbound - From: asmith@company.com - To: client@external.com - Subject: Project Update - Status: Sent",
+            "2026-05-29T10:30:00Z - Inbound - From: alerts@bamboohr.com - To: mrogers@company.com - Subject: Time Off Approved - Status: Delivered"
         ],
         file_server: [
-            "2026-05-29T10:15:00Z - Local Disk Access: D:\\Databases\\ECommerce_Prod.mdf - Accesses: ReadData - Source IP: 192.168.10.80 - User: SERVICE\\sql-svc"
+            "2026-05-29T09:30:15Z - Share Name: \\\\FILE-SRV-01\\Public - Access Request: Allowed - Source IP: 192.168.10.10 - User: COMPANY\\asmith",
+            "2026-05-29T10:15:00Z - Local Disk Access: D:\\Databases\\ECommerce_Prod.mdf - Accesses: ReadData - Source IP: 192.168.10.80 - User: SERVICE\\sql-svc",
+            "2026-05-29T10:22:10Z - Share Name: \\\\FILE-SRV-01\\Public - Access Request: Allowed - Source IP: 192.168.10.15 - User: COMPANY\\mrogers"
         ],
         workstations: [
-            "2026-05-29T10:00:00Z - WEB-SRV-01 (192.168.10.80) - EventID: 4688 - Process Created: sqlservr.exe - Command: Standard query execution"
+            "2026-05-29T09:01:22Z - WKSTN-01 (192.168.10.10) - EventID: 4688 - Process Created: explorer.exe spawned slack.exe",
+            "2026-05-29T10:00:00Z - WEB-SRV-01 (192.168.10.80) - EventID: 4688 - Process Created: sqlservr.exe - Command: Standard query execution",
+            "2026-05-29T10:15:40Z - WKSTN-03 (192.168.10.14) - EventID: 4800 - Workstation Locked - User: COMPANY\\rjones"
         ],
         auth_logs: [
-            "2026-05-29T08:00:00Z - WEB-SRV-01 (192.168.10.80) - EventID: 4624 - Successful Network Logon - User: SERVICE\\sql-svc"
+            "2026-05-29T08:00:15Z - WKSTN-01 (192.168.10.10) - EventID: 4624 - Successful Logon - User: COMPANY\\asmith",
+            "2026-05-29T08:15:32Z - WKSTN-04 (192.168.10.45) - EventID: 4624 - Successful Logon - User: COMPANY\\jdoe",
+            "2026-05-29T09:30:12Z - WKSTN-03 (192.168.10.14) - EventID: 4624 - Successful Logon - User: COMPANY\\rjones",
+            "2026-05-29T10:00:00Z - WEB-SRV-01 (192.168.10.80) - EventID: 4624 - Successful Network Logon - User: SERVICE\\sql-svc"
         ]
     },
     questions: {

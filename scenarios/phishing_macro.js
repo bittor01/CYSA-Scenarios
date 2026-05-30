@@ -4,22 +4,31 @@ scenarios.push({
     description: "Malicious process execution detected on a finance workstation following the opening of a macro-enabled document from an external source.",
     logs: {
         proxy: [
-            "2026-05-29T09:12:45Z - IP: 192.168.10.12 - URL: https://update-services.top/api/v2/config - Status: 200 - Bytes: 1024",
-            "2026-05-29T09:13:45Z - IP: 192.168.10.12 - URL: https://update-services.top/api/v2/config - Status: 200 - Bytes: 1024",
-            "2026-05-29T09:14:45Z - IP: 192.168.10.12 - URL: https://update-services.top/api/v2/config - Status: 200 - Bytes: 1024"
+            "2026-05-29T08:45:12Z - IP: 192.168.10.14 - URL: https://github.com/company-org - Action: Allowed - Bytes: 15320",
+            "2026-05-29T09:12:45Z - IP: 192.168.10.12 - URL: https://update-services.top/api/v2/config - Action: Allowed - Status: 200 - Bytes: 1024",
+            "2026-05-29T09:13:45Z - IP: 192.168.10.12 - URL: https://update-services.top/api/v2/config - Action: Allowed - Status: 200 - Bytes: 1024",
+            "2026-05-29T09:14:45Z - IP: 192.168.10.12 - URL: https://update-services.top/api/v2/config - Action: Allowed - Status: 200 - Bytes: 1024",
+            "2026-05-29T09:20:05Z - IP: 192.168.10.15 - URL: https://www.google.com/search?q=weather - Action: Allowed - Bytes: 1200"
         ],
         email: [
-            "2026-05-29T09:00:10Z - Inbound - From: billing@vendor-corp.net - To: fsmith@company.com - Subject: URGENT: Outstanding Invoice Q2 - Attachment: Invoice_Q2_Final.docm - Status: Delivered"
+            "2026-05-29T08:50:00Z - Inbound - From: notifications@slack.com - To: fsmith@company.com - Subject: You have unread messages - Status: Delivered",
+            "2026-05-29T09:00:10Z - Inbound - From: billing@vendor-corp.net - To: fsmith@company.com - Subject: URGENT: Outstanding Invoice Q2 - Attachment: Invoice_Q2_Final.docm - Status: Delivered",
+            "2026-05-29T09:30:00Z - Outbound - From: asmith@company.com - To: client@external.com - Subject: RE: Project Assets - Status: Sent"
         ],
         file_server: [
-            "2026-05-29T09:05:00Z - Share Name: \\\\FILE-SRV-01\\Finance - Access Request: Allowed - User: COMPANY\\fsmith"
+            "2026-05-29T08:30:15Z - Share Name: \\\\FILE-SRV-01\\Public - Access Request: Allowed - Source IP: 192.168.10.10 - User: COMPANY\\asmith",
+            "2026-05-29T09:05:00Z - Share Name: \\\\FILE-SRV-01\\Finance - Access Request: Allowed - User: COMPANY\\fsmith",
+            "2026-05-29T09:15:45Z - Object Accessed: \\\\FILE-SRV-01\\Finance\\2026_Q2_Forecast.xlsx - Accesses: ReadData - User: COMPANY\\fsmith"
         ],
         workstations: [
             "2026-05-29T09:10:05Z - WKSTN-02 (192.168.10.12) - EventID: 4688 - Process Created: winword.exe spawned - Command: \"C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE\" /n \"C:\\Users\\fsmith\\Downloads\\Invoice_Q2_Final.docm\"",
-            "2026-05-29T09:10:30Z - WKSTN-02 (192.168.10.12) - EventID: 4688 - Process Created: winword.exe spawned cmd.exe - Command: cmd.exe /c \"powershell.exe -ExecutionPolicy Bypass -WindowStyle Hidden -EncodedCommand SQBFAFgAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAA...\""
+            "2026-05-29T09:10:30Z - WKSTN-02 (192.168.10.12) - EventID: 4688 - Process Created: winword.exe spawned cmd.exe - Command: cmd.exe /c \"powershell.exe -ExecutionPolicy Bypass -WindowStyle Hidden -EncodedCommand SQBFAFgAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAA...\"",
+            "2026-05-29T09:45:10Z - WKSTN-01 (192.168.10.10) - EventID: 4800 - Workstation Locked - User: COMPANY\\asmith"
         ],
         auth_logs: [
-            "2026-05-29T08:30:00Z - WKSTN-02 (192.168.10.12) - EventID: 4624 - Successful Logon - User: COMPANY\\fsmith"
+            "2026-05-29T08:00:15Z - WKSTN-01 (192.168.10.10) - EventID: 4624 - Successful Logon - User: COMPANY\\asmith",
+            "2026-05-29T08:30:00Z - WKSTN-02 (192.168.10.12) - EventID: 4624 - Successful Logon - User: COMPANY\\fsmith",
+            "2026-05-29T08:45:10Z - WKSTN-03 (192.168.10.14) - EventID: 4624 - Successful Logon - User: COMPANY\\rjones"
         ]
     },
     questions: {

@@ -4,27 +4,38 @@ scenarios.push({
     description: "High-volume authentication failure alerts followed by a single successful login from a suspicious external IP address targeting the corporate VPN gateway.",
     logs: {
         proxy: [
-            "2026-05-29T22:00:10Z - IP: 45.33.12.110 - URL: https://vpn.company.com/login - Status: 401 - Bytes: 450",
-            "2026-05-29T22:00:12Z - IP: 45.33.12.110 - URL: https://vpn.company.com/login - Status: 401 - Bytes: 450",
-            "2026-05-29T22:00:14Z - IP: 45.33.12.110 - URL: https://vpn.company.com/login - Status: 401 - Bytes: 450",
-            "2026-05-29T22:00:16Z - IP: 45.33.12.110 - URL: https://vpn.company.com/login - Status: 401 - Bytes: 450",
-            "2026-05-29T22:05:30Z - IP: 45.33.12.110 - URL: https://vpn.company.com/login - Status: 200 - Bytes: 1240 - User: COMPANY\\asmith",
-            "2026-05-29T22:10:00Z - IP: 45.33.12.110 - URL: https://internal-portal.company.local/ - Status: 200 - Bytes: 4500"
+            "2026-05-29T21:45:12Z - IP: 192.168.10.14 - URL: https://github.com/company-org - Action: Allowed - Bytes: 15320",
+            "2026-05-29T22:00:10Z - IP: 45.33.12.110 - URL: https://vpn.company.com/login - Action: Allowed - Status: 401 - Bytes: 450",
+            "2026-05-29T22:00:12Z - IP: 45.33.12.110 - URL: https://vpn.company.com/login - Action: Allowed - Status: 401 - Bytes: 450",
+            "2026-05-29T22:00:14Z - IP: 45.33.12.110 - URL: https://vpn.company.com/login - Action: Allowed - Status: 401 - Bytes: 450",
+            "2026-05-29T22:00:16Z - IP: 45.33.12.110 - URL: https://vpn.company.com/login - Action: Allowed - Status: 401 - Bytes: 450",
+            "2026-05-29T22:02:45Z - IP: 192.168.10.10 - URL: https://slack.com/api/rtm.start - Action: Allowed - Bytes: 3100",
+            "2026-05-29T22:05:30Z - IP: 45.33.12.110 - URL: https://vpn.company.com/login - Action: Allowed - Status: 200 - Bytes: 1240 - User: COMPANY\\asmith",
+            "2026-05-29T22:10:00Z - IP: 45.33.12.110 - URL: https://internal-portal.company.local/ - Action: Allowed - Status: 200 - Bytes: 4500",
+            "2026-05-29T22:15:22Z - IP: 192.168.10.12 - URL: https://teams.microsoft.com - Action: Allowed - Bytes: 12450"
         ],
         email: [
-            "2026-05-29T22:06:00Z - Internal - From: security-monitor@company.com - To: asmith@company.com - Subject: Notice: New Login from Unknown Location - Status: Delivered"
+            "2026-05-29T21:30:00Z - Inbound - From: notifications@slack.com - To: asmith@company.com - Subject: You have unread messages - Status: Delivered",
+            "2026-05-29T22:06:00Z - Internal - From: security-monitor@company.com - To: asmith@company.com - Subject: Notice: New Login from Unknown Location - Status: Delivered",
+            "2026-05-29T22:30:00Z - Inbound - From: alerts@bamboohr.com - To: asmith@company.com - Subject: Time Off Request Approved - Status: Delivered"
         ],
         file_server: [
-            "2026-05-29T22:15:20Z - Share Name: \\\\FILE-SRV-01\\Marketing - Access Request: Allowed - Source IP: 45.33.12.110 - User: COMPANY\\asmith"
+            "2026-05-29T21:20:15Z - Share Name: \\\\FILE-SRV-01\\Public - Access Request: Allowed - Source IP: 192.168.10.10 - User: COMPANY\\asmith",
+            "2026-05-29T22:15:20Z - Share Name: \\\\FILE-SRV-01\\Marketing - Access Request: Allowed - Source IP: 45.33.12.110 - User: COMPANY\\asmith",
+            "2026-05-29T22:45:11Z - Share Name: \\\\FILE-SRV-01\\Public - Access Request: Allowed - Source IP: 192.168.10.15 - User: COMPANY\\mrogers"
         ],
         workstations: [
-            "2026-05-29T22:20:00Z - WKSTN-01 (192.168.10.10) - EventID: 4624 - Successful Network Logon - User: COMPANY\\asmith - Source IP: 45.33.12.110 (via VPN)"
+            "2026-05-29T21:01:22Z - WKSTN-01 (192.168.10.10) - EventID: 4688 - Process Created: explorer.exe spawned slack.exe",
+            "2026-05-29T22:20:00Z - WKSTN-01 (192.168.10.10) - EventID: 4624 - Successful Network Logon - User: COMPANY\\asmith - Source IP: 45.33.12.110 (via VPN)",
+            "2026-05-29T22:45:40Z - WKSTN-03 (192.168.10.14) - EventID: 4800 - Workstation Locked - User: COMPANY\\rjones"
         ],
         auth_logs: [
+            "2026-05-29T08:00:15Z - WKSTN-01 (192.168.10.10) - EventID: 4624 - Successful Logon - User: COMPANY\\asmith",
             "2026-05-29T22:00:10Z - VPN_Gateway - User: asmith - Status: Failure - Reason: Bad Password - Source: 45.33.12.110",
             "2026-05-29T22:00:12Z - VPN_Gateway - User: asmith - Status: Failure - Reason: Bad Password - Source: 45.33.12.110",
             "2026-05-29T22:00:14Z - VPN_Gateway - User: asmith - Status: Failure - Reason: Bad Password - Source: 45.33.12.110",
-            "2026-05-29T22:05:30Z - VPN_Gateway - User: asmith - Status: Success - Source: 45.33.12.110"
+            "2026-05-29T22:05:30Z - VPN_Gateway - User: asmith - Status: Success - Source: 45.33.12.110",
+            "2026-05-29T22:30:12Z - WKSTN-03 (192.168.10.14) - EventID: 4624 - Successful Logon - User: COMPANY\\rjones"
         ]
     },
     questions: {
