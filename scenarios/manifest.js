@@ -6,5 +6,17 @@ const scenarioManifest = [
     "zeroday_staging.js",
     "pass_the_hash.js",
     "impossible_travel_social.js",
-    "cicd_supply_chain.js"
+    "cicd_supply_chain.js",
+    "sql_injection.js",
+    "xss_attack.js",
+    "idor_enumeration.js",
+    "ransomware_staging.js",
+    "brute_force.js",
+    "privilege_escalation.js",
+    "cloud_compromise.js",
+    "phishing_macro.js",
+    "phishing_cred_harvest.js",
+    "lateral_rdp.js",
+    "lateral_psexec.js",
+    "exfil_stego_archive.js"
 ];
