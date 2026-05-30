@@ -16,7 +16,8 @@ const MASTER_PRINCIPLES = [
     "Cross-Site Scripting (XSS)",
     "Brute Force / Credential Stuffing",
     "Unauthorized Privilege Use",
-    "Pass-the-Hash"
+    "Pass-the-Hash",
+    "Log Clearing / Anti-Forensics"
 ];
 
 const scenarios = [];

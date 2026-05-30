@@ -18,5 +18,6 @@ const scenarioManifest = [
     "phishing_cred_harvest.js",
     "lateral_rdp.js",
     "lateral_psexec.js",
-    "exfil_stego_archive.js"
+    "exfil_stego_archive.js",
+    "anti_forensics.js"
 ];
