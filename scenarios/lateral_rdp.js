@@ -4,73 +4,92 @@ scenarios.push({
     description: "Multiple Remote Desktop (RDP) sessions initiated from a standard workstation to internal server segments following a local credential compromise.",
     logs: {
         proxy: [
-            "2026-05-29T14:02:14Z - IP: 192.168.10.45 - URL: https://identity.okta.com/oauth2 - Status: 200",
-            "2026-05-29T14:05:00Z - IP: 192.168.10.45 - URL: http://software-update.example.net/patch_9921.exe - Status: 200 - Bytes: 1250000",
-            "2026-05-29T14:15:22Z - IP: 192.168.10.45 - URL: https://outlook.office.com/mapi - Action: Allowed - Bytes: 8940",
-            "2026-05-29T14:30:15Z - IP: 192.168.10.10 - URL: https://slack.com/api/rtm.start - Action: Allowed - Bytes: 3100",
-            "2026-05-29T15:00:12Z - IP: 192.168.10.12 - URL: https://teams.microsoft.com - Action: Allowed - Bytes: 14000",
-            "2026-05-29T15:30:45Z - IP: 192.168.10.14 - URL: https://github.com/company-org - Action: Allowed - Bytes: 15300"
+            "2026-05-29T19:56:10Z - IP: 192.168.10.14 - URL: https://git.example.com/devops/deploy - Action: Allowed - Category: Code-Repository - Bytes: 12400",
+            "2026-05-29T20:02:15Z - IP: 192.168.10.10 - URL: https://canva.com/assets - Action: Allowed - Category: Media/Arts - Bytes: 852000",
+            "2026-05-29T20:10:00Z - IP: 192.168.10.82 - URL: http://198.51.100.15/shell.txt - Action: Allowed - Category: Uncategorized - Bytes: 1450",
+            "2026-05-29T20:15:30Z - IP: 192.168.10.33 - URL: https://slack.com/api/rtm.start - Action: Allowed - Category: Business/Collaboration - Bytes: 3100",
+            "2026-05-29T20:45:00Z - IP: 192.168.10.10 - URL: https://canva.com/design - Action: Allowed - Category: Media/Arts - Bytes: 125000",
+            "2026-05-29T20:55:12Z - IP: 192.168.10.14 - URL: https://github.com/company-org - Action: Allowed - Category: IT/Development - Bytes: 15300"
         ],
         email: [
-            "2026-05-29T13:45:00Z - Inbound - From: notifications@example.com - To: jdoe@example.com - Subject: Critical: Your workstation requires a manual security patch - Status: Delivered",
-            "2026-05-29T14:05:12Z - Inbound - From: newsletters@techcrunch.com - To: asmith@example.com - Subject: TechCrunch Daily - Status: Delivered",
-            "2026-05-29T14:45:00Z - Inbound - From: it-support@example.com - To: kbaker@example.com - Subject: RE: Server Maintenance Schedule - Status: Sent"
+            "2026-05-29T19:50:00Z - Inbound - From: notifications@slack.com - To: rjones@company.com - Subject: You have unread messages in Dev-Ops - Status: Delivered",
+            "2026-05-29T20:00:10Z - Inbound - From: hr-portal@company.com - To: mrogers@company.com - Subject: Notice: Scheduled Q2 Evaluations - Status: Delivered",
+            "2026-05-29T20:30:15Z - Outbound - From: mrogers@company.com - To: ceo@company.com - Subject: RE: Evaluation Guidelines - Status: Sent"
         ],
         file_server: [
-            "2026-05-29T14:20:15Z - Share Name: \\\\FILE-SRV-01\\Public - Access Request: Allowed - Source IP: 192.168.10.10 - User: COMPANY\\asmith",
-            "2026-05-29T15:20:00Z - Local Disk Access: C:\\Windows\\Temp\\dump.zip - Accesses: WriteData - User: COMPANY\\jdoe (via RDP on FILE-SRV-01)",
-            "2026-05-29T15:45:11Z - Share Name: \\\\FILE-SRV-01\\Public - Access Request: Allowed - Source IP: 192.168.10.15 - User: COMPANY\\mrogers"
+            "2026-05-29T19:57:45Z - Share Name: \\\\FILE-SRV-01\\DevShare - Access Request: Allowed - Source IP: 192.168.10.14 - User: COMPANY\\rjones",
+            "2026-05-29T20:02:10Z - Object Accessed: \\\\FILE-SRV-01\\DevShare\\Templates\\deploy_baseline.sh - Accesses: ReadData - Source IP: 192.168.10.14 - User: COMPANY\\rjones",
+            "2026-05-29T20:10:15Z - Share Name: \\\\FILE-SRV-01\\Public - Access Request: Allowed - Source IP: 192.168.10.33 - User: COMPANY\\mrogers",
+            "2026-05-29T20:12:00Z - Object Accessed: \\\\FILE-SRV-01\\Public\\Onboarding_Forms.zip - Accesses: ReadData - Source IP: 192.168.10.33 - User: COMPANY\\mrogers"
         ],
         workstations: [
-            "2026-05-29T14:10:00Z - WKSTN-04 (192.168.10.45) - EventID: 4688 - Process Created: chrome.exe spawned patch_9921.exe",
-            "2026-05-29T14:40:00Z - WKSTN-04 (192.168.10.45) - EventID: 4688 - Process Created: patch_9921.exe spawned mstsc.exe /v:192.168.10.80",
-            "2026-05-29T15:05:30Z - WKSTN-02 (192.168.10.12) - EventID: 4688 - Process Created: outlook.exe spawned excel.exe",
-            "2026-05-29T15:10:00Z - WKSTN-04 (192.168.10.45) - EventID: 4688 - Process Created: explorer.exe spawned mstsc.exe /v:192.168.10.150",
-            "2026-05-29T15:30:12Z - WKSTN-03 (192.168.10.14) - EventID: 4800 - Workstation Locked - User: COMPANY\\rjones"
+            "2026-05-29T19:55:30Z - WKSTN-03 (192.168.10.14) - EventID: 4688 - Process Created: explorer.exe spawned vscode.exe",
+            "2026-05-29T20:10:00Z - WEB-SRV-02 (192.168.10.82) - EventID: 4688 - Process Created: w3wp.exe spawned cmd.exe /c whoami",
+            "2026-05-29T20:11:15Z - WEB-SRV-02 (192.168.10.82) - EventID: 4688 - Process Created: cmd.exe spawned powershell.exe -WindowStyle Hidden -Command \"Get-Content C:\\inetpub\\wwwroot\\web.config.bak\"",
+            "2026-05-29T20:20:00Z - WKSTN-02 (192.168.10.12) - EventID: 4688 - Process Created: svchost.exe (termsrv) spawned rdpshell.exe - session initiated from 192.168.10.82",
+            "2026-05-29T20:25:10Z - WKSTN-02 (192.168.10.12) - EventID: 4688 - Process Created: explorer.exe spawned cmd.exe",
+            "2026-05-29T20:35:12Z - DB-SRV-01 (192.168.10.85) - EventID: 4688 - Process Created: svchost.exe (termsrv) spawned rdpshell.exe - session initiated from 192.168.10.12",
+            "2026-05-29T20:50:00Z - DB-SRV-01 (192.168.10.85) - EventID: 4688 - Process Created: cmd.exe spawned powershell.exe -Command \"Compress-Archive -Path D:\\MSSQL\\Backup\\Q2_Transactions.bak -DestinationPath C:\\Windows\\Temp\\db_staging.zip\""
         ],
         auth_logs: [
-            "2026-05-29T08:00:15Z - WKSTN-01 (192.168.10.10) - EventID: 4624 - Successful Logon - User: COMPANY\\asmith",
-            "2026-05-29T08:30:12Z - WKSTN-04 (192.168.10.45) - EventID: 4624 - Successful Logon - User: COMPANY\\jdoe",
-            "2026-05-29T14:40:05Z - WEB-SRV-01 (192.168.10.80) - EventID: 4624 - Successful Logon - User: COMPANY\\jdoe - Logon Type: 10 (RemoteInteractive/RDP) - Source IP: 192.168.10.45",
-            "2026-05-29T15:10:05Z - FILE-SRV-01 (192.168.10.150) - EventID: 4624 - Successful Logon - User: COMPANY\\jdoe - Logon Type: 10 (RemoteInteractive/RDP) - Source IP: 192.168.10.45",
-            "2026-05-29T15:45:00Z - MGMT-SRV-01 (192.168.10.55) - EventID: 4624 - Successful Logon - User: COMPANY\\kbaker - Logon Type: 10 (RemoteInteractive/RDP) - Source IP: 192.168.10.12"
+            "2026-05-29T19:55:00Z - WKSTN-03 (192.168.10.14) - EventID: 4624 - Successful Logon - User: COMPANY\\rjones - Logon Type: 2 (Interactive)",
+            "2026-05-29T20:00:15Z - WKSTN-33 (192.168.10.33) - EventID: 4624 - Successful Logon - User: COMPANY\\mrogers - Logon Type: 2 (Interactive)",
+            "2026-05-29T20:05:00Z - WKSTN-01 (192.168.10.10) - EventID: 4624 - Successful Logon - User: COMPANY\\asmith - Logon Type: 2 (Interactive)",
+            "2026-05-29T20:20:00Z - WKSTN-02 (192.168.10.12) - EventID: 4624 - Successful Network Logon - Source IP: 192.168.10.82 - User: COMPANY\\db-admin - Logon Type: 10 (RemoteInteractive/RDP)",
+            "2026-05-29T20:35:12Z - DB-SRV-01 (192.168.10.85) - EventID: 4624 - Successful Network Logon - Source IP: 192.168.10.12 - User: COMPANY\\db-admin - Logon Type: 10 (RemoteInteractive/RDP)"
         ]
     },
     questions: {
         vector: {
-            label: "What was the initial infection vector that allowed the attacker to reach Patient Zero (WKSTN-04)?",
+            label: "What was the initial access method used to breach the environment and harvest high-privilege credentials?",
             type: "select",
             options: [
-                "SQL Injection on the web server",
-                "Phishing email leading to a malicious patch download",
-                "Brute force attack on the RDP gateway",
-                "Insider threat copying files to a USB drive"
+                "Spear-phishing email targeting an administrator with a malicious attachment",
+                "Unauthenticated Remote Code Execution on a public e-commerce database",
+                "Application exploitation on public server WEB-SRV-02 and local file config enumeration",
+                "Brute-forcing exposed RDP administrative connections from the internet"
             ],
-            correct: "Phishing email leading to a malicious patch download"
+            correct: "Application exploitation on public server WEB-SRV-02 and local file config enumeration"
         },
-        protocol: {
-            label: "What protocol was used to move laterally from the workstation to the internal servers?",
+        origin: {
+            label: "Which internal IP address represents the initial point of origin (Patient Zero) where the malicious shell was executed?",
             type: "select",
             options: [
-                "Server Message Block (SMB)",
-                "Remote Desktop Protocol (RDP)",
-                "Windows Remote Management (WinRM)",
-                "Windows Management Instrumentation (WMI)"
+                "192.168.10.12",
+                "192.168.10.14",
+                "192.168.10.82",
+                "192.168.10.85"
             ],
-            correct: "Remote Desktop Protocol (RDP)"
+            correct: "192.168.10.82"
         },
-        indicator: {
-            label: "Which process parentage on WKSTN-04 is the most definitive 'smoking gun' of malicious activity?",
+        lateral_movement: {
+            label: "Which Windows Logon Type explicitly identifies the use of Remote Desktop Protocol (RDP) for the lateral movement pivot?",
             type: "select",
             options: [
-                "explorer.exe spawning slack.exe",
-                "patch_9921.exe spawning mstsc.exe (RDP client)",
-                "outlook.exe spawning chrome.exe",
-                "chrome.exe spawning patch_9921.exe"
+                "Logon Type 2 (Interactive)",
+                "Logon Type 3 (Network)",
+                "Logon Type 5 (Service)",
+                "Logon Type 10 (RemoteInteractive)"
             ],
-            correct: "patch_9921.exe spawning mstsc.exe (RDP client)"
+            correct: "Logon Type 10 (RemoteInteractive)"
+        },
+        impact: {
+            label: "Identify the high-value target endpoint compromised at the end of the multi-hop RDP chain:",
+            type: "select",
+            options: [
+                "WKSTN-02 (Finance)",
+                "DB-SRV-01 (Database)",
+                "WKSTN-33 (HR)",
+                "WEB-SRV-02 (Web)"
+            ],
+            correct: "DB-SRV-01 (Database)"
         }
     },
-    principles: ["Lateral Movement", "Unauthorized Privilege Use", "Phishing / Social Engineering"],
-    explanation: "User 'jdoe' on WKSTN-04 was targeted with a phishing email claiming a 'manual security patch' was required. After downloading and executing 'patch_9921.exe', the malware established control and used the native RDP client ('mstsc.exe') to move laterally to WEB-SRV-01 and FILE-SRV-01. The 'smoking gun' is the anomalous process parentage where the fake patch process spawned the RDP client. Benign noise includes standard office traffic and a legitimate administrative RDP session from user 'kbaker'."
+    principles: [
+        "Lateral Movement",
+        "Privilege Escalation",
+        "Unauthorized Privilege Use",
+        "Reconnaissance / Scanning"
+    ],
+    explanation: "At 20:10:00Z, an external attacker exploited an unpatched application vulnerability on WEB-SRV-02 (192.168.10.82) to spawn a local system shell. Running as the web server process daemon, the attacker enumerated local files to read a backup configuration file containing hardcoded credentials for COMPANY\\db-admin. At 20:20:00Z, the attacker executed their first lateral pivot using Remote Desktop Protocol (RDP) to authenticate to the finance workstation WKSTN-02 (Logon Type 10, RemoteInteractive). Armed with administrative access, they executed a second RDP pivot at 20:35:12Z from WKSTN-02 to the highly restricted database host DB-SRV-01 (192.168.10.85). Once inside, the attacker staged the exfiltration of the Q2 Transaction database backup, compressing the archive into a temporary folder. Legitimate users (rjones, mrogers, asmith) accessing standard development environments and business tools concurrently provide realistic background network activity."
 });

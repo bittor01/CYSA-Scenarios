@@ -15,9 +15,9 @@ const scenarioManifest = [
     "privilege_escalation.js",
     "cloud_compromise.js",
     "phishing_macro.js",
-    "phishing_cred_harvest.js"//,
-    //"lateral_rdp.js",
-    //"lateral_psexec.js",
-    //"exfil_stego_archive.js",
-    //"anti_forensics.js"
+    "phishing_cred_harvest.js",
+    "lateral_rdp.js",
+    "lateral_psexec.js",
+    "exfil_stego_archive.js",
+    "anti_forensics.js"
 ];
