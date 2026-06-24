@@ -13,7 +13,7 @@ const scenarioManifest = [
     "ransomware_staging.js",
     "brute_force.js",
     "privilege_escalation.js",
-    "cloud_compromise.js",
+    "cloud_compromise.js"//,
     //"phishing_macro.js",
     //"phishing_cred_harvest.js",
     //"lateral_rdp.js",
