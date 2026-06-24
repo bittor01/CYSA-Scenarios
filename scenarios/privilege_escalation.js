@@ -28,7 +28,6 @@ scenarios.push({
             "2026-05-29T15:05:00Z - WKSTN-12 (192.168.10.22) - EventID: 4688 - Process Created: system-optimizer.exe spawned cmd.exe",
             "2026-05-29T15:05:10Z - WKSTN-12 (192.168.10.22) - EventID: 4688 - Process Created: cmd.exe spawned whoami /priv",
             "2026-05-29T15:05:15Z - WKSTN-12 (192.168.10.22) - EventID: 4688 - Process Created: cmd.exe spawned getsystem.exe",
-            "2026-05-29T15:05:20Z - WKSTN-12 (192.168.10.22) - EventID: 4672 - Special Privileges Assigned to New Logon - User: SYSTEM - Privileges: SeDebugPrivilege, SeTcbPrivilege, SeBackupPrivilege",
             "2026-05-29T15:10:00Z - WKSTN-12 (192.168.10.22) - EventID: 4688 - Process Created: cmd.exe spawned mimikatz.exe sekurlsa::logonpasswords",
             "2026-05-29T15:12:00Z - WKSTN-12 (192.168.10.22) - EventID: 4688 - Process Created: cmd.exe spawned wevtutil cl Security",
             "2026-05-29T15:12:05Z - WKSTN-12 (192.168.10.22) - EventID: 1102 - The audit log was cleared. - User: SYSTEM",
@@ -38,7 +37,9 @@ scenarios.push({
         auth_logs: [
             "2026-05-29T08:30:00Z - WKSTN-12 (192.168.10.22) - EventID: 4624 - Successful Logon - User: COMPANY\\tturner",
             "2026-05-29T08:45:10Z - WKSTN-01 (192.168.10.10) - EventID: 4624 - Successful Logon - User: COMPANY\\asmith",
-            "2026-05-29T15:05:20Z - WKSTN-12 (192.168.10.22) - EventID: 4624 - Successful Logon - User: SYSTEM - Logon Type: 5 (Service)"
+            "2026-05-29T15:05:20Z - WKSTN-12 (192.168.10.22) - EventID: 4624 - Successful Logon - User: SYSTEM - Logon Type: 5 (Service)",
+            "2026-05-29T15:05:20Z - WKSTN-12 (192.168.10.22) - EventID: 4672 - Special Privileges Assigned to New Logon - User: SYSTEM - Privileges: SeDebugPrivilege, SeTcbPrivilege, SeBackupPrivilege",
+            "2026-05-29T22:30:12Z - WKSTN-03 (192.168.10.14) - EventID: 4624 - Successful Logon - User: COMPANY\\rjones"
         ]
     },
     questions: {
@@ -76,6 +77,11 @@ scenarios.push({
             correct: "Event ID 1102 and 'wevtutil cl Security'"
         }
     },
-    principles: ["Privilege Escalation", "Unauthorized Privilege Use", "Log Clearing / Anti-Forensics", "Phishing / Social Engineering"],
+    principles: [
+        "Privilege Escalation", 
+        "Unauthorized Privilege Use", 
+        "Obfuscation / Encryption", 
+        "Phishing / Social Engineering"
+    ],
     explanation: "The incident began with a social engineering lure. User 'tturner' received a Slack message from a spoofed 'IT_Global' account directing them to a 'System Optimizer' tool. After downloading and running the tool from an unclassified site, the malware (system-optimizer.exe) spawned a shell and executed 'getsystem.exe' to escalate to SYSTEM privileges. Windows Event ID 4672 and 4624 (SYSTEM) confirm this. The attacker then cleared the Security logs via 'wevtutil' to hide their subsequent actions (mimikatz, lateral movement attempts). Benign noise includes standard marketing activity on WKSTN-01."
 });

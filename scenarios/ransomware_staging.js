@@ -81,6 +81,10 @@ scenarios.push({
             correct: "Highly rigid 60-second connection frequency to a TOR gateway"
         }
     },
-    principles: ["Phishing / Social Engineering", "Obfuscation / Encryption", "Beaconing / Command & Control"],
+    principles: [
+        "Phishing / Social Engineering", 
+        "Obfuscation / Encryption", 
+        "Beaconing / Command & Control"
+    ],
     explanation: "At 14:40:05Z, user 'jdoe' on WKSTN-04 executed a malicious file disguised as shipping details. The malware immediately attempted to disable recovery options by deleting Volume Shadow Copies via 'vssadmin.exe' and disabling boot recovery via 'bcdedit.exe'. Process logs also show a 60-second beacon to a TOR gateway ('tor-gateway.example.com') to retrieve encryption keys. Shortly after, the process began encrypting files on the network share \\\\FILE-SRV-01\\Public, as evidenced by the rapid renaming of documents to include the '.crypt' extension. Benign activities include asmith opening a legitimate HR PDF and fsmith performing a large backup to the file server, which mimics the file-volume noise of ransomware."
 });

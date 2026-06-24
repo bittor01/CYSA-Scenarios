@@ -33,7 +33,6 @@ scenarios.push({
         ],
         workstations: [
             "2026-05-29T21:01:22Z - WKSTN-01 (192.168.10.10) - EventID: 4688 - Process Created: explorer.exe spawned slack.exe",
-            "2026-05-29T22:20:00Z - WKSTN-01 (192.168.10.10) - EventID: 4624 - Successful Network Logon - User: COMPANY\\asmith - Source IP: 45.33.12.110 (via VPN)",
             "2026-05-29T22:25:30Z - WKSTN-01 (192.168.10.10) - EventID: 4688 - Process Created: explorer.exe spawned cmd.exe",
             "2026-05-29T22:45:40Z - WKSTN-03 (192.168.10.14) - EventID: 4800 - Workstation Locked - User: COMPANY\\rjones"
         ],
@@ -46,6 +45,7 @@ scenarios.push({
             "2026-05-29T22:00:18Z - VPN_Gateway - User: asmith - Status: Failure - Reason: Bad Password - Source: 45.33.12.110",
             "2026-05-29T22:05:30Z - VPN_Gateway - User: asmith - Status: Success - Source: 45.33.12.110",
             "2026-05-29T22:08:00Z - WKSTN-01 (192.168.10.10) - EventID: 4624 - Successful Network Logon - User: COMPANY\\asmith - Source: 45.33.12.110",
+            "2026-05-29T22:20:00Z - WKSTN-01 (192.168.10.10) - EventID: 4624 - Successful Network Logon - User: COMPANY\\asmith - Source IP: 45.33.12.110 (via VPN)",
             "2026-05-29T22:30:12Z - WKSTN-03 (192.168.10.14) - EventID: 4624 - Successful Logon - User: COMPANY\\rjones"
         ]
     },
@@ -84,6 +84,9 @@ scenarios.push({
             correct: "Disable the 'asmith' account and reset their password"
         }
     },
-    principles: ["Brute Force / Credential Stuffing", "Unauthorized Privilege Use"],
-    explanation: "The logs indicate a focused brute-force attack against the 'asmith' user account on the corporate VPN gateway. Starting at 22:00:10Z, the attacker at IP 45.33.12.110 made several rapid password attempts, all resulting in 401/Failure status. At 22:05:30Z, a successful login was achieved. The attacker then used the established VPN tunnel to access internal resources, including the marketing file share and workstation WKSTN-01. The immediate security alert sent to the user ('New Login from Unknown Location') is a key indicator that the login was anomalous. Benign traffic from other users (rjones, jdoe) during late hours provides the context for a 24/7 global operation."
+    principles: [
+        "Brute Force / Credential Stuffing",
+        "Unauthorized Privilege Use"
+    ],
+    explanation: "The logs indicate a focused brute-force attack against the 'asmith' user account on the corporate VPN gateway. Starting at 22:00:10Z, the attacker at IP 45.33.12.110 made several rapid password attempts, all resulting in 401/Failure status. At 22:05:30Z, a successful login was achieved. The attacker then used the established VPN tunnel to access internal resources, including the marketing file share and workstation WKSTN-01. The immediate security alert sent to the user ('New Login from Unknown Location') is a key indicator that the login was anomalous. Benign traffic from other users (rjones, mrogers) during late hours provides the context for a 24/7 global operation."
 });

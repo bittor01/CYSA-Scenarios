@@ -74,6 +74,10 @@ scenarios.push({
             correct: "Unauthorized Privilege Use"
         }
     },
-    principles: ["Unauthorized Privilege Use", "Data Exfiltration (Overt Channel)", "Beaconing / Command & Control"],
+    principles: [
+        "Unauthorized Privilege Use", 
+        "Data Exfiltration (Overt Channel)", 
+        "Beaconing / Command & Control"
+    ],
     explanation: "The attacker gained access to the cloud environment by injecting a stolen session token to bypass MFA for the 'admin-root' account. Once authenticated from an external IP (198.51.100.22), the attacker modified IAM policies to grant themselves full S3 access. They then proceeded to download several hundred megabytes of sensitive documents from the 'company-legal-vault' bucket. The attacker also established a C2 heartbeat to 'c2-cloud-panel.example.net'. Benign noise includes legitimate cloud sync processes and standard administrative activity from other users."
 });
